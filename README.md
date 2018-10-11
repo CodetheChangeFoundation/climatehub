@@ -6,3 +6,5 @@ Wordpress theme for the Climate Hub at UBC
 ## WordPress (PHP, HTML/CSS, Bootstrap, React, JS) with MySQL (AWS)
 "# climatehub" 
 "# climatehub" 
+
+victor
