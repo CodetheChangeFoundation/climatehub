@@ -8,3 +8,5 @@ Wordpress theme for the Climate Hub at UBC
 "# climatehub"
 
 test change
+
+my awesome change XD
