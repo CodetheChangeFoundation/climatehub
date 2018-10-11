@@ -1,1 +1,0 @@
-"# climatehub"  initgit add README.mdgit commit -m "first commit"git remote add origin git@github.com:CodetheChangeFoundation/climatehub.gitgit push -u origin master
