@@ -16,6 +16,3 @@ List of steps to take to initialize the project.
 
 ## License
 This project is licensed under the MIT License.
-=======
-"# climatehub"
-"# climatehub"
