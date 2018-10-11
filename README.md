@@ -4,6 +4,7 @@ Meetings are Wednesdays from 5:00 PM to 8:00 PM in West Mall Swing Space 307.
 Wordpress theme for the Climate Hub at UBC
 
 ## WordPress (PHP, HTML/CSS, Bootstrap, React, JS) with MySQL (AWS)
+<<<<<<< HEAD
 
 ## Tech Stack
 - name - what it's used for
@@ -16,3 +17,9 @@ List of steps to take to initialize the project.
 
 ## License
 This project is licensed under the MIT License.
+=======
+"# climatehub"
+"# climatehub"
+
+test change
+>>>>>>> 4d8f2ad071b0cf1c5bd7fca96263042eb7a0762c
