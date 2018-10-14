@@ -1,6 +1,6 @@
 <?php
 /**
- * Code the Change Foundation enqueue functions
+ * Climate Hub enqueue functions
  *
  * @package climatehub
  */
