@@ -2,10 +2,7 @@
   <h1>This is my index.</h1>
 <?php get_footer(); ?>
 
-<?php if( get_field('page_title') ): ?>
-  <h2><?php the_field('page_title'); ?></h2>
-<?php endif; ?>
-
-<?php if( get_field('paragraph') ): ?>
-  <p><?php the_field('paragraph'); ?></p>
-<?php endif; ?>
+<div class='container'>
+  <?php echo get_template_part( "template-parts/title" ); ?>
+  <?php get_template_part( 'template-parts/paragraph' ); ?>
+</div>
