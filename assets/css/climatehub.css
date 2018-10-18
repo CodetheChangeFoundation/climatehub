@@ -9,7 +9,10 @@
 }
 
 /*Footer - Melissa*/
-.greenbox {
+#greenbox {
   background-color: #DFEBD3;
-  
+}
+#copyright {
+  text-align: center;
+  background-size: cover;
 }
