@@ -18,3 +18,5 @@ WordPress custom theme for the Climate Hub at UBC.
 
 ## License
 This project is licensed under the MIT License.
+
+Test text
