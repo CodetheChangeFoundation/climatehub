@@ -3,6 +3,5 @@
 <?php get_footer(); ?>
 
 <div class='container'>
-  <?php echo get_template_part( "template-parts/title" ); ?>
-  <?php get_template_part( 'template-parts/paragraph' ); ?>
+  <?php get_template_part( "template-parts/title" ); ?>
 </div>
