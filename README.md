@@ -12,7 +12,9 @@ WordPress custom theme for the Climate Hub at UBC.
 1. Download and install <https://local.getflywheel.com/>
 2. Create a new WordPress website
 3. Navigate to the themes folder and clone the repo into the themes folder
-4. Start up the website and use the new cloned theme as the default theme
+4. Install homebrew and run `brew install pre-commit`
+5. Run `pre-commit install`
+6. Start up the website and use the new cloned theme as the default theme
 
 ## License
 This project is licensed under the MIT License.
