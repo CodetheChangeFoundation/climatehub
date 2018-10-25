@@ -22,7 +22,8 @@
                    <img src="<?php echo get_field('project_image')['url']; ?>" class="img-fluid"/>
                   <?php endif; ?>   
             </div>
-          
+        
+            
             <div class="col-sm">
                   <?php if(get_field('title')): ?>
                    <h2><?php echo get_field('title') ?></h2>
@@ -36,6 +37,7 @@
                     <img src="<?php echo get_field('project_image')['url']; ?>" class="img-fluid"/>
                   <?php endif; ?>
              </div>  
+            
             
              <div class="col-sm">
                   <?php if(get_field('title')): ?>
