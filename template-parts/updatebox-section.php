@@ -11,7 +11,7 @@
         <div class="row">
           <div class="col-sm">
                   <?php if(get_field('title')): ?>
-                   <h3><?php echo get_field('title') ?></h3>
+                   <h2><?php echo get_field('title') ?></h2>
                   <?php endif; ?>
                   
                   <?php if( get_field('project_description') ): ?>
@@ -19,13 +19,13 @@
                   <?php endif; ?>
                   
                   <?php if( get_field('project_image') ): ?>
-                   <img src="<?php the_field('project_image'); ?>" />
+                   <img src="<?php echo get_field('project_image')['url']; ?>" class="img-fluid"/>
                   <?php endif; ?>   
             </div>
           
             <div class="col-sm">
                   <?php if(get_field('title')): ?>
-                   <h3><?php echo get_field('title') ?></h3>
+                   <h2><?php echo get_field('title') ?></h2>
                   <?php endif; ?>
                   
                   <?php if( get_field('project_description') ): ?>
@@ -33,13 +33,13 @@
                   <?php endif; ?>
                   
                   <?php if( get_field('project_image') ): ?>
-                   <img src="<?php the_field('project_image'); ?>" />
+                    <img src="<?php echo get_field('project_image')['url']; ?>" class="img-fluid"/>
                   <?php endif; ?>
              </div>  
             
              <div class="col-sm">
                   <?php if(get_field('title')): ?>
-                   <h3><?php echo get_field('title') ?></h3>
+                   <h2><?php echo get_field('title') ?></h2>
                   <?php endif; ?>
                   
                   <?php if( get_field('project_description') ): ?>
@@ -47,9 +47,10 @@
                   <?php endif; ?>
                   
                   <?php if( get_field('project_image') ): ?>
-                   <img src="<?php the_field('project_image'); ?>" />
-                  <?php endif; ?>
+                    <img src="<?php echo get_field('project_image')['url']; ?>" class="img-fluid"/>
+                  <?php endif; ?>     
              </div> 
+            
           </div>
        </section>
      </div>
