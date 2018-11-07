@@ -1,17 +1,22 @@
 <footer>
 
-
-	<div class="container-fluid">
-  <div class="row bg-secondary" style="footer">
+</body>
+  <div class="row align-items-center bg-secondary" style="footer">
     <div class="col-sm-2">
-      <img src="<?php echo get_template_directory_uri() . '/assets/images/ClimateHubLogo.png'; ?>" class="img-thumbnail" alt="ClimateHubLogo"/>
+      <img src="<?php echo get_template_directory_uri() . '/assets/images/ClimateHubLogo.gif'; ?>" class="img-fluid border-0" alt="ClimateHubLogo"/>
     </div>
     <div class="col-sm-2">
-      Creating a vibrant community around bold climate action at UBC.
+    <?php get_template_part( 'template-parts/footer_customfield' )?>
+    Creating a vibrant community around bold climate action at UBC.
     </div>
     <div class="col-sm-4 text-center">
       <h6 class="font-weight-bold">FOLLOW US</h6>
-      <a href="https://wordpress.org/plugins/social-icons-widget-by-wpzoom/"> add social icons plugin</a>
+      <div class="container-fluid">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <a href="https://www.facebook.com/UBCClimateHub/" class="fa fa-facebook"></a>
+        <a href="#" class="fa fa-twitter"></a>
+        <a href="#" class="fa fa-instagram"></a>
+      </div>
     </div>
     <div class="col-sm-2 right">
       Help us achieve our vision! We appreciate your support.
@@ -39,5 +44,3 @@
   </body>
 </html>
 
-<link rel="stylesheet" type = "text/css" href="/assets/css/climatehub">
-<div class="greenbox"> </div>
