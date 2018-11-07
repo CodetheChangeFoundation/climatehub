@@ -1,9 +1,11 @@
+</body>
+
 <footer>
 
-</body>
+<div class="container-fluid text-center">
   <div class="row align-items-center bg-secondary" style="footer">
     <div class="col-sm-2">
-      <img src="<?php echo get_template_directory_uri() . '/assets/images/ClimateHubLogo.gif'; ?>" class="img-fluid border-0" alt="ClimateHubLogo"/>
+      <img src="<?php echo get_template_directory_uri() . '/assets/images/ClimateHubLogo.gif'; ?>" class="img-fluid border-0 chlogo"/>
     </div>
     <div class="col-sm-2">
     <?php get_template_part( 'template-parts/footer_customfield' )?>
@@ -14,7 +16,7 @@
       <div class="container-fluid">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <a href="https://www.facebook.com/UBCClimateHub/" class="fa fa-facebook"></a>
-        <a href="#" class="fa fa-twitter"></a>
+        <a href="#" class="fa fa-twitter a:hover"></a>
         <a href="#" class="fa fa-instagram"></a>
       </div>
     </div>
@@ -36,11 +38,10 @@
 
     </div>
   </div>
-
+</div>
   </footer>
 
 <?php wp_footer(); ?>
 
-  </body>
 </html>
 

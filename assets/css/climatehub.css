@@ -8,7 +8,18 @@
   width: 100%;
 }
 
-/*Social Media Icons (Footer) */
+/*FOOTER*/
+
+/*climate hub logo*/
+.chlogo {
+  width: 70%;
+}
+
+a:hover {
+  color: red;
+}
+
+/*Social Media Icons*/
 .fa {
   padding: 10px;
   font-size: 20px;
