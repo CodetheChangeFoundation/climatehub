@@ -1,8 +1,7 @@
 
 /*FOOTER*/
 
-/*climate hub logo*/
-.chlogo {
+.footer-logo {
   width: 70%;
 }
 
@@ -19,9 +18,9 @@
 
 .fa:hover {
   color: black;
-    opacity: 0.7;
-    text-decoration: none;
-    text-emphasis: bold;
+  opacity: 0.7;
+  text-decoration: none;
+  text-emphasis: bold;
 }
 
 .fa-facebook {
