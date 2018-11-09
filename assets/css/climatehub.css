@@ -5,6 +5,9 @@
   width: 70%;
 }
 
+.highlighted-section-cf-bg {
+  background-color: #DFDFDF;
+}
 /*Social Media Icons*/
 .fa {
   border-radius: 20%;
