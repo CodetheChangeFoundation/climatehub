@@ -9,25 +9,13 @@
     <?php get_template_part( "template-parts/paragraph") ?>
   </div>
 
-  <div class="container">
-    <?php get_template_part( "template-parts/contact-us-title" ) ?>
-    <?php get_template_part( "template-parts/address" ) ?>
-  </div>
-
-  <div class="container">
-    <?php get_template_part( "template-parts/address-input" ) ?>
-  </div>
-
-  <div class="container">
-    <?php get_template_part( "template-parts/phone" ) ?>
+  <div class="container-fluid">
+    <?php get_template_part( "template-parts/contact-us" ) ?>
+    <?php get_template_part( "template-parts/address-title" ) ?>
   </div>
 
   <div class="container">
     <?php get_template_part( "template-parts/contact-us-button" ) ?>
-  </div>
-
-  <div class="container">
-    <?php get_template_part("template-parts/address-map") ?>
   </div>
 
   <?php get_template_part( 'template-parts/partners-content-section' )?>
