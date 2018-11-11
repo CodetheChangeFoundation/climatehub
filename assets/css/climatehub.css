@@ -41,6 +41,6 @@
   box-shadow: none !important;
 }
 
-.nav-link.active.shrink::before {
+.active.shrink::before {
   border-bottom: 59px solid #000 !important;
 }
