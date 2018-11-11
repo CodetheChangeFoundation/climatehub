@@ -13,10 +13,10 @@
   position: relative;
 }
 
-.navbar-light .navbar-nav li a::before {
+.navbar-nav li a::before {
   border-top: 5px solid #000;
   bottom: 125px;
-  box-shadow: 5px 0 0 #000 inset, -5px 0 0 #000 inset,  0 104px 0 #fff inset, 0 114px 0 #fff inset;
+  box-shadow: 5px 0 0 #000 inset, -5px 0 0 #000 inset,  0 104px 0 #FFF inset, 0 114px 0 #FFF inset;
   content: "";
   left: 0;
   position: absolute;
@@ -26,16 +26,16 @@
   z-index: -1;
 }
 
-.navbar-light .navbar-nav li a:hover::before {
+.navbar-nav li a:hover::before {
   bottom: 16px;
-  box-shadow: 5px 0 0 #000 inset, -5px 0 0 #000 inset, 0 104px 0 #fff inset, 0 114px 0 #fff inset;
+  box-shadow: 5px 0 0 #000 inset, -5px 0 0 #000 inset, 0 104px 0 #FFF inset, 0 114px 0 #FFF inset;
 }
 
-.navbar-light .navbar-nav li a.active {
-  color: #fff !important;
+.navbar-nav li a.active {
+  color: #FFF !important;
 }
 
-.navbar-light .navbar-nav li a.active::before {
+.navbar-nav li a.active::before {
   border-bottom: 114px solid #000;
   border-top: 0 !important;
   box-shadow: none !important;
