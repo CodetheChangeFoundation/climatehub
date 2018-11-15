@@ -12,7 +12,6 @@
     </div>
     <div class="col-sm-4 text-center mt-2 mb-2">
       <h6>FOLLOW US</h6>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <a href="https://www.facebook.com/UBCClimateHub/" class="fa fa-facebook"></a>
         <a href="#" class="fa fa-twitter"></a>
         <a href="https://www.instagram.com/ubcclimatehub/?hl=en" class="fa fa-instagram"></a>
