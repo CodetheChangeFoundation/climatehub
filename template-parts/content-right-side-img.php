@@ -1,11 +1,16 @@
-<?php if(get_field('enable_cf')): ?>
-<div class="container">
+<?php if(get_field('enable_content_w/_right_side_img_cf')): ?>
+<div class="container-fluid">
     <div class="row">
-        <div class="column">
-            <h4><?php the_field('title') /*issue with same name for "title in multiple custom fields"*/?></h4>
-            <p><?php the_field('paragraph') ?></p>
+        <div class="col">
+            <h4><?php the_field('content_w/_right_side_img_title') ?> </h4>
+            <p><?php the_field('content_w/_right_side_img_paragraph') ?></p>
+
         </div>
-        <div class="column">
+        <div class="col">
+        <?php if( get_field('content_w/_right_side_img_picture') ): ?>
+            <img src="<?php the_field('content_w/_right_side_img_picture'); ?>" class="img-fluid"  />
+        <?php endif; ?>
+
 
         </div>
 

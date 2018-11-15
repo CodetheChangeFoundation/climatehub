@@ -11,6 +11,7 @@
 
   <div class="container">
     <?php get_template_part( "template-parts/highlightedSection") ?>
+    <?php get_template_part("template-parts/content-right-side-img") ?>
   </div>
 
   <div class="containter">
