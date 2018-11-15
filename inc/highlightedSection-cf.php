@@ -7,8 +7,8 @@ if( function_exists('acf_add_local_field_group') ):
         'fields' => array(
             array(
                 'key' => 'field_5be5151520bac',
-                'label' => 'enable custom field',
-                'name' => 'enable_custom_field',
+                'label' => 'enable highlighted section cf',
+                'name' => 'enable_highlighted_section_cf',
                 'type' => 'true_false',
                 'instructions' => '',
                 'required' => 0,
@@ -27,7 +27,7 @@ if( function_exists('acf_add_local_field_group') ):
             array(
                 'key' => 'field_5be51c646e00c',
                 'label' => 'title',
-                'name' => 'title',
+                'name' => 'highlighted_section_title',
                 'type' => 'text',
                 'instructions' => '',
                 'required' => 0,
@@ -54,7 +54,7 @@ if( function_exists('acf_add_local_field_group') ):
             array(
                 'key' => 'field_5be5106bdb5de',
                 'label' => 'content section',
-                'name' => 'content_section',
+                'name' => 'highlighted_section_content_section',
                 'type' => 'wysiwyg',
                 'instructions' => '',
                 'required' => 0,
@@ -81,7 +81,7 @@ if( function_exists('acf_add_local_field_group') ):
             array(
                 'key' => 'field_5be526cfccfd0',
                 'label' => 'link to blog post',
-                'name' => 'link_to_blog_post',
+                'name' => 'highlighted_section_link_to_blog_post',
                 'type' => 'page_link',
                 'instructions' => '',
                 'required' => 0,
