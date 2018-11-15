@@ -18,6 +18,11 @@
     <?php get_template_part( "template-parts/contact-us-button" ) ?>
   </div>
 
+  </div class="container-fluid">
+    <?php get_template_part("template-parts/home-page-banner") ?>
+  </div>
+
   <?php get_template_part( 'template-parts/partners-content-section' )?>
   <?php get_template_part( 'template-parts/updatebox-section' )?>
+
 <?php get_footer(); ?>
