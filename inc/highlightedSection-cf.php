@@ -82,7 +82,7 @@ if( function_exists('acf_add_local_field_group') ):
                 'key' => 'field_5be526cfccfd0',
                 'label' => 'link to blog post',
                 'name' => 'highlighted_section_link_to_blog_post',
-                'type' => 'page_link',
+                'type' => 'link',
                 'instructions' => '',
                 'required' => 0,
                 'conditional_logic' => array(
@@ -99,13 +99,7 @@ if( function_exists('acf_add_local_field_group') ):
                     'class' => '',
                     'id' => '',
                 ),
-                'post_type' => array(
-                    0 => 'post',
-                ),
-                'taxonomy' => '',
-                'allow_null' => 0,
-                'allow_archives' => 1,
-                'multiple' => 0,
+                'return_format' => 'array',
             ),
         ),
         'location' => array(
