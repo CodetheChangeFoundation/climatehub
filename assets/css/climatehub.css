@@ -7,3 +7,21 @@
 #someId {
   width: 100%;
 }
+
+.home-Page-Banner-Bottom-Left{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.home-Page-Banner{
+  height: 30rem;
+}
+
+.home-page-banner-width-title{
+  width: 46%;
+}
+
+.home-page-banner-width-paragraph{
+  width: 58%;
+}

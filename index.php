@@ -18,7 +18,7 @@
     <?php get_template_part( "template-parts/contact-us-button" ) ?>
   </div>
 
-  </div class="container-fluid">
+  </div class="jumbotron d-flex flex-column border border-primary justify-content-end align-content-start p-0">
     <?php get_template_part("template-parts/home-page-banner") ?>
   </div>
 
