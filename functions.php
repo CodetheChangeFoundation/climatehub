@@ -13,4 +13,5 @@ require get_template_directory() . '/inc/title-cf.php';
 require get_template_directory() . '/inc/paragraph-cf.php';
 require get_template_directory() . '/custom-fields/partners-content-section.php';
 require get_template_directory() . '/custom-fields/updatebox-section.php';
+require get_template_directory() . '/custom-fields/home-asset-map-cf.php'
 ?>
