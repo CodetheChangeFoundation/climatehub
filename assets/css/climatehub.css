@@ -1,6 +1,10 @@
-
+/*content-right-side-img*/
+.content-right-side-background-image {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
 /*FOOTER*/
-
 .footer-logo {
   width: 70%;
 }
