@@ -11,7 +11,7 @@
         <?php endif; ?>
 
         <?php if( get_field("home_page_button_enable") && get_field("home_page_button_text") && get_field("home_page_button_link") ): ?>
-          <button type="button" href="<?php echo the_field("home_page_button_link"); ?>" class="btn btn-outline-primary font-weight-bold align-middle"> <?php the_field("home_page_button_text")?> </button>
+          <a role="button" href="<?php echo the_field("home_page_button_link"); ?>" class="btn btn-outline-primary font-italic align-middle"> <?php the_field("home_page_button_text")?> </a>
         <?php endif; ?>
       </div>
     </div>
