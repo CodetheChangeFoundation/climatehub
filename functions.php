@@ -16,5 +16,4 @@ require get_template_directory() . '/inc/content-right-side-img-cf.php';
 require get_template_directory() . '/custom-fields/partners-content-section.php';
 require get_template_directory() . '/inc/bs4navwalker.php';
 require get_template_directory() . '/custom-fields/updatebox-section.php';
->>>>>>> 06e3a5cd8ee5a8028a5447a304e52de6afa1cafe
 ?>

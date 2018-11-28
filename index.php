@@ -10,10 +10,6 @@
   </div>
 
   <div class="container">
-    <?php get_template_part( "template-parts/highlightedSection") ?>
-  </div>
-
-  <div class="container">
     <?php get_template_part("template-parts/content-right-side-img") ?>
   </div>
   <?php get_template_part( 'template-parts/partners-content-section' )?>
