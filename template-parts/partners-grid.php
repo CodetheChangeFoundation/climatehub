@@ -5,6 +5,18 @@
  * @package climatehub
  */
 
+/*
+
+<?php
+var numrows = get_field('num_rows');
+for (var i=1; i<=num_rows; i++) {
+  // loop through 3 rows
+  echo
+}
+?>
+
+*/
+
 if( get_field('enable_partners_grid') ): ?>
   <div class="container">
     <?php $size='thumbnail'; ?> <!--(thumbnail, medium, large, full or custom size)-->
