@@ -1,0 +1,25 @@
+{
+  "name": "assetmap",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@types/d3": "^5.0.1",
+    "d3": "^5.7.0",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-scripts-ts": "3.1.0"
+  },
+  "scripts": {
+    "start": "sed -i '' '/.*ModuleScopePlugin.*/d' node_modules/react-scripts-ts/config/webpack.config.dev.js; react-scripts-ts start",
+    "build": "sed -i '' \"/.*assets.*css.*/ s/^/\\/\\/ /\" src/*; react-scripts-ts build; sed -i '' 's/.*import/import/' src/*",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.10",
+    "@types/node": "^10.12.11",
+    "@types/react": "^16.7.11",
+    "@types/react-dom": "^16.0.11",
+    "typescript": "^3.2.1"
+  }
+}

@@ -26,6 +26,11 @@
   z-index: -1;
 }
 
+.navbar-nav li a {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .navbar-nav li a:hover::before {
   bottom: 16px;
   box-shadow: 5px 0 0 #000 inset, -5px 0 0 #000 inset, 0 104px 0 #FFF inset, 0 114px 0 #FFF inset;
