@@ -8,7 +8,7 @@ phases:
      - echo "pre_build step"
  build:
    commands:
-     - aws s3 sync --delete . "s3://<codepipeline-ca-central-1-751716897608>"
+     - aws s3 sync --delete . "s3://codepipeline-ca-central-1-751716897608"
  post_build:
    commands:
      - echo "post_build step"
