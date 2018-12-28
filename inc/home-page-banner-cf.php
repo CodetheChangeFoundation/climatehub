@@ -11,7 +11,7 @@ if( function_exists('acf_add_local_field_group') ):
 				'name' => 'enable_home_page_title',
 				'type' => 'true_false',
 				'instructions' => '',
-				'required' => 0,
+				'required' => 1,
 				'conditional_logic' => 0,
 				'wrapper' => array(
 					'width' => '',
@@ -103,7 +103,7 @@ if( function_exists('acf_add_local_field_group') ):
 				'name' => 'enable_home_page_image',
 				'type' => 'true_false',
 				'instructions' => '',
-				'required' => 0,
+				'required' => 1,
 				'conditional_logic' => 0,
 				'wrapper' => array(
 					'width' => '',
@@ -167,98 +167,4 @@ if( function_exists('acf_add_local_field_group') ):
 		'active' => 1,
 		'description' => '',
 	));
-
-	acf_add_local_field_group(array(
-		'key' => 'group_5bf614278d612',
-		'title' => 'Home Page Button',
-		'fields' => array(
-			array(
-				'key' => 'field_5bf6142d6965c',
-				'label' => 'home page button enable',
-				'name' => 'home_page_button_enable',
-				'type' => 'true_false',
-				'instructions' => '',
-				'required' => 0,
-				'conditional_logic' => 0,
-				'wrapper' => array(
-					'width' => '',
-					'class' => '',
-					'id' => '',
-				),
-				'message' => '',
-				'default_value' => 0,
-				'ui' => 0,
-				'ui_on_text' => '',
-				'ui_off_text' => '',
-			),
-			array(
-				'key' => 'field_5bf6149d6965d',
-				'label' => 'home page button text',
-				'name' => 'home_page_button_text',
-				'type' => 'text',
-				'instructions' => '',
-				'required' => 0,
-				'conditional_logic' => array(
-					array(
-						array(
-							'field' => 'field_5bf6142d6965c',
-							'operator' => '==',
-							'value' => '1',
-						),
-					),
-				),
-				'wrapper' => array(
-					'width' => '',
-					'class' => '',
-					'id' => '',
-				),
-				'default_value' => 'Join Us',
-				'placeholder' => '',
-				'prepend' => '',
-				'append' => '',
-				'maxlength' => '',
-			),
-			array(
-				'key' => 'field_5bf61e9945327',
-				'label' => 'home page button link',
-				'name' => 'home_page_button_link',
-				'type' => 'link',
-				'instructions' => '',
-				'required' => 0,
-				'conditional_logic' => array(
-					array(
-						array(
-							'field' => 'field_5bf6142d6965c',
-							'operator' => '==',
-							'value' => '1',
-						),
-					),
-				),
-				'wrapper' => array(
-					'width' => '',
-					'class' => '',
-					'id' => '',
-				),
-				'return_format' => 'url',
-			),
-		),
-		'location' => array(
-			array(
-				array(
-					'param' => 'page',
-					'operator' => '==',
-					'value' => '127',
-				),
-			),
-		),
-		'menu_order' => 0,
-		'position' => 'normal',
-		'style' => 'default',
-		'label_placement' => 'top',
-		'instruction_placement' => 'label',
-		'hide_on_screen' => '',
-		'active' => 1,
-		'description' => '',
-	));
-
 endif; ?>
