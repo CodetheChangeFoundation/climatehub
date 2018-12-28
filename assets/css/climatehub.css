@@ -1,25 +1,58 @@
-/* Example Section */
-.someCoolClassName {
-  color: black;
-  font-family: Helvetica;
+/* Navbar */
+
+.navbar-brand.shrink {
+  max-height: 75px;
+  transition: all 0.4s ease;
+  -webkit-transition: all 0.4s ease;
 }
 
-#someId {
-  width: 100%;
+.navbar-nav > li {
+  align-items: flex-end;
+  display: flex;
+  margin: 0 5px;
+  position: relative;
 }
 
-.home-Page-Banner-Bottom-Left{
+.navbar-nav li a::before {
+  border-top: 5px solid #000;
+  box-shadow: 5px 0 0 #000 inset, -5px 0 0 #000 inset,  0 104px 0 #FFF inset, 0 114px 0 #FFF inset;
+  content: "";
+  position: absolute;
+  bottom: 125px;
+  right: 0;
+  left: 0;
+  top: 0;
+  transition: bottom 0.5s ease-in-out;
+  z-index: -1;
+}
+
+.navbar-nav li a:hover::before {
+  bottom: 16px;
+  box-shadow: 5px 0 0 #000 inset, -5px 0 0 #000 inset, 0 104px 0 #FFF inset, 0 114px 0 #FFF inset;
+}
+
+.navbar-nav li a.active {
+  color: #FFF !important;
+}
+
+.navbar-nav li a.active::before {
+  border-bottom: 114px solid #000;
+  border-top: 0 !important;
+  box-shadow: none !important;
+}
+
+.active.shrink::before {
+  border-bottom: 59px solid #000 !important;
+}
+
+.home-page-banner-bottom-left{
   position: absolute;
   bottom: 0;
   left: 0;
 }
 
-.home-Page-Banner{
+.home-page-banner{
   height: 60vh;
-}
-
-.home-page-banner-width-title{
-  width: 46%;
 }
 
 .home-page-banner-width-paragraph{
