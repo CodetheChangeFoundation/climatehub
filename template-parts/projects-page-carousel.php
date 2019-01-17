@@ -1,9 +1,14 @@
+<?php
+ $enable = get_field('enable_projects_carousel');
+ $title1 = get_field('project_carousel_project_title');
+ $description1 = get_field('project_carousel_project_description');
 
+ if($enable && $title1 && $description1): ?>
 
 
 <div id="demo" class="carousel slide" data-ride="carousel">
 
-  <!-- Indicators WHAT IS THIS -->
+  <!-- Indicators -->
   <ul class="carousel-indicators carousel-indicators-active carousel-indicators-dark">
     <li data-target="#demo" data-slide-to="0" class="active"></li>
     <li data-target="#demo" data-slide-to="1"></li>
@@ -21,8 +26,8 @@
       <a href="#" class="text-muted no-text-decoration">
     <div class="card">
       <div class="card-body bg-secondary">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <h5 class="card-title"><?php echo $title1; ?> </h5>
+        <p class="card-text"><?php echo $description1; ?></p>
       </div>
          <img class="card-img-bottom img-carousel" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
     </div>
@@ -134,3 +139,5 @@
   </a>
 
 </div>
+
+    <?php endif; ?>
