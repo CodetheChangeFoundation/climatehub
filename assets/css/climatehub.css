@@ -64,3 +64,13 @@
   height: auto !important;
   max-width: 30% !important;
 }
+.carousel-indicators-active .active  {
+ background-color: black !important;
+}
+.carousel-indicators-dark li {
+  background-color: grey !important;
+}
+
+.no-text-decoration{
+  text-decoration: none !important;
+}
