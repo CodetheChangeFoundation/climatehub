@@ -25,6 +25,6 @@
   <?php get_template_part( 'template-parts/partners-content-section' )?>
   <?php get_template_part( 'template-parts/updatebox-section' )?>
 
-  <?php get_template_part( 'template-parts/blog-call-to-action-box') ?>
+  <?php get_template_part( 'template-parts/blog-about-author' ) ?>
 
 <?php get_footer(); ?>
