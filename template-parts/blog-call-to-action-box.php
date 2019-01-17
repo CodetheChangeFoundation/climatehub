@@ -1,7 +1,7 @@
 <?php if( get_field("call_to_action_title") && get_field("call_to_action_summary") ): ?>
 
   <div class="container text-center">
-    <div class="col-md-3 col-md-offset-3 bg-white pb-2 pt-3">
+    <div class="col-md-3 col-md-offset-3 bg-white pb-2 pt-3 ml-auto mr-auto">
       <h3><?php the_field("call_to_action_title") ?> </h3>
       <p><?php the_field("call_to_action_summary") ?></h3>
 
