@@ -58,3 +58,9 @@
 .home-page-banner-width-paragraph{
   width: 58%;
 }
+
+/*projects page carousel*/
+.image-carousel{
+  height: auto !important;
+  max-width: 30% !important;
+}

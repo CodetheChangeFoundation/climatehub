@@ -25,44 +25,9 @@
   <?php get_template_part( 'template-parts/partners-content-section' )?>
   <?php get_template_part( 'template-parts/updatebox-section' )?>
 
-<!--melissa start !-->
-
-<div class="containter">
-<div class = "row">
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body bg-secondary">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-      <img class="card-img-bottom"src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-    </div>
+  <div class="container">
+    <?php get_template_part( 'template-parts/projects-page-carousel' )?>
   </div>
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body bg-secondary">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-      <img class="card-img-bottom"src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body bg-secondary">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-      <img class="card-img-bottom"src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-    </div>
-  </div>
-</div>
-
-</div>
-
 
 <!-- melissa end !-->
 <?php get_footer(); ?>
