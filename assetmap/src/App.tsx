@@ -10,7 +10,7 @@ class App extends React.Component {
   public render() {
     return (
       <div className="App">
-        <SearchForm/>
+        <SearchForm categories={["Communities", "Groups", "Individuals", "Projects"]} columns={["1", "2", "3"]} data={[["a", "b", "c"], ["a", "b", "c"], ["a", "b", "c"]]}/>
       </div>
     );
   }
