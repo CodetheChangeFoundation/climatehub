@@ -18,115 +18,55 @@
   <!-- The slideshow -->
   <div class="carousel-inner">
     <div class="carousel-item active">
-
-    <div class="containter">
-<div class = "row">
-    <?php $max = 3; for($i = 0; $i<$max; $i++){ ?>
+      <div class = "container row">
+        <?php $max = 3; for($i = 0; $i<$max; $i++){ ?>
         <div class="col-sm-4">
-      <a href="#" class="text-muted no-text-decoration">
-    <div class="card">
-      <div class="card-body bg-secondary">
-        <h5 class="card-title"><?php echo $title1; ?> </h5>
-        <p class="card-text"><?php echo $description1; ?></p>
+          <a href="#" class="text-muted no-text-decoration">
+          <div class="card">
+            <div class="card-body bg-secondary">
+              <h5 class="card-title"><?php echo $title1; ?> </h5>
+              <p class="card-text"><?php echo $description1; ?></p>
+            </div>
+          <img class="card-img-bottom img-carousel" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
+          </div>
+          </a>
+        </div>
+        <?php } ?>
       </div>
-         <img class="card-img-bottom img-carousel" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-    </div>
-        </a>
-  </div>
-    <?php } ?>
-
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body bg-secondary">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-      </div>
-      <img class="card-img-bottom img-carousel"src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body bg-secondary">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-      </div>
-      <img class="card-img-bottom img-carousel" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-    </div>
-  </div>
-</div>
-</div>
     </div>
     <div class="carousel-item">
-    <div class="containter">
-<div class = "row">
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body bg-secondary">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <div class = "container row">
+        <?php $max = 3; for($i = 0; $i<$max; $i++){ ?>
+        <div class="col-sm-4">
+          <a href="#" class="text-muted no-text-decoration">
+          <div class="card">
+            <div class="card-body bg-secondary">
+              <h5 class="card-title"><?php echo $title1; ?> </h5>
+              <p class="card-text"><?php echo $description1; ?></p>
+            </div>
+          <img class="card-img-bottom img-carousel" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
+          </div>
+          </a>
+        </div>
+        <?php } ?>
       </div>
-         <img class="card-img-bottom img-carousel" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body bg-secondary">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-      </div>
-      <img class="card-img-bottom img-carousel"src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body bg-secondary">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-      </div>
-      <img class="card-img-bottom img-carousel" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-    </div>
-  </div>
-</div>
-</div>
     </div>
     <div class="carousel-item">
-    <div class="containter">
-<div class = "row">
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body bg-secondary">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <div class="containter row">
+        <?php $max = 3; for($i = 0; $i<$max; $i++){ ?>
+        <div class="col-sm-4">
+          <a href="#" class="text-muted no-text-decoration">
+          <div class="card">
+            <div class="card-body bg-secondary">
+              <h5 class="card-title"><?php echo $title1; ?> </h5>
+              <p class="card-text"><?php echo $description1; ?></p>
+            </div>
+            <img class="card-img-bottom img-carousel" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
+          </div>
+          </a>
+        </div>
+        <?php } ?>
       </div>
-         <img class="card-img-bottom img-carousel" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body bg-secondary">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-      </div>
-      <img class="card-img-bottom img-carousel"src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body bg-secondary">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-      </div>
-      <img class="card-img-bottom img-carousel" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-    </div>
-  </div>
-</div>
-</div>
     </div>
   </div>
 
