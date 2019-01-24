@@ -1,11 +1,14 @@
 <?php
- $enable = get_field('enable_projects_carousel');
- $title1 = get_field('project_carousel_project_title');
- $description1 = get_field('project_carousel_project_description');
+ $enable = get_field('project_carousel_enable');
+ $numrows = 0 ;
+ $items = get_field('project_carousel_item');
+ if($enable):
+    while (have_rows('project_carousel_item')): the_row();
+     $numrows++;
+    endwhile;
+ ?>
 
- if($enable && $title1 && $description1): ?>
-
-
+<?php if($items) : ?>
 <div id="demo" class="carousel slide" data-ride="carousel">
 
   <!-- Indicators -->
@@ -18,21 +21,29 @@
   <!-- The slideshow -->
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <div class = "container row">
-        <?php $max = 3; for($i = 0; $i<$max; $i++){ ?>
-        <div class="col-sm-4">
-          <a href="#" class="text-muted no-text-decoration">
-          <div class="card">
-            <div class="card-body bg-secondary">
-              <h5 class="card-title"><?php echo $title1; ?> </h5>
-              <p class="card-text"><?php echo $description1; ?></p>
-            </div>
-          <img class="card-img-bottom img-carousel" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="Card image cap">
-          </div>
-          </a>
+        <div class = "container row">
+        <?php for($i = 0; $i<2; $i++){
+            the_row();
+            $current_row = $items[$i];
+            $title = $current_row['project_title'];
+		    $description = $current_row['project_description'];
+		    $link = $current_row['project_link'];
+            $image = $current_row['project_image'];
+
+            if( $title && $description && $link && $image): ?>
+    		    <div class="col-sm-4">
+                    <a href="<?php echo $link; ?>" class="text-muted no-text-decoration">
+                    <div class="card">
+                        <div class="card-body bg-secondary">
+                            <h5 class="card-title"><?php echo $title; ?> </h5>
+                            <p class="card-text"><?php echo $description; ?></p>
+                        </div>
+                        <img class="card-img-bottom img-carousel" src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
+                    </div>
+                    </a>
+                </div>
+            <?php  endif; } ?>
         </div>
-        <?php } ?>
-      </div>
     </div>
     <div class="carousel-item">
       <div class = "container row">
@@ -80,4 +91,5 @@
 
 </div>
 
-    <?php endif; ?>
+<?php endif; ?>
+<?php endif; ?>
