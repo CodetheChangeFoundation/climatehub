@@ -1,15 +1,31 @@
-<?php if( get_field("call_to_action_title") && get_field("call_to_action_summary") ): ?>
+<?php if( have_rows('call_to_action_repeater') ): ?>
 
-  <div class="container text-center">
-    <div class="col-md-3 col-md-offset-3 bg-white pb-2 pt-3 ml-auto mr-auto">
-      <h3><?php the_field("call_to_action_title") ?> </h3>
-      <p><?php the_field("call_to_action_summary") ?></h3>
+  <?php while ( have_rows("call_to_action_repeater") ) : the_row(); // loop through the rows of data
 
-      <?php if( get_field("call_to_action_button_title") &&  get_field("call_to_action_button_link")): ?>
-        <a role="button" href="<?php echo the_field("call_to_action_button_link"); ?>" class="btn btn-outline-primary font-italic align-middle">
-        <?php the_field("call_to_action_button_title")?> </a>
-      <? endif; ?>
+    $title       = get_sub_field("call_to_action_title");
+    $summary     = get_sub_field("call_to_action_summary");
+    $buttontitle = get_sub_field("call_to_action_button_title");
+    $link        = get_sub_field("call_to_action_button_link");
+  ?>
+
+    <div class="container pt-5 pb-5 text-center">
+      <div class="col-md-3 col-md-offset-3 bg-white pb-2 pt-3 ml-auto mr-auto">
+
+        <?php if( $title ): ?>
+          <h3><?php echo $title; ?> </h3>
+        <? endif; ?>
+
+        <?php if( $summary ): ?>
+          <p><?php echo $summary; ?></p>
+        <?php endif; ?>
+
+        <?php if( $buttontitle && $link ): ?>
+          <a role="button" href="<?php echo $link; ?>" class="btn btn-outline-primary font-italic align-middle">
+          <?php echo $buttontitle; ?> </a>
+        <?php endif; ?>
+      </div>
     </div>
-  </div>
+
+  <?php endwhile; ?>
 
 <?php endif; ?>
