@@ -1,0 +1,8 @@
+i am working on the 3 panel thing from the PROJECTS page NOT the homepage
+so
+- i need to be able to repeat the projects carousel 3 times on the page
+- for each carousel, minimum of 3, but could be 4, 5. there should always be 3 projects visible at a time
+
+the homepage 3 panel thing aka "updates" will only have 3 updates at a time
+- i could use repeater field for this
+- hardcode in 3 times (and set restrictions in the acf groups)
