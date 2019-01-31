@@ -8,22 +8,42 @@
  * The user should select an option in WordPress. See wikipage.
  */
 
-$sel   = get_field("blog_page_select_image_size");
-$full  = "blog_page_full_size";
-$med   = "blog_page_paragraph_size";
-$right = "blog_page_small_right";
-$left  = "blog_page_small_left";
+$sel       = get_field("blog_page_select_image_size");
+$img_full  = get_field("blog_page_full_size");
+$img_med   = get_field("blog_page_paragraph_size");
+$img_small_r = get_field("blog_page_small_right");
+$img_small_l = get_field("blog_page_small_left");
+
+$full    = "Full page width";
+$med     = "Paragraph width";
+$right   = "Small right";
+$left    = "Small left";
+
+$size_full = "full";
+$size_med  = "medium";
+$size_small ="small";
 
   switch ($sel) {
     case $full :
-      break;
+      if( $img_full ){
+        echo wp_get_attachment_image( $img_full, $size_full );
+      }
+
     case $med :
-      break;
+      if( $img_med ){
+        echo wp_get_attachment_image( $img_med, $size_med );
+      }
+
     case $right :
-      break;
+      if( $img_small_r ){
+        echo wp_get_attachment_image( $img_small_r, $size_small );
+      }
+
     case $left :
-      break;
+      if( $img_small_l ){
+        echo wp_get_attachment_image( $img_small_l, $size_small );
+      }
+
     default :
       break;
   }
-?>
