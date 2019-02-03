@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+// import * as d3 from 'd3';
 import * as React from 'react';
 import '../../assets/css/bootstrap/bootstrap-grid.min.css';
 import '../../assets/css/bootstrap/bootstrap-reboot.min.css';
@@ -21,7 +21,7 @@ class Assetmap extends React.Component<{}, MyState> {
       items: [["1", "2", "3"],["1", "2", "3"],["1", "2", "3"]]
     };
   }
-  
+
   componentDidMount() {
     // Make API Call
     // Change state based on response
