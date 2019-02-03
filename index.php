@@ -28,5 +28,5 @@
   <?php get_template_part( 'template-parts/partners-content-section' )?>
   <?php get_template_part( 'template-parts/updatebox-section' )?>
   <?php get_template_part( 'template-parts/about-us-title-paragraph' )?>
-
+  <?php get_template_part( 'template-parts/home-asset-map' ) ?>
 <?php get_footer(); ?>

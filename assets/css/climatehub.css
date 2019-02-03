@@ -1,3 +1,13 @@
+.home-asset-map {
+  height: 30rem;
+}
+
+.asset-map-banner-bg-image {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 /*Social Media Icons*/
 .fa {
   border-radius: 20%;
