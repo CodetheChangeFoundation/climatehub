@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "sed -i '' '/.*ModuleScopePlugin.*/d' node_modules/react-scripts-ts/config/webpack.config.dev.js; react-scripts-ts start",
-    "build": "sed -i '' \"/.*assets.*css.*/ s/^/\\/\\/ /\" src/*; react-scripts-ts build; sed -i '' 's/.*import/import/' src/*",
+    "build": "sed -i '' \"/.*assets.*css.*/ s/^/\\/\\/ /\" src/*.tsx; react-scripts-ts build; sed -i '' 's/.*import/import/' src/*.tsx",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   },

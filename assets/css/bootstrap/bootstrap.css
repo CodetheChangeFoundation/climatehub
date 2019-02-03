@@ -3705,6 +3705,13 @@ input[type="button"].btn-block {
   border: 2px solid #dfdfdf;
   border-radius: 0;
   appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+/* For IE10 */
+.custom-select::-ms-expand {
+  display: none;
 }
 
 .custom-select:focus {
