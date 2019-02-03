@@ -78,3 +78,16 @@
   color: white;
 }
 
+.home-page-banner-bottom-left{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.home-page-banner{
+  height: 60vh;
+}
+
+.home-page-banner-width-paragraph{
+  width: 58%;
+}
