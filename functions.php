@@ -11,6 +11,8 @@ require get_template_directory() . '/inc/theme-support.php';
 
 require get_template_directory() . '/inc/title-cf.php';
 require get_template_directory() . '/inc/paragraph-cf.php';
+require get_template_directory() . '/inc/highlightedSection-cf.php';
+require get_template_directory() . '/inc/content-right-side-img-cf.php';
 require get_template_directory() . '/custom-fields/partners-content-section.php';
 require get_template_directory() . '/inc/bs4navwalker.php';
 require get_template_directory() . '/custom-fields/updatebox-section.php';
