@@ -1,0 +1,119 @@
+[
+    {
+        "key": "group_5c3fd6d95c56a",
+        "title": "Call to Action Box",
+        "fields": [
+            {
+                "key": "field_5c491db4a0936",
+                "label": "Call To Action Repeater",
+                "name": "call_to_action_repeater",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_5c491df1a0937",
+                "min": 0,
+                "max": 0,
+                "layout": "row",
+                "button_label": "",
+                "sub_fields": [
+                    {
+                        "key": "field_5c491df1a0937",
+                        "label": "Call to Action Title",
+                        "name": "call_to_action_title",
+                        "type": "text",
+                        "instructions": "Enter the title of the field.",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "Call to Action",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_5c491e2da0938",
+                        "label": "Call to Action Summary",
+                        "name": "call_to_action_summary",
+                        "type": "wysiwyg",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "30",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "tabs": "all",
+                        "toolbar": "full",
+                        "media_upload": 0,
+                        "delay": 0
+                    },
+                    {
+                        "key": "field_5c491e73a0939",
+                        "label": "Call to Action Button Title",
+                        "name": "call_to_action_button_title",
+                        "type": "text",
+                        "instructions": "This will display on the button.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "Join Us",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
+                    {
+                        "key": "field_5c491eb1a093a",
+                        "label": "Call to Action Button Link",
+                        "name": "call_to_action_button_link",
+                        "type": "url",
+                        "instructions": "This is the link the button will redirect the user to.",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "https:\/\/www.facebook.com\/UBCClimateHub\/",
+                        "placeholder": ""
+                    }
+                ]
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "158"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 1,
+        "description": ""
+    }
+]
