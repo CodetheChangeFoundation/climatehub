@@ -1,4 +1,7 @@
 /*projects page carousel*/
+.carousel-card-no-border{
+  border: none !important;
+}
 .carousel-no-text-decoration{
   text-decoration: none !important;
 }

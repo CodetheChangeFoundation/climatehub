@@ -18,8 +18,8 @@
          $link = $current_row['project_link'];
          $image = $current_row['project_image']; ?>
                  <a href="<?php echo $link; ?>" class="text-muted carousel-no-text-decoration">
-                 <div class="card">
-                   <div class="card-body">
+                 <div class="card carousel-card-no-border">
+                   <div class="card-body" style="height: 6.5rem; ">
                      <h5 class="card-title font-weight-bold"> <?php echo $title; ?></h5>
 
                    </div>
@@ -39,8 +39,8 @@
              if( $title && $link && $image): ?>
              <div class="carousel-item col-md-4">
                      <a href="<?php echo $link; ?>" class="text-muted carousel-no-text-decoration">
-                     <div class="card">
-                         <div class="card-body">
+                     <div class="card carousel-card-no-border">
+                         <div class="card-body" style="height: 6.5rem; ">
                              <h5 class="card-title font-weight-bold "><?php echo $title; ?> </h5>
                              </div>
                          <img class="card-img-bottom img-carousel" src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
@@ -55,7 +55,8 @@
     <span class="sr-only">Previous</span>
    </a>
    <a class="carousel-control-next" href="#projects-carousel" data-slide="next">
-    <?php if($numrows>3): ?><span class="carousel-control-next-icon"><?php endif; ?></span>
+    <?php if($numrows>3): ?>
+    <span class="carousel-control-next-icon"><?php endif; ?></span>
     <span class="sr-only">Next</span>
    </a>
  </div>
