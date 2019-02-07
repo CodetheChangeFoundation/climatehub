@@ -29,5 +29,4 @@
     <?php get_template_part( 'template-parts/projects-page-carousel' )?>
   </div>
 
-<!-- melissa end !-->
 <?php get_footer(); ?>
