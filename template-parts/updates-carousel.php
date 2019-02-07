@@ -16,12 +16,14 @@
          $current_row = $items[0];
          $title = $current_row['project_title'];
          $link = $current_row['project_link'];
-         $image = $current_row['project_image']; ?>
+         $image = $current_row['project_image'];
+         $description = $current_row['project_description']; ?>
                  <a href="<?php echo $link; ?>" class="text-muted carousel-no-text-decoration">
                  <div class="card">
                    <div class="card-body">
                      <h5 class="card-title font-weight-bold"> <?php echo $title; ?></h5>
-
+                     <?php if ($description): ?>
+                    <p class="card-text"> <?php echo $description; ?> </p> <?php endif; ?>
                    </div>
                    <img class="card-img-bottom img-carousel" src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
                  </div>
@@ -35,14 +37,15 @@
              $title = $current_row['project_title'];
              $link = $current_row['project_link'];
              $image = $current_row['project_image'];
-
+             $description = $current_row['project_description'];
              if( $title && $link && $image): ?>
              <div class="carousel-item col-md-4">
                      <a href="<?php echo $link; ?>" class="text-muted carousel-no-text-decoration">
                      <div class="card">
                          <div class="card-body">
                              <h5 class="card-title font-weight-bold "><?php echo $title; ?> </h5>
-                             </div>
+                             <p class="card-text"><?php if($description): echo $description; endif;?></p>
+                         </div>
                          <img class="card-img-bottom img-carousel" src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
                      </div>
                      </a>

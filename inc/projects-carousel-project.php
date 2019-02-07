@@ -40,7 +40,7 @@ if( function_exists('acf_add_local_field_group') ):
 				'collapsed' => 'field_5c491d3d79f9c',
 				'min' => 3,
 				'max' => 0,
-				'layout' => 'row',
+				'layout' => 'block',
 				'button_label' => '',
 				'sub_fields' => array(
 					array(
@@ -61,25 +61,6 @@ if( function_exists('acf_add_local_field_group') ):
 						'prepend' => '',
 						'append' => '',
 						'maxlength' => '',
-					),
-					array(
-						'key' => 'field_5c491d6d79f9d',
-						'label' => 'Project Description',
-						'name' => 'project_description',
-						'type' => 'wysiwyg',
-						'instructions' => 'optional',
-						'required' => 0,
-						'conditional_logic' => 0,
-						'wrapper' => array(
-							'width' => '',
-							'class' => '',
-							'id' => '',
-						),
-						'default_value' => '',
-						'tabs' => 'all',
-						'toolbar' => 'full',
-						'media_upload' => 0,
-						'delay' => 0,
 					),
 					array(
 						'key' => 'field_5c491de6043a7',
