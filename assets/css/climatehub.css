@@ -65,6 +65,11 @@
     display: block;
   }
 
+/*toggle current/past links*/
+
+a:link {
+  color: black !important;
+}
 
 /* Navbar */
 

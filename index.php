@@ -26,37 +26,27 @@
   <?php get_template_part( 'template-parts/updatebox-section' )?>
 
   <div class="container pt-4 pb-4">
-    <!-- todo: add nav tabs for past/current -->
-    <!-- todo: make enable options for each of the carousels, if "past" is empty or not enabled, do not show the link (and same for the rest of the carousels) -->
-  <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-  </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
-</div> -->
-    <p> current </p> <p> past </p>
-    <!-- todo! ask Viniel about this -->
-    <?php $current = true;
-     if($current):
-      get_template_part( 'template-parts/projects-page-carousel-current' );
-     else:
-      get_template_part( 'template-parts/projects-page-carousel-past' );
-     endif;
-      ?>
+    <div id="toggle-past-current" class="text-center">
+      <h2>
+        <a href="?link=current"> current</a>
+        <a href="?link=past">past</a>
+      </h2>
+      <?php $link=$_GET['link'];
+      if($link == 'past'){
+        get_template_part( 'template-parts/projects-page-carousel-past' );
+      } else{
+        get_template_part( 'template-parts/projects-page-carousel-current' );
+      } ?>
+    </div>
+    <!-- todo! enqueue both current and past carousels before clicking hyperlink -->
+    <!-- todo! remove project_carousel_currentpast_toggle -->
+    <!-- todo! add image restriction for update carousel DONE -->
+    <!-- todo! make it not a carousel, hardcode it? -->
+
   </div>
 
   <div class="container pt-4 pb-4">
-    <h2 class="text-center"> featured projects from the community </h2>
+    <h2 class="text-center" style="text-decoration: underline;"> featured projects from the community </h2>
     <?php get_template_part( 'template-parts/projects-page-carousel-featured' )?>
   </div>
 
