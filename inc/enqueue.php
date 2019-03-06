@@ -30,11 +30,11 @@ function climatehub_load_bootstrap_scripts() {
 }
 add_action('wp_enqueue_scripts', 'climatehub_load_bootstrap_scripts');
 
-function climatehub_load_scripts() {
-  wp_enqueue_style('climatehub', get_template_directory_uri() . '/assets/css/climatehub.css', array(), '1.0.0', 'all');
+// function climatehub_load_scripts() {
+//   wp_enqueue_style('climatehub', get_template_directory_uri() . '/assets/css/climatehub.css', array(), '1.0.0', 'all');
 
-  wp_register_script('climatehub', get_template_directory_uri() . "/assets/js/climatehub.js", false, '1.0.0', true);
-  wp_enqueue_script('climatehub');
-}
-add_action('wp_enqueue_scripts', 'climatehub_load_scripts');
-?>
+//   wp_register_script('climatehub', get_template_directory_uri() . "/assets/js/climatehub.js", false, '1.0.0', true);
+//   wp_enqueue_script('climatehub');
+// }
+// add_action('wp_enqueue_scripts', 'climatehub_load_scripts');
+// ?>

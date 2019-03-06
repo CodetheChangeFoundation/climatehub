@@ -25,6 +25,11 @@
   <div class="container">
     <?php get_template_part("template-parts/content-right-side-img") ?>
   </div>
+
+  <div class="container">
+    <?php get_template_part("template-parts/team-grid") ?>
+  </div>
+
   <?php get_template_part( 'template-parts/partners-content-section' )?>
   <?php get_template_part( 'template-parts/updatebox-section' )?>
   <?php get_template_part( 'template-parts/about-us-title-paragraph' )?>
