@@ -4,10 +4,10 @@
         "title": "Team Grid",
         "fields": [
             {
-                "key": "field_5c7f4a72ef6e0",
-                "label": "Team Group",
-                "name": "team_group",
-                "type": "group",
+                "key": "field_5c805c32f0fbe",
+                "label": "Team Grid Enable",
+                "name": "team_grid_enable",
+                "type": "true_false",
                 "instructions": "",
                 "required": 0,
                 "conditional_logic": 0,
@@ -16,12 +16,43 @@
                     "class": "",
                     "id": ""
                 },
+                "message": "",
+                "default_value": 0,
+                "ui": 0,
+                "ui_on_text": "",
+                "ui_off_text": ""
+            },
+            {
+                "key": "field_5c805c4bf0fbf",
+                "label": "Team Members",
+                "name": "team_members",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5c805c32f0fbe",
+                            "operator": "==",
+                            "value": "1"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "collapsed": "field_5c805cb4f0fc1",
+                "min": 0,
+                "max": 0,
                 "layout": "block",
+                "button_label": "",
                 "sub_fields": [
                     {
-                        "key": "field_5c7f4ae2ef6e1",
-                        "label": "Team Member",
-                        "name": "team_member",
+                        "key": "field_5c805c81f0fc0",
+                        "label": "Member Image",
+                        "name": "member_image",
                         "type": "image",
                         "instructions": "",
                         "required": 0,
@@ -31,7 +62,7 @@
                             "class": "",
                             "id": ""
                         },
-                        "return_format": "array",
+                        "return_format": "url",
                         "preview_size": "thumbnail",
                         "library": "all",
                         "min_width": "",
@@ -43,11 +74,11 @@
                         "mime_types": ""
                     },
                     {
-                        "key": "field_5c7f4af5ef6e2",
-                        "label": "Team Member 2",
-                        "name": "team_member_2",
-                        "type": "image",
-                        "instructions": "",
+                        "key": "field_5c805cb4f0fc1",
+                        "label": "Member Name",
+                        "name": "member_name",
+                        "type": "text",
+                        "instructions": "optional",
                         "required": 0,
                         "conditional_logic": 0,
                         "wrapper": {
@@ -55,23 +86,18 @@
                             "class": "",
                             "id": ""
                         },
-                        "return_format": "array",
-                        "preview_size": "thumbnail",
-                        "library": "all",
-                        "min_width": "",
-                        "min_height": "",
-                        "min_size": "",
-                        "max_width": "",
-                        "max_height": "",
-                        "max_size": "",
-                        "mime_types": ""
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
                     },
                     {
-                        "key": "field_5c7f4b076fcf7",
-                        "label": "Team Member 3",
-                        "name": "team_member_3",
-                        "type": "image",
-                        "instructions": "",
+                        "key": "field_5c805ccef0fc2",
+                        "label": "Member Description",
+                        "name": "member_description",
+                        "type": "text",
+                        "instructions": "title\/position",
                         "required": 0,
                         "conditional_logic": 0,
                         "wrapper": {
@@ -79,64 +105,11 @@
                             "class": "",
                             "id": ""
                         },
-                        "return_format": "array",
-                        "preview_size": "thumbnail",
-                        "library": "all",
-                        "min_width": "",
-                        "min_height": "",
-                        "min_size": "",
-                        "max_width": "",
-                        "max_height": "",
-                        "max_size": "",
-                        "mime_types": ""
-                    },
-                    {
-                        "key": "field_5c7f4b136fcf8",
-                        "label": "Team Member 4",
-                        "name": "team_member_4",
-                        "type": "image",
-                        "instructions": "",
-                        "required": 0,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "",
-                            "class": "",
-                            "id": ""
-                        },
-                        "return_format": "array",
-                        "preview_size": "thumbnail",
-                        "library": "all",
-                        "min_width": "",
-                        "min_height": "",
-                        "min_size": "",
-                        "max_width": "",
-                        "max_height": "",
-                        "max_size": "",
-                        "mime_types": ""
-                    },
-                    {
-                        "key": "field_5c7f4b3367dc1",
-                        "label": "Team Member 5",
-                        "name": "team_member_5",
-                        "type": "image",
-                        "instructions": "",
-                        "required": 0,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "",
-                            "class": "",
-                            "id": ""
-                        },
-                        "return_format": "array",
-                        "preview_size": "thumbnail",
-                        "library": "all",
-                        "min_width": "",
-                        "min_height": "",
-                        "min_size": "",
-                        "max_width": "",
-                        "max_height": "",
-                        "max_size": "",
-                        "mime_types": ""
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
                     }
                 ]
             }
