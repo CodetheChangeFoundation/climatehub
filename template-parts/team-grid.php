@@ -4,43 +4,49 @@ if($enable):
     $members = get_field('team_members');
     $numitems = 0;
     $i = 0;
-    while(have_rows('team_member')): the_row();
+    while(have_rows('team_members')): the_row();
         $numitems++;
     endwhile;
-
-    $numrowsm1 = floor($numitems / 4); //=numrows-1
-    $numlastrow = $numitems % 4;
-    //numrows = floor of numitems/4
-    //last row has numitems%4
-?>
-
-<?php endif; ?>
-
+endif; ?>
 <div class = "container-fluid">
     <div class="row">
-        <?php for($i; $i<=$numrowsm1; $i++){
+        <?php for($i; $i<4; $i++){
             the_row();
             $current_member = $members[$i];
             $image = $current_member['member_image'];
             $name = $current_member['member_name'];
             $description = $current_member['member_description'];?>
-            <div class="col">
-                <img src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt']; ?> " />
+            <div class="col text-center">
+                <img class="img-fluid" src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
+                <h6 class="font-weight-bold"><?php echo $name; ?></h6>
+                <h7><?php echo $description;?></h7>
+            </div>
+        <?php } ?>
+    </div>
+    <div class="row">
+        <?php for($i; $i<4; $i++){
+            the_row();
+            $current_member = $members[$i];
+            $image = $current_member['member_image'];
+            $name = $current_member['member_name'];
+            $description = $current_member['member_description'];?>
+            <div class="col  text-center">
+                <img class="img-fluid" src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
                 <h5 class="font-weight-bold"><?php echo $name; ?></h5>
                 <h5><?php echo $description;?></h5>
             </div>
 
         <?php } ?>
     </div>
-    <div class = "row">
-        <?php for($i; $i<$numitems; $i++){ //$numitems?
+    <div class="row center-block">
+        <?php for($i; $i<4; $i++){
             the_row();
             $current_member = $members[$i];
             $image = $current_member['member_image'];
             $name = $current_member['member_name'];
-            $description = $current_member['member_description']; //optional ?>
-            <div class="col">
-                <img src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt']; ?> " />
+            $description = $current_member['member_description'];?>
+            <div class="col  text-center">
+                <img class="img-fluid" src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
                 <h5 class="font-weight-bold"><?php echo $name; ?></h5>
                 <h5><?php echo $description;?></h5>
             </div>

@@ -62,15 +62,15 @@
                             "class": "",
                             "id": ""
                         },
-                        "return_format": "url",
+                        "return_format": "array",
                         "preview_size": "thumbnail",
                         "library": "all",
                         "min_width": "",
                         "min_height": "",
                         "min_size": "",
-                        "max_width": "",
-                        "max_height": "",
-                        "max_size": "",
+                        "max_width": 150,
+                        "max_height": 150,
+                        "max_size": 150,
                         "mime_types": ""
                     },
                     {
