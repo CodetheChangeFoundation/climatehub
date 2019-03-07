@@ -8,7 +8,7 @@
  * The user should select an option in WordPress. See wikipage.
  */
 
-$sel         = get_field("blog_page_select_image_size");
+$sel         = get_sub_field("blog_page_select_image_size");
 $img_full    = get_field("blog_page_full_size");
 $img_med     = get_field("blog_page_paragraph_size");
 $img_small_r = get_field("blog_page_small_right");
@@ -24,54 +24,76 @@ $size_full  = "full";
 $size_med   = "full";
 $size_small = "full";
 ?>
+<?php
+if( have_rows('blog_page_images_repeater') ):
 
-<div class="container">
-  <div class="row justify-content-center"> <?php
-    switch ($sel) {
-      case $full :
-        if( $img_full ){
-          echo wp_get_attachment_image( $img_full, $size_full );
-          ?></div><?php
-          ?><div class="row pl-3"><?php
-          text_display_bp($img_txt);
-        }
+  // loop through the rows of data
+   while ( have_rows('blog_page_images_repeater') ) : the_row();
+   ?>
 
-      case $med :
-        if( $img_med ){
+<div class="row"> <?php
+
+  switch ($sel) {
+
+    case $full :
+
+      if( $img_full ){ ?>
+        <div class="container-fluid pl-3 pr-3" align="center">
+          <div class="figure"> <?php
+            echo wp_get_attachment_image( $img_full, $size_full );
+            text_display_bp($img_txt); ?>
+          </div> <?php
+      }
+
+    case $med :
+
+      if( $img_med ){ ?>
+        <div class="container-fluid" align="center">
+          <div class="figure"> <?php
             echo wp_get_attachment_image( $img_med, $size_med );
-            ?></div><?php
-            ?><div class="row pl-3 justify-content-left"><?php
-            text_display_bp($img_txt);
-        }
+            text_display_bp($img_txt); ?>
+          </div> <?php
+      }
 
-      case $right :
-        if( $img_small_r ){
+    case $right :
+
+      if( $img_small_r ){ ?>
+        <div class="container-fluid pr-3 pl-3" align="right">
+          <div class="figure"> <?php
           echo wp_get_attachment_image( $img_small_r, $size_small );
-          ?></div><?php
-          ?><div class="row pl-3"><?php
-          text_display_bp($img_txt);
-        }
+          text_display_bp($img_txt);?>
+        </div><?php
+      }
 
-      case $left :
-        if( $img_small_l ){
-          echo wp_get_attachment_image( $img_small_l, $size_small );
-          ?></div><?php
-          ?><div class="row pl-3"><?php
-          text_display_bp($img_txt);
-        }
+    case $left :
 
-      default :
-        break;
-    }
-  ?>
+      if( $img_small_l ){ ?>
+        <div class="container-fluid pr-3 pl-3" align="left">
+          <div class="figure"> <?php
+            echo wp_get_attachment_image( $img_small_l, $size_small );
+            text_display_bp($img_txt); ?>
+          </div> <?php
+      }
+
+    default :
+      break;
+  }
+?>
   </div>
 </div>
+
+<?php
+endwhile;
+else: ?>
+<p> Error: repeater </p>
+</div>
+<?php endif; ?>
 
 <?php
 /* If there is image caption display bottom left */
 function text_display_bp($txt) {
   if( $txt ){
-    ?> <p class="text-left"> <?php echo $txt; ?> </p> <?php
+    ?> <figcaption class="figure-caption" align="left"> <?php echo $txt; ?> </figcaption> <?php
   }
   return;
 }
