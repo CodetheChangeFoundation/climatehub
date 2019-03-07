@@ -27,6 +27,6 @@
 
   <?php get_template_part( 'template-parts/blog-call-to-action-box') ?>
 
-  <?php get_template_part( 'template-parts/blog-page-images') ?>
+    <?php get_template_part( 'template-parts/blog-page-images') ?>
 
 <?php get_footer(); ?>
