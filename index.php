@@ -29,9 +29,21 @@
   <div class="container">
     <?php get_template_part("template-parts/team-grid") ?>
   </div>
+ 
+  <div class="container">
+    <?php get_template_part("template-parts/team-grid") ?>
+  </div>
 
   <?php get_template_part( 'template-parts/partners-content-section' )?>
+
   <?php get_template_part( 'template-parts/updatebox-section' )?>
+
+  <?php get_template_part( 'template-parts/blog-call-to-action-box') ?>
+
+  <?php get_template_part( 'template-parts/blog-page-images') ?>
+            
   <?php get_template_part( 'template-parts/about-us-title-paragraph' )?>
+
   <?php get_template_part( 'template-parts/home-asset-map' ) ?>
+            
 <?php get_footer(); ?>
