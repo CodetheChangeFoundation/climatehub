@@ -23,6 +23,60 @@
                 "ui_off_text": ""
             },
             {
+                "key": "field_5c89c52ed3c1b",
+                "label": "Team Grid Title",
+                "name": "team_grid_title",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5c805c32f0fbe",
+                            "operator": "==",
+                            "value": "1"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Team",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5c89c555d3c1c",
+                "label": "Team Grid Description",
+                "name": "team_grid_description",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                    [
+                        {
+                            "field": "field_5c805c32f0fbe",
+                            "operator": "==",
+                            "value": "1"
+                        }
+                    ]
+                ],
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "Short descriptive paragraph. The Paris Agreement (French: Accord de Paris)[3] is an agreement within the United Nations Framework Convention on Climate Change (UNFCCC), dealing with greenhouse-gas-emissions mitigation, adaptation, and finance, starting in the year 2020.",
+                "tabs": "all",
+                "toolbar": "full",
+                "media_upload": 1,
+                "delay": 0
+            },
+            {
                 "key": "field_5c805c4bf0fbf",
                 "label": "Team Members",
                 "name": "team_members",
@@ -63,14 +117,14 @@
                             "id": ""
                         },
                         "return_format": "array",
-                        "preview_size": "thumbnail",
+                        "preview_size": "full",
                         "library": "all",
                         "min_width": "",
                         "min_height": "",
                         "min_size": "",
-                        "max_width": 150,
-                        "max_height": 150,
-                        "max_size": 150,
+                        "max_width": "",
+                        "max_height": "",
+                        "max_size": "",
                         "mime_types": ""
                     },
                     {
