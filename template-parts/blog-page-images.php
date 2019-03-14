@@ -82,12 +82,6 @@ if( have_rows('blog_page_images_repeater') ):
       <?php
 
   endwhile;
-
-else :
-
-  // no rows found
-  ?><p>Error:Check repeater</p><?php
-
 endif;
 
 /* If there is image caption display bottom left */
