@@ -89,6 +89,5 @@ function text_display_bp($txt) {
   if( $txt ){
     ?> <figcaption class="figure-caption" align="left"> <?php echo $txt; ?> </figcaption> <?php
   }
-  return;
 }
 ?>
