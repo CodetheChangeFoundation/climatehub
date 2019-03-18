@@ -1,5 +1,4 @@
 <?php get_header(); ?>
-  <h1>Index</h1>
 
   <div class="container">
     <?php get_template_part( 'template-parts/title' ); ?>
@@ -21,6 +20,7 @@
   </div class="jumbotron d-flex flex-column border border-primary justify-content-end align-content-start p-0">
     <?php get_template_part("template-parts/home-page-banner") ?>
   </div>
+  <?php get_template_part( 'template-parts/home-asset-map' ) ?>
 
   <div class="container">
     <?php get_template_part("template-parts/content-right-side-img") ?>
@@ -28,5 +28,4 @@
   <?php get_template_part( 'template-parts/partners-content-section' )?>
   <?php get_template_part( 'template-parts/updatebox-section' )?>
   <?php get_template_part( 'template-parts/about-us-title-paragraph' )?>
-  <?php get_template_part( 'template-parts/home-asset-map' ) ?>
 <?php get_footer(); ?>
