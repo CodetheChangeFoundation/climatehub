@@ -3,7 +3,8 @@ import * as React from 'react';
 interface MyProps {
   categories: Array<string>,
   columns: Array<string>,
-  data: Array<Array<string>>
+  data: Array<Array<string>>,
+  onChange: any
 };
 
 interface MyState {
@@ -26,6 +27,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.setState({searchTerm: event.target.value});
   }
   handleFilter(event: any) {
+    this.props.onChange();
     this.setState({filterParameter: event.target.value});
   }
 
