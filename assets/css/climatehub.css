@@ -8,6 +8,26 @@
   background-size: cover;
 }
 
+/* Partners Grid */
+@media (min-width: 1200px) {
+  .custom-col-xl-2-4 {
+    flex: 0 0 20% !important;
+    max-width: 20% !important;
+  }
+}
+
+.partner-logo-container {
+  max-width: 15rem;
+}
+
+.partner-logo {
+  padding-top: 100%;
+  background-origin: border-box;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 /*Social Media Icons*/
 .fa {
   border-radius: 20%;
@@ -34,6 +54,7 @@
 .fa-twitter {
   background: #55ACEE;
   color: white;
+}
 
 /* Navbar */
 

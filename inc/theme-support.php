@@ -1,6 +1,6 @@
 <?php
 /**
- * Climate Hub theme support options
+ * Theme support options
  *
  * @package climatehub
  */

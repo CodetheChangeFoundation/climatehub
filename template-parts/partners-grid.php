@@ -5,142 +5,37 @@
  * @package climatehub
  */
 
-/*
-
-<?php
-var numrows = get_field('num_rows');
-for (var i=1; i<=num_rows; i++) {
-  // loop through 3 rows
-  echo
-}
-?>
-
-*/
-
 if( get_field('enable_partners_grid') ): ?>
   <div class="container">
-    <?php $size='thumbnail'; ?> <!--(thumbnail, medium, large, full or custom size)-->
-    <div class="row no-gutters align-items-start">
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_1')['logo_1'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image, $size );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_1')['logo_2'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image, $size );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_1')['logo_3'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image, $size );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_1')['logo_4'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image, $size );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_1')['logo_5'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image, $size );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_2')['logo_1'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_2')['logo_2'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_2')['logo_3'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_2')['logo_4'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_2')['logo_5'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_3')['logo_1'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_3')['logo_2'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_3')['logo_3'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_3')['logo_4'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image );
-          }
-        ?>
-      </div>
-      <div class="col p-3">
-        <?php
-          $image = get_field('row_3')['logo_5'];
-          if( $image ) {
-            echo wp_get_attachment_image( $image );
-          }
-        ?>
-      </div>
+    <div class="row">
+      <?php 
+        if( have_rows('partners_grid') ):
+          while ( have_rows('partners_grid') ) : the_row();
+            $gridRow = get_sub_field('grid_row');
+            $numImages = sizeof($gridRow);
+            for($logo=1; $logo<=$numImages; $logo++):
+              $image = $gridRow['image_'.$logo]; ?>
+              <?php if ($image): ?>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 custom-col-xl-2-4 mb-5">
+                  <div class="partner-logo-container m-auto">
+                    <a href="<?php echo $image['url'] ?>">
+                      <div class="partner-logo" style="background-image: url('<?php echo $image['url'] ?>')"></div>
+                    </a>
+                  </div>
+                </div>
+              <?php else: ?>
+                <div class="d-none d-md-flex col-md-4 col-lg-3 custom-col-xl-2-4 mb-5">
+                  <div class="partner-logo-container m-auto">
+                    <a href="<?php echo $image['url'] ?>">
+                      <div class="partner-logo" style="background-image: url('<?php echo $image['url'] ?>')"></div>
+                    </a>
+                  </div>
+                </div>
+              <?php endif;
+            endfor;
+          endwhile;
+        endif;
+      ?>
     </div>
   </div>
 <?php endif ?>
