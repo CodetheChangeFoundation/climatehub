@@ -60,6 +60,10 @@
   height: 30rem;
 }
 
+.right-side-image {
+  min-height: 10rem !important;
+}
+
 /*Social Media Icons*/
 .fa {
   border-radius: 20%;

@@ -6,14 +6,10 @@
   </div>
 
   <!-- Home Page -->
-  <?php get_template_part("template-parts/home/home-page-banner") ?>
-  <?php get_template_part( 'template-parts/home/home-asset-map' ) ?>
-
-  <div class="container">
-    <?php get_template_part("template-parts/home/content-right-side-img") ?>
-  </div>
-
-  <?php get_template_part( 'template-parts/home/updatebox-section' )?>
+  <?php get_template_part('template-parts/home/home-page-banner') ?>
+  <?php get_template_part('template-parts/home/home-asset-map') ?>
+  <?php get_template_part('template-parts/home/content-right-side-img') ?>
+  <?php get_template_part('template-parts/home/updatebox-section') ?>
 
   <!-- About Page -->
   <?php get_template_part( 'template-parts/about/about-us-title-paragraph' )?>
