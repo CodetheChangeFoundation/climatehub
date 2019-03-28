@@ -1,11 +1,99 @@
+/* Global Classes */
+.background-image {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Navbar */
+#logo {
+  height: 8rem;
+  padding: 1rem 0;
+  transition: 0.4s;
+}
+
+@media (min-width: 768px) {
+  #bs4navbar {
+    height: 100%;
+  }
+
+  #bs4navbar ul {
+    height: 100%;
+  }
+
+  #bs4navbar ul li {
+    height: 100%;
+  }
+
+  #bs4navbar ul li a {
+    position: relative;
+    height: 75%;
+    margin: 0 5px;
+    padding: 0 0.7rem;
+    border-top: 5px solid var(--dark);
+  }
+  
+  #bs4navbar ul li a:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: 100%;
+    top: -5px;
+    border-left: 5px solid var(--dark);
+    border-bottom: 5px solid var(--dark);
+    z-index: -1;
+    transition: right 0.1s ease-in-out 0.1s,
+      bottom 0.1s ease-in-out 0.2s;
+  }
+
+  #bs4navbar ul li a:hover:before {
+    right: calc(100% - 0.6rem);
+    bottom: 10px;
+    transition: bottom 0.2s ease-in-out 0s,
+    right 0.2s ease-in-out 0.2s;
+  }
+
+  #bs4navbar ul li a:after {
+    content: "";
+    position: absolute;
+    left: calc(100% - 5px);
+    right: 5px;
+    bottom: 100%;
+    top: -5px;
+    border-right: 5px solid var(--dark);
+    border-bottom: 5px solid var(--dark);
+    z-index: -1;
+    transition: left 0.1s ease-in-out 0.1s,
+      bottom 0.1s ease-in-out 0.2s,
+      right 0s ease-in-out 0.5s;
+  }
+
+  #bs4navbar ul li a:hover:after {
+    left: calc(100% - 0.6rem);
+    right: 0;
+    bottom: 10px;
+    transition: bottom 0.2s ease-in-out 0s,
+      left 0.2s ease-in-out 0.2s;
+  }
+
+  #bs4navbar ul li a.active {
+    color: var(--white);
+    background-color: var(--dark);
+  }
+}
+
+/* Home page */
+.home-page-banner {
+  height: 60vh;
+}
+
 .home-asset-map {
   height: 30rem;
 }
 
-.asset-map-banner-bg-image {
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
+.right-side-image {
+  min-height: 10rem !important;
 }
 
 /* Partners Grid */
@@ -40,7 +128,7 @@
 }
 
 .fa:hover {
-  color: black;
+  color: var(--dark);
   opacity: 0.7;
   text-decoration: none;
   text-emphasis: bold;
@@ -56,68 +144,7 @@
   color: white;
 }
 
-/* Navbar */
-
-.navbar-brand.shrink {
-  max-height: 75px;
-  transition: all 0.4s ease;
-  -webkit-transition: all 0.4s ease;
-}
-
-.navbar-nav > li {
-  align-items: flex-end;
-  display: flex;
-  margin: 0 5px;
-  position: relative;
-}
-
-.navbar-nav li a::before {
-  border-top: 5px solid #000;
-  box-shadow: 5px 0 0 #000 inset, -5px 0 0 #000 inset,  0 104px 0 #FFF inset, 0 114px 0 #FFF inset;
-  content: "";
-  position: absolute;
-  bottom: 125px;
-  right: 0;
-  left: 0;
-  top: 0;
-  transition: bottom 0.5s ease-in-out;
-  z-index: -1;
-}
-
-.navbar-nav li a:hover::before {
-  bottom: 16px;
-  box-shadow: 5px 0 0 #000 inset, -5px 0 0 #000 inset, 0 104px 0 #FFF inset, 0 114px 0 #FFF inset;
-}
-
-.navbar-nav li a.active {
-  color: #FFF !important;
-}
-
-.navbar-nav li a.active::before {
-  border-bottom: 114px solid #000;
-  border-top: 0 !important;
-  box-shadow: none !important;
-}
-
-.active.shrink::before {
-  border-bottom: 59px solid #000 !important;
-}
-
 .fa-instagram {
   background: #125688;
   color: white;
-}
-
-.home-page-banner-bottom-left{
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
-
-.home-page-banner{
-  height: 60vh;
-}
-
-.home-page-banner-width-paragraph{
-  width: 58%;
 }
