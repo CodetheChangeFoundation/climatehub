@@ -15,9 +15,9 @@
   </head>
   <body>
     <nav class="navbar sticky-top navbar-expand-md navbar-light bg-white text-uppercase font-weight-bold p-0 align-items-stretch">
-      <div class="container">
-        <a class="navbar-brand p-0 m-0" href="<?php echo get_home_url() ?>">
-          <img class="navbar-brand" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="logo" width=auto height=130/>
+      <div class="container px-3 px-sm-0">
+        <a class="navbar-brand" href="<?php echo get_home_url() ?>">
+          <img id="logo" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="logo"/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs4navbar" aria-controls="bs4navbar" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -28,9 +28,10 @@
             'theme_location'  => 'primary',
             'container'       => 'div',
             'container_id'    => 'bs4navbar',
-            'container_class' => 'collapse navbar-collapse h-100',
+            'container_class' => 'collapse navbar-collapse',
             'menu_id'         => false,
             'menu_class'      => 'navbar-nav ml-auto',
+            'nav_menu_css_class' => 'd-flex align-items-center',
             'depth'           => 2,
             'fallback_cb'     => 'bs4navwalker::fallback',
             'walker'          => new bs4navwalker()
