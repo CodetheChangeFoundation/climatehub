@@ -4,7 +4,7 @@
 <div class="container-fluid text-center">
   <div class="row align-items-center bg-secondary" style="footer">
     <div class="col-sm-2">
-      <img src="<?php echo get_template_directory_uri() . '/assets/images/ClimateHubLogo.gif'; ?>" class="img-fluid border-0 w-75"/>
+      <img src="<?php echo get_template_directory_uri() . '/assets/images/ClimateHubLogo.png'; ?>" class="img-fluid border-0 w-75"/>
     </div>
     <div class="col-sm-2">
     Creating a vibrant community around bold climate action at UBC.
