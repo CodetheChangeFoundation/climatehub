@@ -1,6 +1,6 @@
 <?php
 /**
- * About Page Highlighted Section
+ * Climate Hub about page highlighted section template
  *
  * @package climatehub
  */

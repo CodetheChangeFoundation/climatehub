@@ -1,6 +1,6 @@
 <?php
 /**
- * Functions
+ * Climate Hub Functions
  *
  * @package climatehub
  */

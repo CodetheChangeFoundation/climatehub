@@ -1,4 +1,12 @@
-<?php if( get_field("call_to_action_title") && get_field("call_to_action_summary") ): ?>
+<?php
+/**
+ * Climate Hub blog call to action box template
+ *
+ * @package climatehub
+ */
+
+
+if( get_field("call_to_action_title") && get_field("call_to_action_summary") ): ?>
 
   <div class="container text-center">
     <div class="col-md-3 col-md-offset-3 bg-white pb-2 pt-3 ml-auto mr-auto">

@@ -1,6 +1,6 @@
 <?php
 /**
- * Header
+ * Climate Hub Header
  *
  * @package climatehub
  */
@@ -24,8 +24,8 @@
   <body>
     <nav class="navbar sticky-top navbar-expand-md navbar-light bg-white text-uppercase font-weight-bold p-0 align-items-stretch">
       <div class="container px-3 px-sm-0">
-        <a class="navbar-brand" href="<?php echo get_home_url() ?>">
-          <img id="logo" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="logo"/>
+        <a class="navbar-brand col-6 col-sm-5 col-md-3" href="<?php echo get_home_url() ?>">
+          <img id="logo" class="img-fluid" src="<?php echo get_template_directory_uri(); ?>/assets/images/ClimateHubLogo.png" alt="logo"/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs4navbar" aria-controls="bs4navbar" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>

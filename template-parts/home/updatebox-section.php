@@ -1,6 +1,7 @@
 <?php
 /**
  * Climate Hub partners page supplementary updatebox section template
+ * 
  * @package climatehub
  */
 
