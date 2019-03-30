@@ -1,4 +1,12 @@
-<?php if (get_field('enable_two_column')): ?>
+<?php
+/**
+ * Climate Hub home page two column content template
+ *
+ * @package climatehub
+ */
+
+
+if (get_field('enable_two_column')): ?>
     <div class="container mt-4">
         <div class="row">
             <div class="col-12 col-md-6">

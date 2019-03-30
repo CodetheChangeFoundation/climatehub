@@ -1,7 +1,9 @@
 <?php
 /*
- * Blog Page image options:
  *
+ * Climate Hub blog page images template
+ * 
+ * Blog Page image options:
  * 1. Full width of page
  * 2. Width of paragraph
  * 3. Small in margin (either on the left side or right side)

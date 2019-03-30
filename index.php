@@ -1,6 +1,6 @@
 <?php
 /**
- * Index
+ * Climate Hub Index
  *
  * @package climatehub
  */

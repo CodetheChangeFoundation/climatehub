@@ -1,11 +1,9 @@
 // javascript functions
 
-window.onscroll = function () { scrollFunction(); };
-
-function scrollFunction() {
-  if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
-    $("#logo").addClass("shrink");
-  } else {
-    $("#logo").removeClass("shrink");
+$(window).scroll(function () {
+  if ($(document).scrollTop() >= 80) {
+    $('#logo').addClass('shrink');
+  } else if ($(document).scrollTop() < 80-64) {
+    $('#logo').removeClass('shrink');
   }
-}
+});

@@ -1,4 +1,12 @@
-<?php if( get_field("enable_asset_map_banner")): ?>
+<?php
+/**
+ * Climate Hub home page asset map banner template
+ *
+ * @package climatehub
+ */
+
+
+if( get_field("enable_asset_map_banner")): ?>
   <div class="container mt-4">
     <div class="row">
       <div class="col-12">
