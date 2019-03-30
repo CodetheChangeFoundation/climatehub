@@ -1,3 +1,11 @@
+<?php
+/**
+ * Global Paragraph Custom Field
+ *
+ * @package climatehub
+ */
+?>
+
 <?php if( get_field("enable_paragraph") && get_field("paragraph") ): ?>
   <div class="row">
     <div class="col-12 col-md-8 m-auto">

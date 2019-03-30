@@ -1,11 +1,11 @@
 [
     {
         "key": "group_5c7f4a6821073",
-        "title": "Team Grid",
+        "title": "About Page Team Grid",
         "fields": [
             {
                 "key": "field_5c805c32f0fbe",
-                "label": "Team Grid Enable",
+                "label": "Enable Grid",
                 "name": "team_grid_enable",
                 "type": "true_false",
                 "instructions": "",
@@ -24,7 +24,7 @@
             },
             {
                 "key": "field_5c89c52ed3c1b",
-                "label": "Team Grid Title",
+                "label": "Grid Title",
                 "name": "team_grid_title",
                 "type": "text",
                 "instructions": "",
@@ -51,7 +51,7 @@
             },
             {
                 "key": "field_5c89c555d3c1c",
-                "label": "Team Grid Description",
+                "label": "Grid Description",
                 "name": "team_grid_description",
                 "type": "wysiwyg",
                 "instructions": "",
@@ -78,7 +78,7 @@
             },
             {
                 "key": "field_5c805c4bf0fbf",
-                "label": "Team Members",
+                "label": "Grid Images",
                 "name": "team_members",
                 "type": "repeater",
                 "instructions": "",
@@ -112,7 +112,7 @@
                         "required": 0,
                         "conditional_logic": 0,
                         "wrapper": {
-                            "width": "",
+                            "width": "20",
                             "class": "",
                             "id": ""
                         },
@@ -136,7 +136,7 @@
                         "required": 0,
                         "conditional_logic": 0,
                         "wrapper": {
-                            "width": "",
+                            "width": "40",
                             "class": "",
                             "id": ""
                         },
@@ -155,7 +155,7 @@
                         "required": 0,
                         "conditional_logic": 0,
                         "wrapper": {
-                            "width": "",
+                            "width": "40",
                             "class": "",
                             "id": ""
                         },
@@ -171,13 +171,13 @@
         "location": [
             [
                 {
-                    "param": "page_template",
+                    "param": "page",
                     "operator": "==",
-                    "value": "default"
+                    "value": "46"
                 }
             ]
         ],
-        "menu_order": 0,
+        "menu_order": 32,
         "position": "normal",
         "style": "default",
         "label_placement": "top",

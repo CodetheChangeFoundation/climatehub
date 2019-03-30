@@ -7,7 +7,7 @@
 
 if( get_field('enable_partners_content_section') ): ?>
   <div class="container">
-    <section>
+    <section class="bg-white pt-2">
       <div class="row m-3 w-100">
         <div class="col-12 col-md-8 p-3">
           <?php if( get_field('left_column_title') ): ?>
