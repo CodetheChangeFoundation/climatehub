@@ -1,12 +1,11 @@
 // javascript functions
 
+window.onscroll = function () { scrollFunction(); };
 
-$(window).scroll(function() {
-  if ($(document).scrollTop() > 50) {
-    $('.navbar-brand').addClass('shrink');
-    $('.active').addClass('shrink');
+function scrollFunction() {
+  if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+    $("#logo").addClass("shrink");
   } else {
-    $('.navbar-brand').removeClass('shrink');
-    $('.active').removeClass('shrink');
+    $("#logo").removeClass("shrink");
   }
-});
+}
