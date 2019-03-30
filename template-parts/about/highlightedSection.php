@@ -14,7 +14,7 @@
  if($enable && $title && $content && $link): ?>
 <div class="container pt-4">
   <div class="row px-3">
-    <div class="col col-12 col-md-8 m-auto py-3 border-left border-dark bg-grey">
+    <div class="col-12 col-md-8 m-auto py-3 border-left border-dark bg-grey">
       <h4><?php echo $title ?></h4>
       <p><?php echo $content ?></p>
       <a href="<?php echo $link['url']; ?>"

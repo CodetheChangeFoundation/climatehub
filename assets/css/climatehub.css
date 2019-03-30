@@ -116,8 +116,8 @@
   }
 }
 
-.partner-logo-container {
-  max-width: 15rem;
+.partner-logo-container, .grid-image {
+  max-width: 15rem !important;
 }
 
 .partner-logo {
