@@ -1,3 +1,11 @@
+<?php
+/**
+ * Index
+ *
+ * @package climatehub
+ */
+?>
+
 <?php get_header(); ?>
   <!-- Global -->
   <div class="container">
@@ -13,19 +21,20 @@
 
   <!-- About Page -->
   <?php get_template_part( 'template-parts/about/about-us-title-paragraph' )?>
+  <?php get_template_part( 'template-parts/about/highlightedSection' )?>
 
   <!-- Partners Page -->
   <?php get_template_part( 'template-parts/partners/partners-grid' )?>
   <?php get_template_part( 'template-parts/partners/partners-content-section' )?>
 
   <!-- Contact Page -->
-  <div class="container">
+  <!-- <div class="container"> -->
     <?php get_template_part( "template-parts/contact-us" ) ?>
     <?php get_template_part( "template-parts/address-title" ) ?>
-  </div>
+  <!-- </div> -->
 
-  <div class="container">
+  <!-- <div class="container"> -->
     <?php get_template_part( "template-parts/contact-us-button" ) ?>
-  </div>
+  <!-- </div> -->
 
 <?php get_footer(); ?>

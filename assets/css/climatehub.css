@@ -5,11 +5,23 @@
   background-size: cover;
 }
 
+.bg-grey {
+  background-color: #E4E4E4;
+}
+
 /* Navbar */
 #logo {
   height: 8rem;
   padding: 1rem 0;
-  transition: 0.4s;
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+
+#logo.shrink {
+  height: 4rem;
+  padding: 0.2rem 0;
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
 }
 
 @media (min-width: 768px) {

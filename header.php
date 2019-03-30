@@ -1,3 +1,11 @@
+<?php
+/**
+ * Header
+ *
+ * @package climatehub
+ */
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
