@@ -18,7 +18,7 @@ if (get_field('enable_two_column')): ?>
                         <p><?php echo the_field('two_column_paragraph') ?></p>
                     <?php endif; ?>
                     <?php if (get_field('two_column_button')): ?>
-                        <a type="button" href="<?php echo get_field('two_column_button')['url']; ?>" class="btn btn-outline-primary font-italic align-middle" target="<?php echo get_field('two_column_button')['target']; ?>">
+                        <a href="<?php echo get_field('two_column_button')['url']; ?>" class="btn btn-outline-primary font-italic align-middle" target="<?php echo get_field('two_column_button')['target']; ?>">
                             <?php echo get_field('two_column_button')['title']; ?>
                         </a>
                     <?php endif; ?>
