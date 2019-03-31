@@ -25,4 +25,4 @@
   </div>
 </div>
 
-<? endif; ?>
+<?php endif; ?>
