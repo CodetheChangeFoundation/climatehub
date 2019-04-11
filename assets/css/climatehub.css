@@ -99,7 +99,7 @@ body {
 
 /* Home page */
 .home-page-banner {
-  height: 60vh;
+  height: 70vh;
 }
 
 .home-asset-map {
@@ -108,6 +108,15 @@ body {
 
 .right-side-image {
   min-height: 10rem !important;
+}
+
+.update-box-link {
+  color: var(--dark);
+}
+
+.update-box-link:hover {
+  text-decoration: none;
+  color: var(--dark);
 }
 
 /* Partners Grid */

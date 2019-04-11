@@ -55,7 +55,7 @@
             $footer_button_target = (isset($footer_button['target'])) ? $footer_button['target'] : '';
           ?>
           <div class="d-flex align-items-center justify-content-center pt-3 pt-md-0">
-            <button type="button" class="btn btn-outline-primary font-italic" href="<?php echo $footer_button_link ?>" target="<?php echo $footer_button_target ?>"><?php echo $footer_button_text ?></button>
+            <a role="button" href="<?php echo $footer_button_link ?>" target="<?php echo $footer_button_target ?>" class="btn btn-outline-primary font-italic"><?php echo $footer_button_text ?></a>
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@
             <p class="text-light m-0 small">Copyright &copy;
               <script type="text/javascript">document.write(new Date().getFullYear());</script>
               Climate Hub. Created by
-              <a href="http://codethechange.ca/"> Code the Change Foundation</a>.
+              <a href="http://codethechange.ca/" target="_blank"> Code the Change Foundation</a>.
             </p>
           </div>
         </div>
