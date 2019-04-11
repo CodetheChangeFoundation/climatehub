@@ -55,7 +55,7 @@
             $footer_button_target = (isset($footer_button['target'])) ? $footer_button['target'] : '';
           ?>
           <div class="d-flex align-items-center justify-content-center pt-3 pt-md-0">
-            <button type="button" class="btn btn-outline-primary font-italic" href="<?php echo $footer_button_link ?>" target="<?php echo $footer_button_target ?>"><?php echo $footer_button_text ?></button>
+            <a role="button" href="<?php echo $footer_button_link ?>" target="<?php echo $footer_button_target ?>" class="btn btn-outline-primary font-italic"><?php echo $footer_button_text ?></a>
           </div>
         </div>
       </div>
