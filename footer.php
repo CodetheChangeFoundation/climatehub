@@ -67,7 +67,7 @@
             <p class="text-light m-0 small">Copyright &copy;
               <script type="text/javascript">document.write(new Date().getFullYear());</script>
               Climate Hub. Created by
-              <a href="http://codethechange.ca/"> Code the Change Foundation</a>.
+              <a href="http://codethechange.ca/" target="_blank"> Code the Change Foundation</a>.
             </p>
           </div>
         </div>
