@@ -3,7 +3,6 @@
 Meetings are Wednesdays from 5:00 PM to 8:00 PM in West Mall Swing Space 307.
 WordPress custom theme for the Climate Hub at UBC.
 
-/
 ## Tech Stack
 - HTML/CSS, PHP, Bootstrap, JS, WordPress - frontend/UI
 - React - frontend asset map

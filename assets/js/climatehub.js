@@ -1,17 +1,16 @@
 // javascript functions
-$(window).scroll(function() {
-  if ($(document).scrollTop() > 50) {
-    $('.navbar-brand').addClass('shrink');
-    $('.active').addClass('shrink');
-  } else {
-    $('.navbar-brand').removeClass('shrink');
-    $('.active').removeClass('shrink');
+
+$(window).scroll(function () {
+  if ($(document).scrollTop() >= 80) {
+    $('#logo').addClass('shrink');
+  } else if ($(document).scrollTop() < 80-64) {
+    $('#logo').removeClass('shrink');
   }
 });
 
 /*projects page carousel*/
-$(document).ready(function() {
-  $("#projects-carousel").on("slide.bs.carousel", function(e) {
+$(document).ready(function () {
+  $("#projects-carousel").on("slide.bs.carousel", function (e) {
     var $e = $(e.relatedTarget);
     var idx = $e.index();
     var itemsPerSlide = 3;
