@@ -138,6 +138,19 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
 }
+/* Contact Us Page */
+.contact-us-banner {
+  height: 25rem;
+}
+
+.acf-map {
+  width: 100%;
+  height: 25rem;
+}
+
+.acf-map img {
+  max-width: inherit !important;
+}
 
 /*Social Media Icons*/
 .fa {

@@ -22,16 +22,16 @@
   <!-- About Page -->
   <?php get_template_part( 'template-parts/about/about-us-title-paragraph' )?>
   <?php get_template_part( 'template-parts/about/highlightedSection' )?>
-  <?php get_template_part("template-parts/about/team-grid")?>
-  <?php get_template_part("template-parts/about/board-of-directors-grid")?>
+  <?php get_template_part( 'template-parts/about/team-grid' )?>
+  <?php get_template_part( 'template-parts/about/board-of-directors-grid' )?>
 
   <!-- Partners Page -->
   <?php get_template_part( 'template-parts/partners/partners-grid' )?>
   <?php get_template_part( 'template-parts/partners/partners-content-section' )?>
 
   <!-- Contact Page -->
-  <?php get_template_part( "template-parts/contact-us" ) ?>
-  <?php get_template_part( "template-parts/address-title" ) ?>
-  <?php get_template_part( "template-parts/contact-us-button" ) ?>
+  <?php get_template_part( 'template-parts/contact-us/contact-us' ) ?>
+  <?php get_template_part( 'template-parts/contact-us/contact-us-banner' )?>
+
 
 <?php get_footer(); ?>

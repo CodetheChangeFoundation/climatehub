@@ -34,3 +34,9 @@ if( function_exists('acf_add_options_page') ) {
 	));
 	
 }
+
+// Google Maps
+function my_acf_init() {
+	acf_update_setting('google_api_key', 'AIzaSyBklza7tjbuNSp-Ul6TLx0op9eEbV8yDCE');
+}
+add_action('acf/init', 'my_acf_init');
