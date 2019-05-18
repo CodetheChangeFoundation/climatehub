@@ -26,7 +26,7 @@ if( get_field('enable_partners_grid') ): ?>
                     <div class="row">
                       <a class="close-icon text-primary btn btn-link font-weight-light" role="button">&times;</a>
                       <div class="col-12 col-md-8 p-4">
-                        <h3><?php echo $image['title'] ?></h3>
+                        <h3 class="mr-5"><?php echo $image['title'] ?></h3>
                         <p><?php echo $image['description'] ?></p>
                       </div>
                       <div class="col-12 col-md-4 p-4">

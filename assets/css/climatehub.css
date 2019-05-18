@@ -122,14 +122,20 @@ body {
 /* Partners Grid */
 .partner-grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 200px);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 350px));
   grid-auto-flow: row dense;
   grid-column-gap: 1.5rem;
   justify-content: center;
 }
 
+@media (min-width: 576px) {
+  .partner-grid-container {
+    grid-template-columns: repeat(auto-fill, 200px);
+  }
+}
+
 .partner-image {
-  height: 200px;
+  padding-top: 100%;
 }
 
 .partner-content {
