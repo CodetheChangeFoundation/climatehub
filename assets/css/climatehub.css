@@ -120,24 +120,33 @@ body {
 }
 
 /* Partners Grid */
-@media (min-width: 1200px) {
-  .custom-col-xl-2-4 {
-    flex: 0 0 20% !important;
-    max-width: 20% !important;
-  }
+.partner-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 200px);
+  grid-auto-flow: row dense;
+  grid-column-gap: 1.5rem;
+  justify-content: center;
 }
 
-.partner-logo-container, .grid-image {
-  max-width: 15rem !important;
+.partner-image {
+  height: 200px;
 }
 
-.partner-logo {
-  padding-top: 100%;
-  background-origin: border-box;
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
+.partner-content {
+  grid-column-start: 1;
+  grid-column-end: -1;
+  position: relative;
 }
+
+.close-icon {
+  font-size: 4rem;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  line-height: 0;
+  z-index: 99;
+}
+
 /* Contact Us Page */
 .contact-us-banner {
   height: 25rem;
