@@ -27,7 +27,6 @@
 
   <!-- Partners Page -->
   <?php get_template_part( 'template-parts/partners/partners-grid' )?>
-  <?php get_template_part( 'template-parts/partners/partners-content-section' )?>
 
   <!-- Contact Page -->
   <?php get_template_part( 'template-parts/contact-us/contact-us' ) ?>
