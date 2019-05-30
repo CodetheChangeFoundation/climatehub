@@ -91,7 +91,7 @@ body {
       left 0.2s ease-in-out 0.2s;
   }
 
-  #bs4navbar ul li a.active {
+  #bs4navbar ul li.active a {
     color: var(--white);
     background-color: var(--dark);
   }
@@ -312,4 +312,16 @@ body {
   width: 70%;
   height: 1.2em;
   background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 75%);
+}
+
+/* Blog page */
+.blog-gutter-image {
+  max-height: 200px;
+}
+
+.full-width-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
 }

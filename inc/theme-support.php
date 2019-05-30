@@ -92,3 +92,24 @@ function add_image_attachment_fields_to_save($post, $attachment) {
 	return $post;
 }
 add_filter("attachment_fields_to_save", "add_image_attachment_fields_to_save", null, 2);
+
+// Highlight menu item for individual project/blog pages
+add_action('nav_menu_css_class', 'add_current_nav_class', 10, 2 );
+function add_current_nav_class($classes, $item) {
+	global $post;
+	$menu_slug = strtolower(trim($item->url));
+	$current_post_category = get_the_category($post->ID);
+	$category_parent_id = $current_post_category[0]->category_parent;
+	if ($category_parent_id != 0) {
+    $category_parent = get_term($category_parent_id, 'category');
+    $category_slug = $category_parent->slug;
+	} else {
+    $category_slug = $current_post_category[0]->slug;
+	}
+
+	if (strpos($menu_slug,$category_slug) !== false) {
+		$classes[] = 'current-menu-item active';
+	}
+
+	return $classes;
+}

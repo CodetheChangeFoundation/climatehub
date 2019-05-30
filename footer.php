@@ -11,7 +11,7 @@
 
 ?>
 
-<footer class="pt-4">
+<footer class="mt-4">
   <div class="bg-grey">
     <div class="container">
       <div class="row align-items-center">
