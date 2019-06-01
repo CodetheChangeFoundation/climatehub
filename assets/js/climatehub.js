@@ -9,6 +9,28 @@ $(window).scroll(function () {
   }
 });
 
+// projects page carousels
+$('.owl-carousel').owlCarousel({
+  loop: false,
+  margin: 15,
+  nav: true,
+  navText: ['&lang;','&rang;'],
+  responsive: {
+    0: {
+      items: 1
+    },
+    576: {
+      items: 2
+    },
+    992: {
+      items: 3
+    },
+    1200: {
+      items: 4
+    }
+  }
+})
+
 // engagements page
 $('.partner-image').on('click', function() {
   $('.collapse.show').collapse('toggle');

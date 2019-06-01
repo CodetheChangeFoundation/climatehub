@@ -54,22 +54,13 @@
             [
                 {
                     "param": "page",
-                    "operator": "==",
-                    "value": "46"
-                }
-            ],
-            [
+                    "operator": "!=",
+                    "value": "6"
+                },
                 {
-                    "param": "page",
-                    "operator": "==",
-                    "value": "48"
-                }
-            ],
-            [
-                {
-                    "param": "page",
-                    "operator": "==",
-                    "value": "55"
+                    "param": "post_type",
+                    "operator": "!=",
+                    "value": "post"
                 }
             ]
         ],
