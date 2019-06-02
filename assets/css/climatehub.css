@@ -100,6 +100,7 @@ body {
 /* Home page */
 .home-page-banner {
   height: 70vh;
+  min-height: 25rem;
 }
 
 .home-asset-map {
