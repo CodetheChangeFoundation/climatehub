@@ -16,7 +16,7 @@
                     "class": "",
                     "id": ""
                 },
-                "default_value": "<h1 style=\"text-align: center;\"><strong>404<\/strong><\/h1>\r\n<h2 style=\"text-align: center;\">Page Not Found<\/h2>\r\n<h3 style=\"text-align: center;\">We can't find the page you're looking for. Go back or head over the the homepage.<\/h3>",
+                "default_value": "<h1 style=\"text-align: center;\"><strong>404<\/strong><\/h1>\r\n<h2 style=\"text-align: center;\">Page Not Found<\/h2>\r\n<h3 style=\"text-align: center;\">We can't find the page you're looking for. Go back or head over to the homepage.<\/h3>",
                 "tabs": "all",
                 "toolbar": "full",
                 "media_upload": 0,
