@@ -293,6 +293,7 @@ body {
 }
 
 .item img {
+  height: 9.25rem;
   overflow: hidden;
   object-fit: cover;
   object-position: center center;

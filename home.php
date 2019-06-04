@@ -33,9 +33,8 @@ if ($title || $paragraph): ?>
 
 <?php if (have_posts()): ?>
   <div class="container mb-4">
-    <div class="row">
+    <div class="row row">
       <?php while (have_posts()): the_post(); ?>
-
         <div class="col-12 col-md-6 col-lg-4 mt-4">
           <a class="item d-flex bg-white justify-content-between text-body m-auto" target="<?php echo (get_field('post_behaviour') == 'link') ? get_field('post_link')['target'] : '_self'; ?>" href="<?php echo (get_field('post_behaviour') == 'link') ? get_field('post_link')['url'] : the_permalink() ?>">
             <div class="blog-card-content">
@@ -58,14 +57,43 @@ if ($title || $paragraph): ?>
             <?php endif; ?>
           </a>
         </div>
-
       <?php endwhile; ?>
-      <!-- <nav>
-        <ul>
-          <li><?php previous_posts_link( '&laquo; PREV', $cpt_query->max_num_pages) ?></li> 
-          <li><?php next_posts_link( 'NEXT &raquo;', $cpt_query->max_num_pages) ?></li>
-        </ul>
-      </nav> -->
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <nav aria-label="Blog page navigation">
+          <?php
+            global $wp_query;
+            $current = max( 1, absint( get_query_var( 'paged' ) ) );
+            $pagination = paginate_links( array(
+              'base' => str_replace( PHP_INT_MAX, '%#%', esc_url( get_pagenum_link( PHP_INT_MAX ) ) ),
+              'format' => '?paged=%#%',
+              'current' => $current,
+              'total' => $wp_query->max_num_pages,
+              'type' => 'array',
+              'prev_text' => '&laquo;',
+              'next_text' => '&raquo;',
+            ) ); ?>
+          <?php if ( ! empty( $pagination ) ) : ?>
+            <ul class="pagination justify-content-center mt-4 mb-0">
+              <?php if ( strpos(htmlspecialchars($pagination[0]), 'laquo') === false ) : ?>
+                <li class="page-item disabled">
+                  <span class="page-numbers">&laquo;</span>
+                </li>
+              <?php endif; ?>
+              <?php foreach ( $pagination as $key => $page_link ) : ?>
+                <li class="page-item<?php if ( strpos( $page_link, 'current' ) !== false ) { echo ' active'; } ?>"><?php echo $page_link ?></li>
+              <?php endforeach; ?>
+              <?php if ( strpos(htmlspecialchars(end($pagination)), 'raquo') === false ) : ?>
+                <li class="page-item disabled">
+                  <span class="page-numbers">&raquo;</span>
+                </li>
+              <?php endif; ?>
+            </ul>
+          <?php endif ?>
+        </nav>
+      </div>
     </div>
   </div>
 
