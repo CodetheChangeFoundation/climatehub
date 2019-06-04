@@ -113,3 +113,11 @@ function add_current_nav_class($classes, $item) {
 
 	return $classes;
 }
+
+// Filter posts on blog page
+function my_blog_category( $query ) {
+	if ( $query->is_home() && $query->is_main_query() ) {
+		$query->set( 'cat', get_cat_ID('blog'));
+	}
+}
+add_action( 'pre_get_posts', 'my_blog_category' );
