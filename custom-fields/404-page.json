@@ -1,0 +1,59 @@
+[
+    {
+        "key": "group_5cf45950cc09e",
+        "title": "404 Page",
+        "fields": [
+            {
+                "key": "field_5cf45958bfe40",
+                "label": "404 Page Content",
+                "name": "404_page_content",
+                "type": "wysiwyg",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "<h1 style=\"text-align: center;\"><strong>404<\/strong><\/h1>\r\n<h2 style=\"text-align: center;\">Page Not Found<\/h2>\r\n<h3 style=\"text-align: center;\">We can't find the page you're looking for. Go back or head over to the homepage.<\/h3>",
+                "tabs": "all",
+                "toolbar": "full",
+                "media_upload": 0,
+                "delay": 0
+            },
+            {
+                "key": "field_5cf45a3e1af99",
+                "label": "404 Page Button",
+                "name": "404_page_button",
+                "type": "link",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "options_page",
+                    "operator": "==",
+                    "value": "theme-general-settings"
+                }
+            ]
+        ],
+        "menu_order": 101,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 1,
+        "description": ""
+    }
+]

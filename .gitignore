@@ -18,7 +18,8 @@ wp-content/plugins/hello.php
 /sitemap.xml.gz
 .DS_Store
 
-/assetmap/node_modules/
+**/node_modules
+
 /assetmap/build
 /assetmap/*.tgz
 /assetmap/template/src/__tests__/__snapshots__/
