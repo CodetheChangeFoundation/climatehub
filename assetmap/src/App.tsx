@@ -28,7 +28,7 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   componentDidMount() {
-    fetch("https://jbjskvmpv3.execute-api.us-east-1.amazonaws.com/Production/university")
+    fetch("http://test.local/wp-json/wp/v2/cities")
       .then(res => res.json())
       .then(
         (result) => {
