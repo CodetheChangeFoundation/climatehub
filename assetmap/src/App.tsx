@@ -28,19 +28,38 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   componentDidMount() {
-    fetch("http://test.local/wp-json/wp/v2/cities")
+    fetch("http://climatehub.local/wp-json/wp/v2/cities")
       .then(res => res.json())
       .then(
         (result) => {
-          const universities:Array<any> = [];
-          result.forEach((university: { UID: any; UCode: any; Name: any; Address: any }) => {
-            universities.push([university.UID, university.UCode, university.Name])
+          console.log(result);
+          // const universities:Array<any> = [];
+          // result.forEach((university: { UID: any; UCode: any; Name: any; Address: any }) => {
+          //   universities.push([university.UID, university.UCode, university.Name])
+          // });
+          // this.setState({
+          //   columns: Object.keys(result[0]).splice(0,3),
+          //   isLoaded: true,
+          //   items: universities
+          // });
+          let cities: Array<any> = [];
+          let communities: Array<any> = [];
+          result.forEach((city: {id: any; name: any; location: any; community: any;}) =>  {
+            cities.push([city.id, city.name, city.location]);
+            if (city.community !== "") {
+              city.community.forEach((comm: {ID: any; post_title: any}) => {
+                communities.push([comm.ID, comm.post_title]);
+              });
+            }
           });
+          console.log(cities);
           this.setState({
-            columns: Object.keys(result[0]).splice(0,3),
+            columns: ["ID", "Name"],
             isLoaded: true,
-            items: universities
+            items: communities
           });
+          cities = [];
+          communities = [];
         }, (error) => {
           this.setState({
             error,
