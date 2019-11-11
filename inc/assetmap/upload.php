@@ -25,24 +25,49 @@ function register_acf_options_pages() {
 add_action('acf/init', 'register_acf_options_pages');
 
 // 
-include "SimpleXLSX.php";
+// include "SimpleXLSX.php";
 function parse_excel_file() {
 	$screen = get_current_screen();
 	if (strpos($screen->id, "asset-map") == true) {
-
-
     
+    $city_data = read_file_from_field('city_file');
+    $community_data = read_file_from_field('community_file');
+    $project_data = read_file_from_field('project_file');
+    $group_data = read_file_from_field('group_file');
+    $individual_data = read_file_from_field('individual_file');
+}
+
+function read_file_from_field($field_name) {
+  $file = get_field($field_name, 'option');
+  if ($file) { 
+    $file_url = $file['url'];
+  }
+  $file_data = [];
+  if (($h = fopen($file_url, 'r')) !== FALSE) {
+    while (($data = fgetcsv($h, 100, ',')) !== FALSE) {
+      $file_data[] = $data; 
+    }
+    fclose($h);
+  }
+  return $file_data;
+}
+
+    // Test creating a post and updating a field
+function create_new_post() { 
     $my_post = array(
-      'post_title'    => 'IT WORKED',
+      'post_title'    =>  'TEST POST',
       'post_status'   => 'publish',
       'post_author'   => 1,
       'post_type' => 'cities'
     );
     
     // Insert the post into the database
-    wp_insert_post( $my_post );
-	}
+    $post_id = wp_insert_post( $my_post );
+    update_field('name', 'Test name', $post_id);
+
+  }
 }
+
 add_action('acf/save_post', 'parse_excel_file', 20);
 
 function my_custom_mime_types( $mimes ) {
