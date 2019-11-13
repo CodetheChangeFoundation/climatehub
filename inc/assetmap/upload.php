@@ -47,32 +47,38 @@ function parse_excel_file() {
 
     $all_objects = [];
     if ($city_data) {
+      delete_all_posts('cities');
       $all_objects['cities'] = create_posts($city_data, 'cities');
-      $all_objects['cities']['fields'] = $city_data[0];
+      // $all_objects['cities']['fields'] = $city_data[0];
     }
     if ($community_data) {
+      delete_all_posts('communities');
       $all_objects['communities'] = create_posts($community_data, 'communities');
     }
     if ($project_data) {
+      delete_all_posts('projects');
       $all_objects['projects'] = create_posts($project_data, 'projects');
     }
     if ($group_data) {
+      delete_all_posts('groups');
       $all_objects['groups'] = create_posts($group_data, 'groups');
     }
     if ($individual_data) {
+      delete_all_posts('individuals');
       $all_objects['individuals'] = create_posts($individual_data, 'individuals');
     }
 
-    //print all_objects to name field of sample post
-    $my_post = array(
-      'post_title'    =>  'sample',
-      'post_status'   => 'publish',
-      'post_author'   => 1,
-      'post_type' => 'cities'
-    );
-    $post_id = wp_insert_post( $my_post );
-    update_field('name', $all_objects, $post_id);
+    // Test: print all_objects to name field of sample cities post
+    // $my_post = array(
+    //   'post_title'    =>  'sample',
+    //   'post_status'   => 'publish',
+    //   'post_author'   => 1,
+    //   'post_type' => 'cities'
+    // );
+    // $post_id = wp_insert_post( $my_post );
+    // update_field('name', $all_objects, $post_id);
   }
+
 }
 
 function read_file_from_field($field_name) {
@@ -91,9 +97,8 @@ function read_file_from_field($field_name) {
 }
 
 function create_posts($post_data, $post_type) {
-  $i = 1;
   $post_objs = [];
-  for ($i; $i < count($post_data); $i++) {
+  for ($i=1; $i < count($post_data); $i++) {
     $curr_post = $post_data[$i];
     $post_objs[$curr_post[1]] = create_new_post($curr_post, $post_type);
   }
@@ -121,6 +126,20 @@ function update_city_fields($post_id, $post_data, $post_fields) {
   // $location = ['address' => $post_data[1]];
   // update_field('location', $location, $post_id);
   // update_field('community')
+}
+
+function delete_all_posts($post_type) {
+  $query = new WP_query(array(
+    'post_type' => $post_type,
+    'post_status' => 'publish',
+    'posts_per_page' => -1
+  ));
+
+  while($query->have_posts()) {
+    $query->the_post();
+    $post_id = get_the_id();
+    wp_delete_post($post_id);
+  }
 }
 
 add_action('acf/save_post', 'parse_excel_file', 20);
