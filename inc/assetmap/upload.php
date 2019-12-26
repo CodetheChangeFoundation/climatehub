@@ -34,7 +34,6 @@ function my_custom_mime_types( $mimes ) {
 
 add_filter( 'upload_mimes', 'my_custom_mime_types' );
 // 
-// include "SimpleXLSX.php";
 function parse_excel_file() {
 	$screen = get_current_screen();
 	if (strpos($screen->id, "asset-map") == true) {
@@ -124,7 +123,7 @@ function create_new_post($post_data, $post_type) {
 function update_city_fields($post_id, $post_data, $post_fields) {
   // update_field('name', $post_data[0], $post_id);
   // $location = ['address' => $post_data[1]];
-  // update_field('location', $location, $post_id);
+  // update_field('location', $loca`t`ion, $post_id);
   // update_field('community')
 }
 
@@ -143,22 +142,3 @@ function delete_all_posts($post_type) {
 }
 
 add_action('acf/save_post', 'parse_excel_file', 20);
-
-
-// $dataUrl = the_field('asset_map_data', 'option');
-// $filecontent = file_get_contents($dataUrl);
-// file_put_contents($tmpfname, $filecontent);
-// echo '<p>' . $dataUrl . '</p>';
-// if ( $xlsx = SimpleXLSX::parse($tmpfname) ) {
-//   echo '<h1>Tiobe Index August 2019</h1><pre>';
-//   echo '<table><tbody>';
-//   $i = 0;
-//   foreach ($xlsx->rows() as $elt) {
-//     if ($i == 0) {
-//       echo "<tr><th>" . $elt[0] . "</th><th>" . $elt[1] . "</th></tr>";
-//     } else {
-//       echo "<tr><td>" . $elt[0] . "</td><td>" . $elt[1] . "</td></tr>";
-//     }      
-//     $i++;
-//   }
-// }
