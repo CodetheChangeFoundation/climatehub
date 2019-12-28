@@ -123,7 +123,7 @@ function create_new_post($post_data, $post_type) {
 function update_city_fields($post_id, $post_data, $post_fields) {
   // update_field('name', $post_data[0], $post_id);
   // $location = ['address' => $post_data[1]];
-  // update_field('location', $loca`t`ion, $post_id);
+  // update_field('location', $location, $post_id);
   // update_field('community')
 }
 
