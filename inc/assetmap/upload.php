@@ -37,34 +37,33 @@ add_filter( 'upload_mimes', 'my_custom_mime_types' );
 function parse_excel_file() {
 	$screen = get_current_screen();
 	if (strpos($screen->id, "asset-map") == true) {
-    
-    $city_data = read_file_from_field('city_file');
-    $community_data = read_file_from_field('community_file');
-    $project_data = read_file_from_field('project_file');
-    $group_data = read_file_from_field('group_file');
-    $individual_data = read_file_from_field('individual_file');
+    // To parse additional file, add to array as array(POST_TYPE, FIELD_NAME)    
+    $files_to_parse = array(
+      array('cities','city_file'),
+      array('communities','community_file'),
+      array('projects','project_file'),
+      array('groups','group_file'),
+      array('individuals','individual_file'),
+      array('tag_a','tag_a_file'),
+      array('tag_b','tag_b_file'),
+      array('tag_c','tag_c_file'),
+    );
 
+    $all_file_data = [];
     $all_objects = [];
-    if ($city_data) {
-      delete_all_posts('cities');
-      $all_objects['cities'] = create_posts($city_data, 'cities');
-      // $all_objects['cities']['fields'] = $city_data[0];
+
+    for($i=0;  $i< count($files_to_parse); $i++) {
+      $file = $files_to_parse[$i];
+      $file_data = read_file_from_field($file[1]);
+      if($file_data) {
+        $all_file_data[] = (array($file[0], $file_data));
+      }
     }
-    if ($community_data) {
-      delete_all_posts('communities');
-      $all_objects['communities'] = create_posts($community_data, 'communities');
-    }
-    if ($project_data) {
-      delete_all_posts('projects');
-      $all_objects['projects'] = create_posts($project_data, 'projects');
-    }
-    if ($group_data) {
-      delete_all_posts('groups');
-      $all_objects['groups'] = create_posts($group_data, 'groups');
-    }
-    if ($individual_data) {
-      delete_all_posts('individuals');
-      $all_objects['individuals'] = create_posts($individual_data, 'individuals');
+
+    for($i=0; $i< count($all_file_data); $i++) {
+      $file = $all_file_data[$i];
+      delete_all_posts($file[0]);
+      $all_objects[$file[0]] = create_posts($file[1], $file[0]);
     }
 
     // Test: print all_objects to name field of sample cities post
@@ -106,7 +105,7 @@ function create_posts($post_data, $post_type) {
 
 function create_new_post($post_data, $post_type) { 
   $my_post = array(
-    'post_title'    =>  $post_data[0] . ': ' . $post_data[1],
+    'post_title'    =>  $post_data[0] . ($post_data[1]!==null? ': ' . $post_data[1] : ''),
     'post_status'   => 'publish',
     'post_author'   => 1,
     'post_type' => $post_type
