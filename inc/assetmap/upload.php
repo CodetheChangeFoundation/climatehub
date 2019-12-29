@@ -33,7 +33,7 @@ function my_custom_mime_types( $mimes ) {
 }
 
 add_filter( 'upload_mimes', 'my_custom_mime_types' );
-// 
+
 function parse_excel_file() {
 	$screen = get_current_screen();
 	if (strpos($screen->id, "asset-map") == true) {
@@ -51,7 +51,7 @@ function parse_excel_file() {
 
     $all_file_data = [];
     $all_objects = [];
-
+    // Read files
     for($i=0;  $i< count($files_to_parse); $i++) {
       $file = $files_to_parse[$i];
       $file_data = read_file_from_field($file[1]);
@@ -59,7 +59,7 @@ function parse_excel_file() {
         $all_file_data[] = (array($file[0], $file_data));
       }
     }
-
+    // Create posts
     for($i=0; $i< count($all_file_data); $i++) {
       $file = $all_file_data[$i];
       delete_all_posts($file[0]);
@@ -76,7 +76,6 @@ function parse_excel_file() {
     // $post_id = wp_insert_post( $my_post );
     // update_field('name', $all_objects, $post_id);
   }
-
 }
 
 function read_file_from_field($field_name) {
@@ -85,25 +84,29 @@ function read_file_from_field($field_name) {
     $file_url = $file['url'];
     $file_data = [];
     if (($h = fopen($file_url, 'r')) !== FALSE) {
-      while (($data = fgetcsv($h, 100, ',')) !== FALSE) {
+      while (($data = fgetcsv($h, 10000, ',')) !== FALSE) {
         $file_data[] = $data; 
       }
       fclose($h);
     }
-    return $file_data;
+    return ($file_data);
   }
 }
 
+// Creates posts for each row in post_data 
 function create_posts($post_data, $post_type) {
   $post_objs = [];
-  for ($i=1; $i < count($post_data); $i++) {
+  // First row is skipped and second row is file header
+  $file_header = $post_data[1];
+  for ($i=2; $i < count($post_data); $i++) {
     $curr_post = $post_data[$i];
-    $post_objs[$curr_post[1]] = create_new_post($curr_post, $post_type);
+    $post_objs[$curr_post[0]] = create_new_post($curr_post, $post_type, $file_header);
   }
   return $post_objs;
 }
 
-function create_new_post($post_data, $post_type) { 
+// Creates new WP post and returns object containing post_id and row data
+function create_new_post($post_data, $post_type, $file_header) { 
   $my_post = array(
     'post_title'    =>  $post_data[0] . ($post_data[1]!==null? ': ' . $post_data[1] : ''),
     'post_status'   => 'publish',
@@ -112,9 +115,14 @@ function create_new_post($post_data, $post_type) {
   );
   // Insert the post into the database
   $post_id = wp_insert_post( $my_post );
+  // Create object to cache
+  $formatted_post_data = [];
+  for($i=0 ; $i < count($file_header) ; $i++) {
+    $formatted_post_data[$file_header[$i]] = $post_data[$i];
+  };
   $post_obj = array(
     'post_id' => $post_id,
-    'data' => $post_data
+    'data' => $formatted_post_data
   );
   return $post_obj;
 }
@@ -126,6 +134,7 @@ function update_city_fields($post_id, $post_data, $post_fields) {
   // update_field('community')
 }
 
+// Delete all posts for given post type
 function delete_all_posts($post_type) {
   $query = new WP_query(array(
     'post_type' => $post_type,
