@@ -34,7 +34,6 @@ function my_custom_mime_types( $mimes ) {
 
 add_filter( 'upload_mimes', 'my_custom_mime_types' );
 
-
 function parse_excel_file() {
 	$screen = get_current_screen();
 	if (strpos($screen->id, "asset-map") == true) {
@@ -170,12 +169,13 @@ function update_fields($all_objects) {
     switch($key) {
       case 'cities': update_city_fields($post_type, $all_objects); break;
       case 'communities': update_community_fields($post_type, $all_objects); break;
-      // case 'groups': update_group_fields($post_type, $all_objects); break;
-      // case 'projects': update_project_fields($post_type, $all_objects); break;
-      // case 'individuals': update_individual_fields($post_type, $all_objects); break;
+      case 'groups': update_group_fields($post_type, $all_objects); break;
+      case 'projects': update_project_fields($post_type, $all_objects); break;
+      case 'individuals': update_individual_fields($post_type, $all_objects); break;
     }
   }
 }
+
 function update_city_fields($cities, $all_objects) {
   foreach($cities as $post) {
     $post_id = $post['post_id'];
@@ -183,8 +183,10 @@ function update_city_fields($cities, $all_objects) {
     // Update 'CITY_ID', 'NAME', 'LOCATION'
     update_field('city_id', $post_data['CITY_ID'], $post_id);
     update_field('name', $post_data['NAME'], $post_id);
-    // TODO $location = ['address' => $post_data[1]];
-    // update_field('location', $location, $post_id);
+    // TODO Location -> Location
+    $address = explode(';', $post_data['LOCATION']);
+    $location = array('address' => $address[0], 'lat' => $address[1], 'lng' => $address[2]);
+    update_field('location', $location, $post_id);
   }
 }
 
@@ -196,10 +198,11 @@ function update_community_fields($communities, $all_objects) {
     update_field('community_id', $post_data['COMMUNITY_ID'], $post_id);
     update_field('name', $post_data['NAME'], $post_id);
     update_field('code', $post_data['CODE'], $post_id);
-    // TODO Location -> Location
-    // TODO City -> Relationship
-    // update_field('name', $all_objects, $post_id);
     update_field('city', get_post_id('cities', $post_data['CITY'], $all_objects), $post_id);
+    // TODO Location -> Location
+    $address = explode(';', $post_data['LOCATION']);
+    $location = array('address' => $address[0], 'lat' => $address[1], 'lng' => $address[2]);
+    update_field('location', $location, $post_id);
   }
 }
 
@@ -213,11 +216,17 @@ function update_group_fields($groups, $all_objects) {
     update_field('name', $post_data['NAME'], $post_id);
     update_field('description', $post_data['DESCRIPTION'], $post_id);
     update_field('website', $post_data['WEBSITE'], $post_id);
-    // TODO Tag A, Tag B, Tag, C -> Relationships
-    // TODO Community -> Relationship
-    // TODO Parent_group -> Relationship
-    // TODO Projects -> Relationship
-    // TODO Individuals -> Relationship
+    // update_relationship_field('groups', 'tag_a', );
+    update_field('tag_a', get_post_id('tag_a', $post_data['TAG_A'], $all_objects), $post_id);
+    update_field('tag_b', get_post_id('tag_b', $post_data['TAG_B'], $all_objects), $post_id);
+    update_field('tag_c', get_post_id('tag_c', $post_data['TAG_C'], $all_objects), $post_id);
+    update_field('community', get_post_id('communities', $post_data['COMMUNITY'], $all_objects), 
+      $post_id);
+    update_field('parent_group', get_post_id('groups', $post_data['PARENT_GROUP'], $all_objects), 
+      $post_id);
+    update_field('projects', get_post_id('projects', $post_data['PROJECTS'], $all_objects), $post_id);
+    update_field('individuals', get_post_id('individuals', $post_data['INDIVIDUALS'], $all_objects), 
+      $post_id);
   }
 }
 
@@ -232,8 +241,11 @@ function update_project_fields($projects, $all_objects) {
     update_field('description', $post_data['DESCRIPTION'], $post_id);
     update_field('website', $post_data['WEBSITE'], $post_id);
     update_field('blog_post', $post_data['BLOG_POST'], $post_id);
-    // TODO Tag A, Tag B, Tag, C -> Relationships
-    // TODO Director -> Relationships
+    update_field('tag_a', get_post_id('tag_a', $post_data['TAG_A'], $all_objects), $post_id);
+    update_field('tag_b', get_post_id('tag_b', $post_data['TAG_B'], $all_objects), $post_id);
+    update_field('tag_c', get_post_id('tag_c', $post_data['TAG_C'], $all_objects), $post_id);
+    update_field('director', get_post_id('individuals', $post_data['DIRECTOR'], $all_objects), 
+      $post_id);
   }
 }
 
@@ -251,15 +263,23 @@ function update_individual_fields($individuals, $all_objects) {
     update_field('email', $post_data['EMAIL'], $post_id);
     update_field('phone', $post_data['PHONE'], $post_id);
     update_field('survey_info', $post_data['SURVEY_INFO'], $post_id);
-    // TODO Tag A, Tag B, Tag, C -> Relationships
+    update_field('tag_a', get_post_id('tag_a', $post_data['TAG_A'], $all_objects), $post_id);
+    update_field('tag_b', get_post_id('tag_b', $post_data['TAG_B'], $all_objects), $post_id);
+    update_field('tag_c', get_post_id('tag_c', $post_data['TAG_C'], $all_objects), $post_id);
   }
 }
 
-// INPUT: Related Object Type, Related Object ID, All Objects array
-// RETURN: Related Object Post ID
+// INPUT: Related Object Type, Related Object ID(s), All Objects array
+// RETURN: Related Object Post ID(s)
 function get_post_id($post_type, $object_id, $all_objects) {
-  $post = $all_objects[$post_type][$object_id];
-  return $post['post_id'];
+  $objects = explode(',',$object_id);
+  $return_id = [];
+  while (!empty($objects)) {
+    $object = trim(array_shift($objects));
+    $post = $all_objects[$post_type][$object];
+    $return_id[] = $post['post_id'];
+  }
+  return $return_id;
 }
 
 // Delete all posts for given post type
@@ -279,6 +299,8 @@ function delete_all_posts($post_type) {
 
 add_action('acf/save_post', 'parse_excel_file', 20);
 
-
-//IDEAS: 
-// --- Store WP Post ID after it has been looked up once
+// NOTES: 
+// --- Cache WP Post ID after it has been looked up once
+// --- Should Tags be displayed on Relationship tab on ACF FG
+// --- Tag fields will only be updated if tag name in row is identical 
+// ---    to tag name in tag import file
