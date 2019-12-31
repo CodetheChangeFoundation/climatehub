@@ -1359,7 +1359,7 @@
             {
                 "key": "field_5dc78fee481eb",
                 "label": "GROUPS",
-                "name": "group",
+                "name": "groups",
                 "type": "relationship",
                 "instructions": "",
                 "required": 0,
