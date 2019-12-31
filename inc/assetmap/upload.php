@@ -358,119 +358,22 @@ function update_relationship_fields($posts, $fields_to_update, $all_objects, $re
     $post_id = $post['post_id'];
     $post_data = $post['data'];
     foreach($fields_to_update as $field) {
-      $field_name = strtolower($field);
-      // POST_TYPE is not correct, it should be POST_TYPE of RELATED POSTS
+      $field_name = strtolower($field);   
       $related_post_type = $related_posts[$field]['post_type'];
+      $related_field_name = strtolower($related_posts[$field]['field_name']);
       $related_post_ids = get_post_id($related_post_type, $post_data[$field], $all_objects);
       update_field($field_name, $related_post_ids, $post_id);
-
+      foreach($related_post_ids as $related_post_id) {
+        $curr = [];
+        if (get_field($related_field_name, $related_post_id)) {
+          $curr = get_field($related_field_name, $related_post_id);
+        }
+        $curr[] = $post_id;
+        update_field($related_field_name, $curr, $related_post_id);
+      }
     }
   }
 }
-// function update_fields($all_objects) {
-//   foreach($all_objects as $key => $post_type) {
-//     switch($key) {
-//       case 'cities': update_city_fields($post_type, $all_objects); break;
-//       case 'communities': update_community_fields($post_type, $all_objects); break;
-//       case 'groups': update_group_fields($post_type, $all_objects); break;
-//       case 'projects': update_project_fields($post_type, $all_objects); break;
-//       case 'individuals': update_individual_fields($post_type, $all_objects); break;
-//     }
-//   }
-// }
-// 
-// function update_city_fields($cities, $all_objects) {
-//   foreach($cities as $post) {
-//     $post_id = $post['post_id'];
-//     $post_data = $post['data'];
-//     // Update 'CITY_ID', 'NAME', 'LOCATION'
-//     update_field('city_id', $post_data['CITY_ID'], $post_id);
-//     update_field('name', $post_data['NAME'], $post_id);
-//     // TODO Location -> Location
-//     $address = explode(';', $post_data['LOCATION']);
-//     $location = array('address' => $address[0], 'lat' => $address[1], 'lng' => $address[2]);
-//     update_field('location', $location, $post_id);
-//   }
-// }
-
-// function update_community_fields($communities, $all_objects) {
-//   foreach($communities as $post) {
-//     $post_id = $post['post_id'];
-//     $post_data = $post['data'];
-//     // Update 'COMMUNITY_ID', 'NAME', 'CODE', 'LOCATION', 'CITY'
-//     update_field('community_id', $post_data['COMMUNITY_ID'], $post_id);
-//     update_field('name', $post_data['NAME'], $post_id);
-//     update_field('code', $post_data['CODE'], $post_id);
-//     update_field('city', get_post_id('cities', $post_data['CITY'], $all_objects), $post_id);
-//     // TODO Location -> Location
-//     $address = explode(';', $post_data['LOCATION']);
-//     $location = array('address' => $address[0], 'lat' => $address[1], 'lng' => $address[2]);
-//     update_field('location', $location, $post_id);
-//   }
-// }
-
-// function update_group_fields($groups, $all_objects) {
-//   foreach($groups as $post) {
-//     $post_id = $post['post_id'];
-//     $post_data = $post['data'];
-//     // Update 'GROUP_ID', 'NAME', 'DESCRIPTION', 'TAG_A', 'TAG_B', 
-//     //  'TAG_C', 'WEBSITE', 'COMMUNITY', 'PARENT_GROUP', 'PROJECTS', 'INDIVIDUALS'
-//     update_field('group_id', $post_data['GROUP_ID'], $post_id);
-//     update_field('name', $post_data['NAME'], $post_id);
-//     update_field('description', $post_data['DESCRIPTION'], $post_id);
-//     update_field('website', $post_data['WEBSITE'], $post_id);
-//     // update_relationship_field('groups', 'tag_a', );
-//     update_field('tag_a', get_post_id('tag_a', $post_data['TAG_A'], $all_objects), $post_id);
-//     update_field('tag_b', get_post_id('tag_b', $post_data['TAG_B'], $all_objects), $post_id);
-//     update_field('tag_c', get_post_id('tag_c', $post_data['TAG_C'], $all_objects), $post_id);
-//     update_field('community', get_post_id('communities', $post_data['COMMUNITY'], $all_objects), 
-//       $post_id);
-//     update_field('parent_group', get_post_id('groups', $post_data['PARENT_GROUP'], $all_objects), 
-//       $post_id);
-//     update_field('projects', get_post_id('projects', $post_data['PROJECTS'], $all_objects), $post_id);
-//     update_field('individuals', get_post_id('individuals', $post_data['INDIVIDUALS'], $all_objects), 
-//       $post_id);
-//   }
-// }
-
-// function update_project_fields($projects, $all_objects) {
-//   foreach($projects as $post) {
-//     $post_id = $post['post_id'];
-//     $post_data = $post['data'];
-//     // Update 'PROJECT_ID', 'NAME', 'DESCRIPTION', 'TAG_A', 'TAG_B', 
-//     //    'TAG_C', 'WEBSITE', 'BLOG_POST', 'DIRECTOR'
-//     update_field('project_id', $post_data['PROJECT_ID'], $post_id);
-//     update_field('name', $post_data['NAME'], $post_id);
-//     update_field('description', $post_data['DESCRIPTION'], $post_id);
-//     update_field('website', $post_data['WEBSITE'], $post_id);
-//     update_field('blog_post', $post_data['BLOG_POST'], $post_id);
-//     update_field('tag_a', get_post_id('tag_a', $post_data['TAG_A'], $all_objects), $post_id);
-//     update_field('tag_b', get_post_id('tag_b', $post_data['TAG_B'], $all_objects), $post_id);
-//     update_field('tag_c', get_post_id('tag_c', $post_data['TAG_C'], $all_objects), $post_id);
-//     update_field('director', get_post_id('individuals', $post_data['DIRECTOR'], $all_objects), 
-//       $post_id);
-//   }
-// }
-
-// function update_individual_fields($individuals, $all_objects) {
-//   foreach($individuals as $post) {
-//     $post_id = $post['post_id'];
-//     $post_data = $post['data'];
-//     // Update 'INDIVIDUAL_ID', 'NAME', 'DESCRIPTION', 'TAG_A', 
-//     //    'TAG_B', 'TAG_C', 'WEBSITE', 'POSITION', 'EMAIL', 'PHONE', 'SURVEY_INFO'
-//     update_field('individual_id', $post_data['INDIVIDUAL_ID'], $post_id);
-//     update_field('name', $post_data['NAME'], $post_id);
-//     update_field('description', $post_data['DESCRIPTION'], $post_id);
-//     update_field('website', $post_data['WEBSITE'], $post_id);
-//     update_field('position', $post_data['POSITION'], $post_id);
-//     update_field('email', $post_data['EMAIL'], $post_id);
-//     update_field('phone', $post_data['PHONE'], $post_id);
-//     update_field('survey_info', $post_data['SURVEY_INFO'], $post_id);
-//     update_field('tag_a', get_post_id('tag_a', $post_data['TAG_A'], $all_objects), $post_id);
-//     update_field('tag_b', get_post_id('tag_b', $post_data['TAG_B'], $all_objects), $post_id);
-//     update_field('tag_c', get_post_id('tag_c', $post_data['TAG_C'], $all_objects), $post_id);
-//   }
-// }
 
 // INPUT: Related Object Type, Related Object ID(s), All Objects array
 // RETURN: Related Object Post ID(s)

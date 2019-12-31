@@ -14,4 +14,3 @@ require get_template_directory() . '/inc/assetmap/individual.php';
 require get_template_directory() . '/inc/assetmap/tags.php';
 
 require get_template_directory() . '/inc/assetmap/upload.php';
-require get_template_directory() . '/inc/assetmap/bidirectional.php';
