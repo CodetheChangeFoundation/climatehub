@@ -1,6 +1,5 @@
 // import * as d3 from 'd3';
 import * as React from 'react';
-// import { connect } from 'react-redux';
 import '../../assets/css/bootstrap/bootstrap-grid.min.css';
 import '../../assets/css/bootstrap/bootstrap-reboot.min.css';
 import '../../assets/css/bootstrap/bootstrap.css';
@@ -8,38 +7,39 @@ import '../../assets/css/climatehub.css';
 import SearchForm from './components/SearchForm';
 
 interface MyState {
-  columns: any,
+  cities: any,
+  communities: any,
   error: any,
-  isLoaded: boolean,
-  items: any
+  groups: any,
+  individuals: any,
+  isLoaded: boolean
+  projects: any,
 };
 
 class Assetmap extends React.Component<{}, MyState> {
+  categories: Array<string>;
+  
   constructor(props: any) {
     super(props);
+    this.categories = ["Groups", "Projects", "Individuals"];
     this.state = {
-      columns: null,
+      cities: [{"cityId": 1, "name": "Vancouver", "location": "Vancouver, BC", "communities": [1]}],
+      communities: [{"communityId": 1, "name": "University of British Columbia", "code": "UBC", "location": "2329 West Mall", "city": 1}],
       error: null,
+      groups: [],
+      individuals: [],
       isLoaded: false,
-      items: null
+      projects: [],
     };
-
-    this.changeLevel = this.changeLevel.bind(this);
   }
 
   componentDidMount() {
-    fetch("http://test.local/wp-json/wp/v2/cities")
-      .then(res => res.json())
+    fetch("https://jsonplaceholder.typicode.com/todos/1")
+      .then(response => response.json())
       .then(
         (result) => {
-          const universities:Array<any> = [];
-          result.forEach((university: { UID: any; UCode: any; Name: any; Address: any }) => {
-            universities.push([university.UID, university.UCode, university.Name])
-          });
           this.setState({
-            columns: Object.keys(result[0]).splice(0,3),
-            isLoaded: true,
-            items: universities
+            isLoaded: true
           });
         }, (error) => {
           this.setState({
@@ -50,15 +50,8 @@ class Assetmap extends React.Component<{}, MyState> {
       )
   }
 
-  changeLevel() {
-    this.setState({
-      columns: [],
-      items: []
-    });
-  }
-
   public render() {
-    const { columns, error, isLoaded, items } = this.state;
+    const { error, isLoaded } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -66,7 +59,7 @@ class Assetmap extends React.Component<{}, MyState> {
     } else {
       return (
         <div className="asset-map">
-          <SearchForm categories={["Communities", "Groups", "Individuals", "Projects"]} columns={columns} data={items} onChange={this.changeLevel}/>
+          <SearchForm categories={this.categories} />
         </div>
       );
     }

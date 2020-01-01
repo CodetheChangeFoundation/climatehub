@@ -1,63 +1,66 @@
 import * as React from 'react';
+import Select from 'react-select';
 
 interface MyProps {
-  categories: Array<string>,
-  columns: Array<string>,
-  data: Array<Array<string>>,
-  onChange: any
+  categories: Array<string>
 };
 
 interface MyState {
   filterParameter: string,
-  searchTerm: string
+  searchTerm: string,
+  selectedCommunities: any
 };
+
+export const communityOptions = [
+  { label: 'Vancouver', options: [{value: 1, label: 'UBC'}] }
+];
 
 class SearchForm extends React.Component<MyProps, MyState> {
   constructor(props: MyProps) {
     super(props);
     this.state = {
       filterParameter: props.categories[0],
-      searchTerm: ""
+      searchTerm: "",
+      selectedCommunities: null
     };
+    this.handleCommunityChange = this.handleCommunityChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
+  }
+
+  handleCommunityChange(selectedCommunities: any) {
+    this.setState(
+      { selectedCommunities },
+      () => console.log(this.state.selectedCommunities)
+    );
   }
 
   handleSearch(event: any) {
     this.setState({searchTerm: event.target.value});
   }
+
   handleFilter(event: any) {
-    this.props.onChange();
     this.setState({filterParameter: event.target.value});
   }
 
   public render() {
     const dropdown = [];
-    const tableColumns = [];
-    const tableRows = [];
-    const table = [];
 
     for (const category of this.props.categories) {
       dropdown.push(<option key={this.props.categories.indexOf(category)}>{category}</option>);
     }
 
-    for (const column of this.props.columns) {
-      tableColumns.push(<th className="border-top-0" key={this.props.columns.indexOf(column)} scope="col">{column}</th>);
-    }
-
-    for (const row of this.props.data) {
-      const cells = []
-      for (const cell of row) {
-        cells.push(<td key={row.indexOf(cell)}>{cell}</td>);
-      }
-      tableRows.push(<tr key={this.props.data.indexOf(row)}>{cells}</tr>);
-    }
-
-    table.push(<table key="0" className="mb-0 table text-center"><thead><tr>{tableColumns}</tr></thead><tbody>{tableRows}</tbody></table>);
-
     return (
       <form id="SearchForm" className="container mt-5 pt-5">
         <div className="mt-5 pt-5 row">
+          <div className="col-12 form-group">
+            <Select
+              value={this.state.selectedCommunities}
+              onChange={this.handleCommunityChange}
+              options={communityOptions}
+              isMulti={true}
+            />
+          </div>
           <div className="border border-bottom-0 border-dark col-12 col-sm-3 form-group m-0 p-0">
             <span className="align-items-center d-inline-flex h-100 pl-3 position-absolute">
               <svg fill="none" height="20" width="15" viewBox="0 0 15 20" xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +76,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
           </div>
           <div className="border border-dark col-12">
             <div className="mx-4 overflow-hidden">
-              {table}
+              {/* {table} */}
             </div>
           </div>
         </div>
