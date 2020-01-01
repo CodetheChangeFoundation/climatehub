@@ -249,18 +249,6 @@ function parse_excel_file() {
     }
     // Update posts
     update_fields($all_objects, $updated_file_headers, $related_posts);
-
-    // Test: print all_objects to name field of sample cities post
-    // ------
-    $my_post = array(
-      'post_title'    =>  'A Test Post',
-      'post_status'   => 'publish',
-      'post_author'   => 1,
-      'post_type' => 'cities'
-    );
-    $post_id = wp_insert_post( $my_post );
-    update_field('name', $all_objects, $post_id);
-    // ------
   }
 }
 
@@ -363,6 +351,7 @@ function update_relationship_fields($posts, $fields_to_update, $all_objects, $re
       $related_field_name = strtolower($related_posts[$field]['field_name']);
       $related_post_ids = get_post_id($related_post_type, $post_data[$field], $all_objects);
       update_field($field_name, $related_post_ids, $post_id);
+      // Bi-directional update
       foreach($related_post_ids as $related_post_id) {
         $curr = [];
         if (get_field($related_field_name, $related_post_id)) {
@@ -404,7 +393,3 @@ function delete_all_posts($post_type) {
 }
 
 add_action('acf/save_post', 'parse_excel_file', 20);
-
-// NOTES: 
-// --- Tag fields will only be updated if tag name in row is identical 
-// ---    to tag name in tag import file
