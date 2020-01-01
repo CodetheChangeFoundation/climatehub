@@ -33,7 +33,7 @@ function my_custom_mime_types( $mimes ) {
 }
 
 add_filter( 'upload_mimes', 'my_custom_mime_types' );
-
+$errors = [];
 function parse_excel_file() {
 	$screen = get_current_screen();
 	if (strpos($screen->id, "asset-map") == true) {
@@ -325,6 +325,10 @@ function update_basic_fields($posts, $fields_to_update) {
     $post_data = $post['data'];
     foreach($fields_to_update as $field) {
       update_field(strtolower($field), $post_data[$field], $post_id);
+    }
+    if (get_field(strtolower($field), $post_id) !== $post_data[$field]) {
+      $key = $post_data['NAME'];
+      $GLOBALS['errors'][$key] = get_field(strtolower($field), $post_id) . ' does not match ' . $post_data[$field];
     }
   }
 }
