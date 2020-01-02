@@ -1,31 +1,40 @@
 // import * as d3 from 'd3';
 import * as React from 'react';
-// import { connect } from 'react-redux';
 import '../../assets/css/bootstrap/bootstrap-grid.min.css';
 import '../../assets/css/bootstrap/bootstrap-reboot.min.css';
 import '../../assets/css/bootstrap/bootstrap.css';
 import '../../assets/css/climatehub.css';
-import SearchForm from './components/SearchForm';
+// import SearchForm from './components/SearchForm';
 
 interface MyState {
-  columns: any,
+  cities: any,
+  communities: any,
   error: any,
-  isLoaded: boolean,
-  items: any
+  groups: any,
+  individuals: any,
+  isLoaded: boolean
+  projects: any,
 };
 
 class Assetmap extends React.Component<{}, MyState> {
+  categories: Array<string>;
+  cache: {};
+  
   constructor(props: any) {
     super(props);
+    this.categories = ["Groups", "Projects", "Individuals"];
+    this.cache = {};
     this.state = {
-      columns: null,
+      cities: [],
+      communities: [],
       error: null,
+      groups: [],
+      individuals: [],
       isLoaded: false,
-      items: null
+      projects: [],
     };
-
-    this.changeLevel = this.changeLevel.bind(this);
   }
+
 
   componentDidMount() {
     fetch("http://climatehub.local/wp-json/wp/v2/cities")
@@ -33,51 +42,70 @@ class Assetmap extends React.Component<{}, MyState> {
       .then(
         (result) => {
           console.log(result);
-          // const universities:Array<any> = [];
-          // result.forEach((university: { UID: any; UCode: any; Name: any; Address: any }) => {
-          //   universities.push([university.UID, university.UCode, university.Name])
-          // });
-          // this.setState({
-          //   columns: Object.keys(result[0]).splice(0,3),
-          //   isLoaded: true,
-          //   items: universities
-          // });
-          let cities: Array<any> = [];
-          let communities: Array<any> = [];
-          result.forEach((city: {id: any; name: any; location: any; community: any;}) =>  {
-            cities.push([city.id, city.name, city.location]);
-            if (city.community !== "") {
-              city.community.forEach((comm: {ID: any; post_title: any}) => {
-                communities.push([comm.ID, comm.post_title]);
-              });
+          // const postType = 'cities';
+          result.forEach((city: {id: any; city_id: any; name: any; location: any; communities: any;}) =>  {
+            const cityObject = {
+              communities: city.communities,
+              location: city.location,
+              name: city.name,
+              post_id: city.id,
             }
+            this.cache_post('cities',city.city_id, cityObject);
+            this.setState({
+              cities: this.state.cities + city,
+            })
           });
-          console.log(cities);
-          this.setState({
-            columns: ["ID", "Name"],
-            isLoaded: true,
-            items: communities
-          });
-          cities = [];
-          communities = [];
-        }, (error) => {
-          this.setState({
-            error,
-            isLoaded: true
-          });
+          this.get_all_posts_by_type('communities', []);
+          this.get_all_posts_by_type('projects', []);
+          this.get_all_posts_by_type('individuals', []);
+
+          console.log(this.cache);
+          // this.setState({
+          //   // columns: ["ID", "City_ID", "Name", "location", "Communities"],
+          //   isLoaded: true,
+          // });
+        //   cities = [];
+        // }, (error) => {
+        //   this.setState({
+        //     error,
+        //     isLoaded: true
+        //   });
         }
       )
   }
 
-  changeLevel() {
-    this.setState({
-      columns: [],
-      items: []
-    });
+  // changeLevel() {
+  //   this.setState({
+  //     columns: [],
+  //     items: []
+  //   });
+  // }
+
+  get_all_posts_by_type(postType: string, fields: []) {
+    const requestUrl = "http://climatehub.local/wp-json/wp/v2/" + postType;
+    fetch(requestUrl)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          console.log(result);
+          // const postType = 'cities';
+          // result.forEach((postType: {name: any}) =>  {
+          //   const object = {};
+          //   this.cache_post('cities',postType.name, object);
+            // this.setState({
+            //   cities: this.state.cities + city,
+            // })
+          // })
+        })     
+  }
+
+  cache_post(postType: string, postId: any, postData: any) {
+    this.cache[postType] = {}
+    this.cache[postType][postId] = postData;
   }
 
   public render() {
-    const { columns, error, isLoaded, items } = this.state;
+    const { error, isLoaded } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -85,7 +113,7 @@ class Assetmap extends React.Component<{}, MyState> {
     } else {
       return (
         <div className="asset-map">
-          <SearchForm categories={["Communities", "Groups", "Individuals", "Projects"]} columns={columns} data={items} onChange={this.changeLevel}/>
+          {/* <SearchForm categories={["Communities", "Groups", "Individuals", "Projects"]} columns={columns} data={items} onChange={this.changeLevel}/> */}
         </div>
       );
     }
