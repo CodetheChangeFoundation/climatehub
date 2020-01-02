@@ -51,7 +51,7 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   public render() {
-    const { error, isLoaded } = this.state;
+    const { cities, communities, error, isLoaded } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -59,7 +59,14 @@ class Assetmap extends React.Component<{}, MyState> {
     } else {
       return (
         <div className="asset-map">
-          <SearchForm categories={this.categories} />
+          <SearchForm 
+            categories={this.categories}
+            cities={cities}
+            communities={communities}
+            // groups={groups}
+            // individuals={individuals}
+            // projects={projects}
+          />
         </div>
       );
     }

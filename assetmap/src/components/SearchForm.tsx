@@ -3,6 +3,8 @@ import Select from 'react-select';
 
 interface MyProps {
   categories: Array<string>
+  cities: any
+  communities: any
 };
 
 interface MyState {
@@ -11,13 +13,16 @@ interface MyState {
   selectedCommunities: any
 };
 
-export const communityOptions = [
-  { label: 'Vancouver', options: [{value: 1, label: 'UBC'}] }
-];
-
 class SearchForm extends React.Component<MyProps, MyState> {
+  communityOptions: any;
+
   constructor(props: MyProps) {
     super(props);
+
+    this.communityOptions = []
+    this.props.cities.map((city: { name: string; }) => this.communityOptions.push({label: city.name, options: []}))
+    this.props.communities.map((community: { communityId: number, name: string, city: number; }) => this.communityOptions[community.city-1].options.push({value: community.communityId, label: community.name}))
+
     this.state = {
       filterParameter: props.categories[0],
       searchTerm: "",
@@ -57,7 +62,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
             <Select
               value={this.state.selectedCommunities}
               onChange={this.handleCommunityChange}
-              options={communityOptions}
+              options={this.communityOptions}
               isMulti={true}
             />
           </div>
