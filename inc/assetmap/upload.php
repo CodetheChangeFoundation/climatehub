@@ -248,7 +248,8 @@ function parse_excel_file() {
       $all_objects[$post_type] = $posts['posts'];
     }
     // Update posts
-    update_fields($all_objects, $updated_file_headers, $related_posts);
+    $errors = update_fields($all_objects, $updated_file_headers, $related_posts);
+    $export_to_csv($errors);
   }
 }
 
@@ -326,7 +327,8 @@ function update_basic_fields($posts, $fields_to_update) {
     foreach($fields_to_update as $field) {
       update_field(strtolower($field), $post_data[$field], $post_id);
     }
-    if (get_field(strtolower($field), $post_id) !== $post_data[$field]) {
+    if (!get_field(strtolower($field), $post_id) || 
+    get_field(strtolower($field), $post_id) !== $post_data[$field]) {
       $key = $post_data['NAME'];
       $GLOBALS['errors'][$key] = get_field(strtolower($field), $post_id) . ' does not match ' . $post_data[$field];
     }
@@ -341,6 +343,7 @@ function update_location_fields($posts, $fields_to_update) {
       $address = explode(';', $post_data[$field]);
       $location = array('address' => $address[0], 'lat' => $address[1], 'lng' => $address[2]);
       update_field(strtolower($field), $location, $post_id);
+      // TODO: Validate update of fields
     }
   }
 }
@@ -355,6 +358,7 @@ function update_relationship_fields($posts, $fields_to_update, $all_objects, $re
       $related_field_name = strtolower($related_posts[$field]['field_name']);
       $related_post_ids = get_post_id($related_post_type, $post_data[$field], $all_objects);
       update_field($field_name, $related_post_ids, $post_id);
+      // TODO: Validate update of fields
       // Bi-directional update
       foreach($related_post_ids as $related_post_id) {
         $curr = [];
@@ -363,7 +367,8 @@ function update_relationship_fields($posts, $fields_to_update, $all_objects, $re
         }
         $curr[] = $post_id;
         update_field($related_field_name, $curr, $related_post_id);
-      }
+        // TODO: Validate update of fields
+    }
     }
   }
 }
@@ -394,6 +399,19 @@ function delete_all_posts($post_type) {
     $post_id = get_the_id();
     wp_delete_post($post_id);
   }
+}
+
+// TODO: Export $errors data to csv
+function export_to_csv($errors) {
+  header('Content-Type: text/csv');
+  header('Content-Dispostion:attachment; filename="errors.csv"');
+  $file = fopen("errors.csv", 'w');
+  foreach($errors as $line) {
+    fputcsv($file, $line);
+  }
+  fclose($file);
+  readfile($file);
+  exit();
 }
 
 add_action('acf/save_post', 'parse_excel_file', 20);
