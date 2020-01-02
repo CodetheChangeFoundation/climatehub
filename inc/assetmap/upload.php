@@ -33,7 +33,7 @@ function my_custom_mime_types( $mimes ) {
 }
 
 add_filter( 'upload_mimes', 'my_custom_mime_types' );
-$errors = [];
+
 function parse_excel_file() {
 	$screen = get_current_screen();
 	if (strpos($screen->id, "asset-map") == true) {
@@ -249,7 +249,7 @@ function parse_excel_file() {
     }
     // Update posts
     $errors = update_fields($all_objects, $updated_file_headers, $related_posts);
-    $export_to_csv($errors);
+    export_to_csv($errors);
   }
 }
 
@@ -312,30 +312,37 @@ function create_new_post($post_data, $post_type, $file_header) {
 }
 
 function update_fields($all_objects, $file_headers, $related_posts) {
+  $response= [];
   foreach($all_objects as $post_type => $posts) {
-    update_basic_fields($posts, $file_headers[$post_type]['basic_fields']);
-    update_location_fields($posts, $file_headers[$post_type]['location_fields']);
-    update_relationship_fields($posts, $file_headers[$post_type]['relationship_fields'], 
+    $basic = update_basic_fields($posts, $file_headers[$post_type]['basic_fields']);
+    $location = update_location_fields($posts, $file_headers[$post_type]['location_fields']);
+    $relationship = update_relationship_fields($posts, $file_headers[$post_type]['relationship_fields'], 
       $all_objects, $related_posts[$post_type]);
+    $response[$post_type] = array_merge($basic, $location, $relationship);
   }
+  return $response;
 }
 
 function update_basic_fields($posts, $fields_to_update) {
+  $response = [];
   foreach($posts as $post) {
     $post_id = $post['post_id'];
     $post_data = $post['data'];
     foreach($fields_to_update as $field) {
       update_field(strtolower($field), $post_data[$field], $post_id);
-    }
-    if (!get_field(strtolower($field), $post_id) || 
-    get_field(strtolower($field), $post_id) !== $post_data[$field]) {
-      $key = $post_data['NAME'];
-      $GLOBALS['errors'][$key] = get_field(strtolower($field), $post_id) . ' does not match ' . $post_data[$field];
+      $value = get_field(strtolower($field), $post_id);
+      if (!$value || $value !== $post_data[$field]) {
+        $key = $post_data['NAME'];
+        $response[$key][$field] = "'" . $value . 
+          "' does not match '" . $post_data[$field] . "'";
+      }
     }
   }
+  return $response;
 }
 
 function update_location_fields($posts, $fields_to_update) {
+  $response = [];
   foreach($posts as $post) {
     $post_id = $post['post_id'];
     $post_data = $post['data'];
@@ -343,12 +350,21 @@ function update_location_fields($posts, $fields_to_update) {
       $address = explode(';', $post_data[$field]);
       $location = array('address' => $address[0], 'lat' => $address[1], 'lng' => $address[2]);
       update_field(strtolower($field), $location, $post_id);
-      // TODO: Validate update of fields
+      $value = get_field(strtolower($field), $post_id);
+      if (!$value || 
+          $value['address'] != $location['address'] || 
+          $value['lat'] != $location['lat'] || 
+          $value['lng'] != $location['lng']) {
+        $key = $post_data['NAME'];
+        $response[$key][$field] = "Location does not match";
+      }
     }
   }
+  return $response;
 }
 
 function update_relationship_fields($posts, $fields_to_update, $all_objects, $related_posts) {
+  $response = [];
   foreach($posts as $post) {
     $post_id = $post['post_id'];
     $post_data = $post['data'];
@@ -358,7 +374,11 @@ function update_relationship_fields($posts, $fields_to_update, $all_objects, $re
       $related_field_name = strtolower($related_posts[$field]['field_name']);
       $related_post_ids = get_post_id($related_post_type, $post_data[$field], $all_objects);
       update_field($field_name, $related_post_ids, $post_id);
-      // TODO: Validate update of fields
+      $value = get_field(strtolower($field), $post_id);
+      if (!$value || $value != $related_post_ids) {
+        $key = $post_data['NAME'];
+        $response[$key][$field] = $field . ' does not match.';
+      }
       // Bi-directional update
       foreach($related_post_ids as $related_post_id) {
         $curr = [];
@@ -367,10 +387,16 @@ function update_relationship_fields($posts, $fields_to_update, $all_objects, $re
         }
         $curr[] = $post_id;
         update_field($related_field_name, $curr, $related_post_id);
-        // TODO: Validate update of fields
-    }
+        $value_b = get_field($related_field_name, $related_post_id);
+        if (!$value_b || $value_b != $curr) {
+          $key = $post_data['NAME'];
+          $response[$key]['RELATED POST TYPE:' . $related_post_type][$related_field_name] = 
+            $related_field_name . ' does not match.';
+        }
+      }
     }
   }
+  return $response;
 }
 
 // INPUT: Related Object Type, Related Object ID(s), All Objects array
@@ -403,15 +429,26 @@ function delete_all_posts($post_type) {
 
 // TODO: Export $errors data to csv
 function export_to_csv($errors) {
-  header('Content-Type: text/csv');
-  header('Content-Dispostion:attachment; filename="errors.csv"');
-  $file = fopen("errors.csv", 'w');
-  foreach($errors as $line) {
-    fputcsv($file, $line);
-  }
-  fclose($file);
-  readfile($file);
-  exit();
+  //TEST
+  $post = array(
+    'post_title'    =>  'Errors',
+    'post_status'   => 'publish',
+    'post_author'   => 1,
+    'post_type' => 'cities'
+  );
+  // Insert the post into the database
+  $post_id = wp_insert_post( $post );
+  update_field('name', $errors, $post_id);
+
+  // header('Content-Type: text/csv');
+  // header('Content-Dispostion:attachment; filename="errors.csv"');
+  // $file = fopen("errors.csv", 'w');
+  // foreach($errors as $line) {
+  //   fputcsv($file, $line);
+  // }
+  // fclose($file);
+  // readfile($file);
+  // exit();
 }
 
 add_action('acf/save_post', 'parse_excel_file', 20);
