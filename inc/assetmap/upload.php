@@ -453,7 +453,7 @@ function create_attachment($errors, $update_post_types) {
       require_once(ABSPATH . "wp-admin" . '/includes/file.php');
       $attachment_data = wp_generate_attachment_metadata($attachment_id, $upload_file['file']);
       wp_update_attachment_metadata($attachment_id, $attachment_data);
-      update_field('error_file', $attachment_id, 'option');
+      update_field('import_status_file', $attachment_id, 'option');
     }
   } 
 }
