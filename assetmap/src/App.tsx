@@ -16,6 +16,20 @@ interface MyState {
   projects: any,
 };
 
+const fieldTypes = {
+  'cities': ['CITY_ID', 'NAME', 'LOCATION'],
+  'communities': ['COMMUNITY_ID', 'NAME', 'CODE', 'LOCATION', 'CITY'],
+  'groups': ['GROUP_ID', 'NAME', 'DESCRIPTION', 'WEBSITE', 'TAG_A', 'TAG_B', 'TAG_C', 'COMMUNITY', 
+    'PARENT_GROUP', 'PROJECTS', 'INDIVIDUALS'],
+  'individuals': ['INDIVIDUAL_ID', 'NAME', 'DESCRIPTION', 'WEBSITE', 'POSITION', 'EMAIL', 'PHONE', 
+    'SURVEY_INFO', 'TAG_A', 'TAG_B', 'TAG_C'],
+  'projects': ['PROJECT_ID', 'NAME', 'DESCRIPTION', 'WEBSITE', 'BLOG_POST', 'PROJECT_ID', 'NAME', 
+    'DESCRIPTION', 'WEBSITE', 'BLOG_POST'],
+  'tag_a': [],
+  'tag_b': [],
+  'tag_c': []
+}
+
 class Assetmap extends React.Component<{}, MyState> {
   categories: Array<string>;
   cache: {};
@@ -55,6 +69,8 @@ class Assetmap extends React.Component<{}, MyState> {
               cities: this.state.cities + city,
             })
           });
+
+          // Test function
           this.get_all_posts_by_type('communities', []);
           this.get_all_posts_by_type('projects', []);
           this.get_all_posts_by_type('individuals', []);
@@ -102,6 +118,12 @@ class Assetmap extends React.Component<{}, MyState> {
   cache_post(postType: string, postId: any, postData: any) {
     this.cache[postType] = {}
     this.cache[postType][postId] = postData;
+  }
+
+  // Search for keyword in 'name' field of selected level
+  search_by_keyword(keyword: string, level: any) {
+    console.log(fieldTypes);
+    return '';
   }
 
   public render() {
