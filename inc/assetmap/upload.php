@@ -231,6 +231,7 @@ function parse_excel_file() {
     $all_objects = [];
     $updated_file_data = [];
     $updated_file_headers = [];
+    $updated_post_types = [];
     // Read files
     foreach($field_types as $key => $field_type) {
       $file_data = read_file_from_field($field_type['file_field_name']);
@@ -241,6 +242,7 @@ function parse_excel_file() {
     // Create posts
     for($i=0; $i<count($updated_file_data); $i++) {
       $post_type = $updated_file_data[$i][0];
+      $update_post_types[] = $post_type;
       $file_data = $updated_file_data[$i][1];
       delete_all_posts($post_type);
       $posts = create_posts($file_data, $post_type, $field_types);
@@ -249,7 +251,7 @@ function parse_excel_file() {
     }
     // Update posts
     $errors = update_fields($all_objects, $updated_file_headers, $related_posts);
-    export_to_csv($errors);
+    create_attachment($errors, $update_post_types);
   }
 }
 
@@ -427,28 +429,33 @@ function delete_all_posts($post_type) {
   }
 }
 
-// TODO: Export $errors data to csv
-function export_to_csv($errors) {
-  //TEST
-  $post = array(
-    'post_title'    =>  'Errors',
-    'post_status'   => 'publish',
-    'post_author'   => 1,
-    'post_type' => 'cities'
-  );
-  // Insert the post into the database
-  $post_id = wp_insert_post( $post );
-  update_field('name', $errors, $post_id);
-
-  // header('Content-Type: text/csv');
-  // header('Content-Dispostion:attachment; filename="errors.csv"');
-  // $file = fopen("errors.csv", 'w');
-  // foreach($errors as $line) {
-  //   fputcsv($file, $line);
-  // }
-  // fclose($file);
-  // readfile($file);
-  // exit();
+function create_attachment($errors, $update_post_types) {
+  $filetitle = 'Import_Status_D_' . date('Y-m-d') . '_T_' . date('h-i-a') . '.csv';
+  $update_post_types = [];
+  $
+  $file = fopen($filetitle, 'w');
+  // TODO: Write Import Status and Errors to CSV File
+  $filename = basename($filetitle);
+  $upload_file = wp_upload_bits($filename, null, file_get_contents($filetitle));
+  if( !$upload_file['error']) {
+    $wp_filetype = wp_check_filetype($filename, null);
+    $attachment = array(
+      'post_mime_type' => $wp_filetype['type'],
+      'post_title' => 'Error File',
+      'post_content' => '',
+      'post_status' => 'inherit'
+    );
+    if(get_field('error_file', 'option')) {
+      wp_delete_attachment(get_field('error_file', 'option'));
+    };
+    $attachment_id = wp_insert_attachment($attachment, $upload_file['file']);
+    if(!is_wp_error($attachment_id)) {
+      require_once(ABSPATH . "wp-admin" . '/includes/file.php');
+      $attachment_data = wp_generate_attachment_metadata($attachment_id, $upload_file['file']);
+      wp_update_attachment_metadata($attachment_id, $attachment_data);
+      update_field('error_file', $attachment_id, 'option');
+    }
+  } 
 }
 
 add_action('acf/save_post', 'parse_excel_file', 20);
