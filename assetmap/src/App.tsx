@@ -17,14 +17,14 @@ interface MyState {
 };
 
 const fieldTypes = {
-  'cities': ['CITY_ID', 'NAME', 'LOCATION'],
-  'communities': ['COMMUNITY_ID', 'NAME', 'CODE', 'LOCATION', 'CITY'],
-  'groups': ['GROUP_ID', 'NAME', 'DESCRIPTION', 'WEBSITE', 'TAG_A', 'TAG_B', 'TAG_C', 'COMMUNITY', 
-    'PARENT_GROUP', 'PROJECTS', 'INDIVIDUALS'],
-  'individuals': ['INDIVIDUAL_ID', 'NAME', 'DESCRIPTION', 'WEBSITE', 'POSITION', 'EMAIL', 'PHONE', 
-    'SURVEY_INFO', 'TAG_A', 'TAG_B', 'TAG_C'],
-  'projects': ['PROJECT_ID', 'NAME', 'DESCRIPTION', 'WEBSITE', 'BLOG_POST', 'PROJECT_ID', 'NAME', 
-    'DESCRIPTION', 'WEBSITE', 'BLOG_POST'],
+  'cities': ['city_id', 'name', 'location'],
+  'communities': ['community_id', 'name', 'code', 'location', 'city'],
+  'groups': ['group_id', 'name', 'description', 'website', 'tag_a', 'tag_b', 'tag_c', 'community', 
+    'parent_group', 'projects', 'individuals'],
+  'individuals': ['individual_id', 'name', 'description', 'website', 'position', 'email', 'phone', 
+    'survey_info', 'tag_a', 'tag_b', 'tag_c'],
+  'projects': ['project_id', 'name', 'description', 'website', 'blog_post', 'project_id', 'name', 
+    'description', 'website', 'blog_post'],
   'tag_a': [],
   'tag_b': [],
   'tag_c': []
@@ -57,13 +57,9 @@ class Assetmap extends React.Component<{}, MyState> {
         (result) => {
           console.log(result);
           // const postType = 'cities';
-          result.forEach((city: {id: any; city_id: any; name: any; location: any; communities: any;}) =>  {
-            const cityObject = {
-              communities: city.communities,
-              location: city.location,
-              name: city.name,
-              post_id: city.id,
-            }
+          result.forEach((city: any) =>  {
+            const cityObject = {};
+            
             this.cache_post('cities',city.city_id, cityObject);
             this.setState({
               cities: this.state.cities + city,
@@ -71,9 +67,9 @@ class Assetmap extends React.Component<{}, MyState> {
           });
 
           // Test function
-          this.get_all_posts_by_type('communities', []);
-          this.get_all_posts_by_type('projects', []);
-          this.get_all_posts_by_type('individuals', []);
+          this.get_all_posts_by_type('communities');
+          this.get_all_posts_by_type('projects');
+          this.get_all_posts_by_type('individuals');
 
           console.log(this.cache);
           // this.setState({
@@ -97,7 +93,7 @@ class Assetmap extends React.Component<{}, MyState> {
   //   });
   // }
 
-  get_all_posts_by_type(postType: string, fields: []) {
+  get_all_posts_by_type(postType: string) {
     const requestUrl = "http://climatehub.local/wp-json/wp/v2/" + postType;
     fetch(requestUrl)
       .then(res => res.json())
