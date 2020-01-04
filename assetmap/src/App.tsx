@@ -17,17 +17,17 @@ interface MyState {
 };
 
 const fieldTypes = {
-  'cities': ['city_id', 'name', 'location'],
-  'communities': ['community_id', 'name', 'code', 'location', 'city'],
+  'cities': ['city_id', 'name', 'location', 'communities'],
+  'communities': ['community_id', 'name', 'code', 'location', 'city', 'groups'],
   'groups': ['group_id', 'name', 'description', 'website', 'tag_a', 'tag_b', 'tag_c', 'community', 
-    'parent_group', 'projects', 'individuals'],
+    'parent_group', 'child_groups', 'projects', 'individuals'],
   'individuals': ['individual_id', 'name', 'description', 'website', 'position', 'email', 'phone', 
-    'survey_info', 'tag_a', 'tag_b', 'tag_c'],
-  'projects': ['project_id', 'name', 'description', 'website', 'blog_post', 'project_id', 'name', 
-    'description', 'website', 'blog_post'],
-  'tag_a': [],
-  'tag_b': [],
-  'tag_c': []
+    'survey_info', 'tag_a', 'tag_b', 'tag_c', 'projects', 'groups'],
+  'projects': ['project_id', 'name', 'description', 'website', 'blog_post', 'tag_a', 'tag_b', 
+    'tag_c', 'groups', 'director'],
+  'tag_a': ['groups', 'projects', 'individuals'],
+  'tag_b': ['groups', 'projects', 'individuals'],
+  'tag_c': ['groups', 'projects', 'individuals']
 }
 
 class Assetmap extends React.Component<{}, MyState> {
@@ -52,39 +52,13 @@ class Assetmap extends React.Component<{}, MyState> {
 
 
   componentDidMount() {
-    fetch("http://climatehub.local/wp-json/wp/v2/cities")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          console.log(result);
-          // const postType = 'cities';
-          result.forEach((city: any) =>  {
-            const cityObject = {};
-            
-            this.cache_post('cities',city.city_id, cityObject);
-            this.setState({
-              cities: this.state.cities + city,
-            })
-          });
-
-          // Test function
-          this.get_all_posts_by_type('communities');
-          this.get_all_posts_by_type('projects');
-          this.get_all_posts_by_type('individuals');
-
-          console.log(this.cache);
-          // this.setState({
-          //   // columns: ["ID", "City_ID", "Name", "location", "Communities"],
-          //   isLoaded: true,
-          // });
-        //   cities = [];
-        // }, (error) => {
-        //   this.setState({
-        //     error,
-        //     isLoaded: true
-        //   });
-        }
-      )
+    this.get_all_posts_by_type('cities');
+    this.get_all_posts_by_type('communities');
+    this.get_all_posts_by_type('projects');
+    this.get_all_posts_by_type('individuals');
+    this.setState({
+      isLoaded: true,
+    })
   }
 
   // changeLevel() {
@@ -94,26 +68,36 @@ class Assetmap extends React.Component<{}, MyState> {
   //   });
   // }
 
-  get_all_posts_by_type(postType: string) {
+  get_all_posts_by_type(postType: string, filter: Array<any> = []) {
     const requestUrl = "http://climatehub.local/wp-json/wp/v2/" + postType;
     fetch(requestUrl)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          console.log(result);
-          // const postType = 'cities';
-          // result.forEach((postType: {name: any}) =>  {
-          //   const object = {};
-          //   this.cache_post('cities',postType.name, object);
-            // this.setState({
-            //   cities: this.state.cities + city,
-            // })
-          // })
-        })     
+    .then(res => res.json())
+    .then(
+      (result) => {
+        if (filter !== []) {
+          // Filter results 
+        }
+        result.forEach((post: any) =>  {
+          const postObject = {
+            id: post.id,
+          };
+          fieldTypes[postType].forEach((field: string) => {
+            postObject[field] = post[field];
+          })
+          this.cache_post(postType, post.id, postObject);
+          const updatedPosts = {};
+          updatedPosts[postType] = this.state[postType].concat(postObject);
+          this.setState(updatedPosts);
+        }
+      );
+      console.log(this.state[postType]);
+    })     
   }
 
   cache_post(postType: string, postId: any, postData: any) {
-    this.cache[postType] = {}
+    if (!this.cache[postType]) {
+      this.cache[postType] = {};
+    }
     this.cache[postType][postId] = postData;
   }
 
