@@ -11,10 +11,12 @@ interface MyProps {
   getPostsFromCache: any
   cache: any
   getPostbyId: any
+  filterPosts: any
+  individuals: any
+  projects: any
 };
 
 interface MyState {
-  filterParameter: string,
   postType: string,
   searchTerm: string,
   selectedCommunities: any,
@@ -31,13 +33,12 @@ class SearchForm extends React.Component<MyProps, MyState> {
       this.props.cities.map((city: { id: number; name: string; }) => this.communityOptions[city.id] = ({label: city.name, options: []}));
     }
     if (this.props.communities !== []) {
-      this.props.communities.map((community: { id: number, name: string, city: number; }) => this.communityOptions[community.city[0]].options.push({value: community.id, label: community.name}))
+      this.props.communities.map((community: { id: number, name: string, city: number; }) => this.communityOptions[community.city[0]].options.push({id: community.id, value: community.id, label: community.name}))
 
     }
     
     this.state = {
-      filterParameter: props.categories[0],
-      postType: "groups",
+      postType: props.categories[0],
       searchTerm: "",
       selectedCommunities: null
     };
@@ -50,10 +51,9 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.setState(
       { selectedCommunities },
       () => {
-        console.log(this.state.selectedCommunities);
-        this.props.filterPostsByCommunity(this.state.postType, selectedCommunities)
+        this.props.filterPostsByCommunity(this.state.postType.toLowerCase(), selectedCommunities)
         .then(() => {
-          console.log(this.props.groups);
+          console.log(this.props[this.state.postType.toLowerCase()]);
         })
       }
     );
@@ -64,7 +64,20 @@ class SearchForm extends React.Component<MyProps, MyState> {
   }
 
   handleFilter(event: any) {
-    this.setState({filterParameter: event.target.value});
+    this.setState({
+      postType: event.target.value
+    }, 
+      () => {
+      const postType = this.state.postType.toLowerCase();
+      console.log(postType);
+      this.props.getAllPostsByType(postType)
+      .then(() => {
+        this.props.filterPostsByCommunity(postType, this.state.selectedCommunities)
+        .then(() => {
+          console.log(this.props[postType]);
+        });
+      })
+    });
   }
   // Search for keyword in 'name' field of selected level
   searchByKeyword(keyword: string, level: any) {
@@ -95,7 +108,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 <path clipRule="evenodd" fill="#888888" fillRule="evenodd" d="M11.1189 6.55945C11.1189 9.07756 9.07756 11.1189 6.55945 11.1189C4.04133 11.1189 2 9.07756 2 6.55945C2 4.04133 4.04133 2 6.55945 2C9.07756 2 11.1189 4.04133 11.1189 6.55945ZM8.62627 12.7866C7.97647 13.0022 7.28159 13.1189 6.55945 13.1189C2.93676 13.1189 0 10.1821 0 6.55945C0 2.93676 2.93676 0 6.55945 0C10.1821 0 13.1189 2.93676 13.1189 6.55945C13.1189 8.74448 12.0505 10.68 10.4076 11.8721L14.523 19L12.7909 20L8.62627 12.7866Z"/>
               </svg>
             </span>
-            <select className="bg-light border-0 custom-select my-2 pl-5 py-1 shadow-none" onChange={this.handleFilter} value={this.state.filterParameter}>
+            <select className="bg-light border-0 custom-select my-2 pl-5 py-1 shadow-none" onChange={this.handleFilter} value={this.state.postType}>
               {dropdown}
             </select>
           </div>

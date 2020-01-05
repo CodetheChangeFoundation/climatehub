@@ -57,6 +57,7 @@ class Assetmap extends React.Component<{}, MyState> {
     this.getPostsFromCache = this.getPostsFromCache.bind(this);
     this.filterPostsByCommunity = this.filterPostsByCommunity.bind(this);
     this.getPostbyId = this.getPostbyId.bind(this);
+    this.filterPosts = this.filterPosts.bind(this);
   }
 
 
@@ -64,12 +65,10 @@ class Assetmap extends React.Component<{}, MyState> {
     this.getAllPostsByType('cities')
     .then(() => 
       this.getAllPostsByType('communities')
-    ).then(() =>
-    this.getAllPostsByType('groups')
+    ).then(() => 
+      this.getAllPostsByType('groups')
     ).then(() => {
       this.setLoadedState();
-      console.log("Results:");
-      console.log(this.state.groups);
     })
   }
 
@@ -82,6 +81,7 @@ class Assetmap extends React.Component<{}, MyState> {
 
   getAllPostsByType(postType: string): Promise<any> {
     return new Promise((resolve) => {
+      console.log("Querying WP for : " + postType);
       const requestUrl = "http://climatehub.local/wp-json/wp/v2/" + postType;
       fetch(requestUrl)
       .then(res => res.json())
@@ -104,65 +104,61 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   filterPostsByCommunity(postType: string, selectedCommunities: Array<number>): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.filterPosts('groups', selectedCommunities, 'communities', 'groups')
+      .then(() => {
+        if (postType === 'groups') {
+          console.log("Filtered Groups by Community");
+          resolve();
+        } else if (postType === 'individuals') {
+          // this.state.groups is an object, not an array
+          this.filterPosts(postType, this.state.groups, 'groups', 'individuals')
+          .then(() => {
+            console.log("Filtered individuals by Community");
+            resolve();
+          })
+        } else if (postType === 'projects') {
+          console.log(this.state.groups);
+          this.filterPosts(postType, this.state.groups, 'groups', 'projects')
+          .then(() => {
+            console.log("Filtered projects by Community");
+            resolve();
+          })
+        } else {
+          reject();
+        }
+      })
+      .catch(() => {
+        console.log("Invalid post type");
+      })
+    })
+  }
+
+  filterPosts(filterPostType: string, selectedPosts: Array<any>, relatedPostType: string, relatedFieldName: string) {
     return new Promise((resolve) => {
-      this.getPostsFromCache(postType).then(() => {
-        const allPosts = this.cache[postType];
+      this.getPostsFromCache(filterPostType)
+      .then(() => {
+        const allPosts = this.cache[filterPostType];
         const filteredPosts = new Set; 
-        if (selectedCommunities === [] || selectedCommunities === null) {
+        if (selectedPosts === [] || selectedPosts === null) {
+          this.updatePostTypeState(filterPostType, allPosts);
           resolve();
         } else {
-          selectedCommunities.forEach((community: any) => {
-            // TODO change community.value to community.id
-            const communityPost = this.getPostbyId('communities', community.value);
-            const communityGroups = communityPost.groups;
-            if (communityGroups) {
-              communityGroups.forEach((group: number) => {
-                console.log(group);
-                filteredPosts.add(allPosts[group]);
+          selectedPosts.forEach((post: any) => {
+            const postObject = this.getPostbyId(relatedPostType, post.id);
+            const relatedPostIds = postObject[relatedFieldName];
+            if (relatedPostIds) {
+              relatedPostIds.forEach((relatedPostId: number) => {
+                filteredPosts.add(allPosts[relatedPostId]);
               });
             }
           });
-          if (postType === 'groups') {
-            this.setState({
-              groups: Array.from(filteredPosts),
-            })
-            resolve();
-          } else {
-            // get Individuals by Group OR
-            // console.log(this.filterPostsbyGroup('individuals', Array.from(filteredPosts)));
-            // get Projects by Group
-            resolve();
-          }
+          this.updatePostTypeState(filterPostType, Array.from(filteredPosts));
+          resolve();
         }
-      });
+      })
     });
   }
-
-
-  // filterPosts(postType: string, selectedPosts: Array<any>) {
-  //   return new Promise((resolve) => {
-  //     this.getPostsFromCache(postType).then(() => {
-  //       const allPosts = this.cache[postType];
-  //       const filteredPosts = new Set; 
-  //       if (selectedPosts === [] || selectedPosts === null) {
-  //         resolve();
-  //       } else {
-  //         selectedPosts.forEach((post: any) => {
-  //           const postObject = this.getPostbyId(postType, post.id);
-  //           const relatedPostIds = postObject.individuals;
-  //           if (relatedPostIds) {
-  //             relatedPostIds.forEach((relatedPostId: number) => {
-  //               console.log(post);
-  //               filteredPosts.add(allPosts[relatedPostId]);
-  //             });
-  //           }
-  //         });
-  //         this.updatePostTypeState(postType, Array.from(filteredPosts));
-  //         resolve();
-  //       }
-  //     })
-  //   });
-  // }
 
 
   getPostbyId (postType: string, ID: number) {
@@ -177,15 +173,15 @@ class Assetmap extends React.Component<{}, MyState> {
     } else {
       this.getAllPostsByType(postType)
       .then(() => {
-        this.getPostbyId(postType, ID);
-      })
+        this.getPostbyId(postType, ID)
+      });
     }
   }
 
   getPostsFromCache(postType: string): Promise<any> {
     return new Promise((resolve) => {
       if (!this.cache[postType]) {
-        this.getAllPostsByType(postType).then(resolve);
+        this.getAllPostsByType(postType).then(() => resolve());
       } else {
         resolve();
       }
@@ -226,13 +222,14 @@ class Assetmap extends React.Component<{}, MyState> {
             cities={cities}
             communities={communities}
             groups={groups}
+            individuals={this.state.individuals}
+            projects={this.state.projects}
             cache={this.cache}
             getAllPostsByType={this.getAllPostsByType}
             filterPostsByCommunity={this.filterPostsByCommunity}
             getPostsFromCache={this.getPostsFromCache}
             getPostbyId = {this.getPostbyId}
-            // individuals={individuals}
-            // projects={projects}
+            filterPosts = {this.filterPosts}
           />
         </div>
       );
