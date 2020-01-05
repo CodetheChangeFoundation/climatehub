@@ -30,11 +30,10 @@ class SearchForm extends React.Component<MyProps, MyState> {
 
     this.communityOptions = []
     if (this.props.cities !== []) { 
-      this.props.cities.map((city: { id: number; name: string; }) => this.communityOptions[city.id] = ({label: city.name, options: []}));
+      Object.values(this.props.cities).map((city: { id: number; name: string; }) => this.communityOptions[city.id] = ({label: city.name, options: []}));
     }
     if (this.props.communities !== []) {
-      this.props.communities.map((community: { id: number, name: string, city: number; }) => this.communityOptions[community.city[0]].options.push({id: community.id, value: community.id, label: community.name}))
-
+      Object.values(this.props.communities).map((community: { id: number, name: string, city: number; }) => this.communityOptions[community.city[0]].options.push({id: community.id, value: community.id, label: community.name}));
     }
     
     this.state = {
@@ -51,10 +50,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.setState(
       { selectedCommunities },
       () => {
-        this.props.filterPostsByCommunity(this.state.postType.toLowerCase(), selectedCommunities)
-        .then(() => {
-          console.log(this.props[this.state.postType.toLowerCase()]);
-        })
+        this.getPostsbyCommunity(selectedCommunities);
       }
     );
   }
@@ -69,16 +65,27 @@ class SearchForm extends React.Component<MyProps, MyState> {
     }, 
       () => {
       const postType = this.state.postType.toLowerCase();
-      console.log(postType);
       this.props.getAllPostsByType(postType)
       .then(() => {
-        this.props.filterPostsByCommunity(postType, this.state.selectedCommunities)
-        .then(() => {
-          console.log(this.props[postType]);
-        });
+        this.getPostsbyCommunity(this.state.selectedCommunities);
       })
     });
   }
+
+  getPostsbyCommunity(selectedPosts: any) {
+    let selection: any;
+    if (selectedPosts !== null) {
+      selection = {};
+      selectedPosts.forEach((post: any) => {
+        selection[post.id] = post;
+      });
+    } else {
+      selection = null;
+    }
+    console.log(selection);
+    this.props.filterPostsByCommunity(this.state.postType.toLowerCase(), selection)
+  }
+
   // Search for keyword in 'name' field of selected level
   searchByKeyword(keyword: string, level: any) {
     return '';

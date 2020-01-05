@@ -94,7 +94,7 @@ class Assetmap extends React.Component<{}, MyState> {
           fieldTypes[postType].forEach((field: string) => {
             postObject[field] = post[field];
           });
-          updatedPosts.push(postObject);
+          updatedPosts[postObject.id] = (postObject);
           this.cachePost(postType, post.id, postObject);
         });
         this.updatePostTypeState(postType, updatedPosts);
@@ -111,14 +111,13 @@ class Assetmap extends React.Component<{}, MyState> {
           console.log("Filtered Groups by Community");
           resolve();
         } else if (postType === 'individuals') {
-          // this.state.groups is an object, not an array
+          // this.state.groups is an object, not an array 
           this.filterPosts(postType, this.state.groups, 'groups', 'individuals')
           .then(() => {
             console.log("Filtered individuals by Community");
             resolve();
           })
         } else if (postType === 'projects') {
-          console.log(this.state.groups);
           this.filterPosts(postType, this.state.groups, 'groups', 'projects')
           .then(() => {
             console.log("Filtered projects by Community");
@@ -140,12 +139,18 @@ class Assetmap extends React.Component<{}, MyState> {
       .then(() => {
         const allPosts = this.cache[filterPostType];
         const filteredPosts = new Set; 
+        const updatedPosts = new Array;
         if (selectedPosts === [] || selectedPosts === null) {
-          this.updatePostTypeState(filterPostType, allPosts);
+          console.log("Posts from cache");
+          console.log(updatedPosts);
+          Object.keys(allPosts).forEach((postId: any) => {
+            updatedPosts[postId] = allPosts[postId];
+          });
+          this.updatePostTypeState(filterPostType, updatedPosts);
           resolve();
         } else {
-          selectedPosts.forEach((post: any) => {
-            const postObject = this.getPostbyId(relatedPostType, post.id);
+          Object.keys(selectedPosts).forEach((post: any) => {
+            const postObject = this.getPostbyId(relatedPostType, post);
             const relatedPostIds = postObject[relatedFieldName];
             if (relatedPostIds) {
               relatedPostIds.forEach((relatedPostId: number) => {
@@ -153,7 +158,12 @@ class Assetmap extends React.Component<{}, MyState> {
               });
             }
           });
-          this.updatePostTypeState(filterPostType, Array.from(filteredPosts));
+          Array.from(filteredPosts).forEach((post: any) => {
+            updatedPosts[post.id] = post;
+          });
+          console.log("Posts to state");
+          console.log(updatedPosts);
+          this.updatePostTypeState(filterPostType, updatedPosts);
           resolve();
         }
       })
@@ -190,8 +200,12 @@ class Assetmap extends React.Component<{}, MyState> {
 
   updatePostTypeState (postType: string, posts: Array<any>) {
     const updatedState = {};
-    updatedState[postType] = posts;
+    updatedState[postType] = {};
+    posts.forEach((post: any) => {
+      updatedState[postType][post.id] = post;
+    })
     this.setState(updatedState);
+    console.log("Updated State");
     console.log(this.state[postType]);
   }
 
