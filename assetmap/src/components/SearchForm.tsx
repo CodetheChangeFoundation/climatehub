@@ -5,12 +5,19 @@ interface MyProps {
   categories: Array<string>
   cities: any
   communities: any
+  groups: any
+  getAllPostsByType: any
+  filterPostsByCommunity: any
+  getPostsFromCache: any
+  cache: any
+  getPostbyId: any
 };
 
 interface MyState {
   filterParameter: string,
+  postType: string,
   searchTerm: string,
-  selectedCommunities: any
+  selectedCommunities: any,
 };
 
 class SearchForm extends React.Component<MyProps, MyState> {
@@ -20,11 +27,17 @@ class SearchForm extends React.Component<MyProps, MyState> {
     super(props);
 
     this.communityOptions = []
-    this.props.cities.map((city: { id: number; name: string; }) => this.communityOptions[city.id] = ({label: city.name, options: []}));
-    this.props.communities.map((community: { community_id: number, name: string, city: number; }) => this.communityOptions[community.city[0]].options.push({value: community.community_id, label: community.name}))
+    if (this.props.cities !== []) { 
+      this.props.cities.map((city: { id: number; name: string; }) => this.communityOptions[city.id] = ({label: city.name, options: []}));
+    }
+    if (this.props.communities !== []) {
+      this.props.communities.map((community: { id: number, name: string, city: number; }) => this.communityOptions[community.city[0]].options.push({value: community.id, label: community.name}))
 
+    }
+    
     this.state = {
       filterParameter: props.categories[0],
+      postType: "groups",
       searchTerm: "",
       selectedCommunities: null
     };
@@ -36,7 +49,13 @@ class SearchForm extends React.Component<MyProps, MyState> {
   handleCommunityChange(selectedCommunities: any) {
     this.setState(
       { selectedCommunities },
-      () => console.log(this.state.selectedCommunities)
+      () => {
+        console.log(this.state.selectedCommunities);
+        this.props.filterPostsByCommunity(this.state.postType, selectedCommunities)
+        .then(() => {
+          console.log(this.props.groups);
+        })
+      }
     );
   }
 

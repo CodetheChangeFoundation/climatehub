@@ -13,7 +13,9 @@ interface MyState {
   groups: any,
   individuals: any,
   isLoaded: boolean
+  postType: any,
   projects: any,
+  selectedCommunities: Array<any>,
 };
 
 const fieldTypes = {
@@ -40,26 +42,35 @@ class Assetmap extends React.Component<{}, MyState> {
     this.cache = {};
     
     this.state = {
-      cities: [{"cityId": 1, "name": "Vancouver", "location": "Vancouver, BC", "communities": [1]}],
-      communities: [{"communityId": 1, "name": "University of British Columbia", "code": "UBC", "location": "2329 West Mall", "city": 1}],
+      cities: [],
+      communities: [],
       error: null,
       groups: [],
       individuals: [],
       isLoaded: false,
+      postType: 'groups',
       projects: [],
+      selectedCommunities: [],
     };
+    
+    this.getAllPostsByType = this.getAllPostsByType.bind(this);
+    this.getPostsFromCache = this.getPostsFromCache.bind(this);
+    this.filterPostsByCommunity = this.filterPostsByCommunity.bind(this);
+    this.getPostbyId = this.getPostbyId.bind(this);
   }
 
 
   componentDidMount() {
-    this.get_all_posts_by_type('cities');
-    this.get_all_posts_by_type('communities');
-    this.get_all_posts_by_type('groups');    
-    this.get_all_posts_by_type('projects');
-    this.get_all_posts_by_type('individuals');
-    // this.setState({
-    //   isLoaded: true,
-    // })
+    this.getAllPostsByType('cities')
+    .then(() => 
+      this.getAllPostsByType('communities')
+    ).then(() =>
+    this.getAllPostsByType('groups')
+    ).then(() => {
+      this.setLoadedState();
+      console.log("Results:");
+      console.log(this.state.groups);
+    })
   }
 
   // changeLevel() {
@@ -69,50 +80,140 @@ class Assetmap extends React.Component<{}, MyState> {
   //   });
   // }
 
-  get_all_posts_by_type(postType: string, filter: Array<any> = []) {
-    const requestUrl = "http://climatehub.local/wp-json/wp/v2/" + postType;
-    fetch(requestUrl)
-    .then(res => res.json())
-    .then((result) => {
-      if (filter !== []) {
-        // Filter results 
-      };
-      const updatedPosts = new Array;
-      result.forEach((post: any) =>  {
-        const postObject = {
-          id: post.id,
-        };
-        fieldTypes[postType].forEach((field: string) => {
-          postObject[field] = post[field];
+  getAllPostsByType(postType: string): Promise<any> {
+    return new Promise((resolve) => {
+      const requestUrl = "http://climatehub.local/wp-json/wp/v2/" + postType;
+      fetch(requestUrl)
+      .then(res => res.json())
+      .then((result) => {
+        const updatedPosts = new Array;
+        result.forEach((post: any) =>  {
+          const postObject = {
+            id: post.id,
+          };
+          fieldTypes[postType].forEach((field: string) => {
+            postObject[field] = post[field];
+          });
+          updatedPosts.push(postObject);
+          this.cachePost(postType, post.id, postObject);
         });
-        updatedPosts.push(postObject);
-        this.cache_post(postType, post.id, postObject);
-      });
-      this.updatePostTypeState(postType, updatedPosts);
-      if (postType === 'individuals') {
-        this.setState({
-          isLoaded: true,
-        });
-      };
-    });     
+        this.updatePostTypeState(postType, updatedPosts);
+        resolve();
+      });  
+    }) 
   }
 
-  updatePostTypeState (postType: string, posts: Array<object>) {
+  filterPostsByCommunity(postType: string, selectedCommunities: Array<number>): Promise<any> {
+    return new Promise((resolve) => {
+      this.getPostsFromCache(postType).then(() => {
+        const allPosts = this.cache[postType];
+        const filteredPosts = new Set; 
+        if (selectedCommunities === [] || selectedCommunities === null) {
+          resolve();
+        } else {
+          selectedCommunities.forEach((community: any) => {
+            // TODO change community.value to community.id
+            const communityPost = this.getPostbyId('communities', community.value);
+            const communityGroups = communityPost.groups;
+            if (communityGroups) {
+              communityGroups.forEach((group: number) => {
+                console.log(group);
+                filteredPosts.add(allPosts[group]);
+              });
+            }
+          });
+          if (postType === 'groups') {
+            this.setState({
+              groups: Array.from(filteredPosts),
+            })
+            resolve();
+          } else {
+            // get Individuals by Group OR
+            // console.log(this.filterPostsbyGroup('individuals', Array.from(filteredPosts)));
+            // get Projects by Group
+            resolve();
+          }
+        }
+      });
+    });
+  }
+
+
+  // filterPosts(postType: string, selectedPosts: Array<any>) {
+  //   return new Promise((resolve) => {
+  //     this.getPostsFromCache(postType).then(() => {
+  //       const allPosts = this.cache[postType];
+  //       const filteredPosts = new Set; 
+  //       if (selectedPosts === [] || selectedPosts === null) {
+  //         resolve();
+  //       } else {
+  //         selectedPosts.forEach((post: any) => {
+  //           const postObject = this.getPostbyId(postType, post.id);
+  //           const relatedPostIds = postObject.individuals;
+  //           if (relatedPostIds) {
+  //             relatedPostIds.forEach((relatedPostId: number) => {
+  //               console.log(post);
+  //               filteredPosts.add(allPosts[relatedPostId]);
+  //             });
+  //           }
+  //         });
+  //         this.updatePostTypeState(postType, Array.from(filteredPosts));
+  //         resolve();
+  //       }
+  //     })
+  //   });
+  // }
+
+
+  getPostbyId (postType: string, ID: number) {
+    if (this.cache[postType]) {
+      const post = this.cache[postType][ID];
+      if (post) {
+        return post;
+      }
+      else {
+        console.log("Post does not exist");
+      }
+    } else {
+      this.getAllPostsByType(postType)
+      .then(() => {
+        this.getPostbyId(postType, ID);
+      })
+    }
+  }
+
+  getPostsFromCache(postType: string): Promise<any> {
+    return new Promise((resolve) => {
+      if (!this.cache[postType]) {
+        this.getAllPostsByType(postType).then(resolve);
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  updatePostTypeState (postType: string, posts: Array<any>) {
     const updatedState = {};
     updatedState[postType] = posts;
     this.setState(updatedState);
     console.log(this.state[postType]);
   }
 
-  cache_post(postType: string, postId: any, postData: any) {
+  cachePost(postType: string, postId: any, postData: any) {
     if (!this.cache[postType]) {
       this.cache[postType] = {};
     }
     this.cache[postType][postId] = postData;
   }
 
+  setLoadedState () {
+    this.setState({
+      isLoaded: true,
+    })
+  }
+
   public render() {
-    const { cities, communities, error, isLoaded } = this.state;
+    const { cities, communities, error, groups, isLoaded } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -124,7 +225,12 @@ class Assetmap extends React.Component<{}, MyState> {
             categories={this.categories}
             cities={cities}
             communities={communities}
-            // groups={groups}
+            groups={groups}
+            cache={this.cache}
+            getAllPostsByType={this.getAllPostsByType}
+            filterPostsByCommunity={this.filterPostsByCommunity}
+            getPostsFromCache={this.getPostsFromCache}
+            getPostbyId = {this.getPostbyId}
             // individuals={individuals}
             // projects={projects}
           />
