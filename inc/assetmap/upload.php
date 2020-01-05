@@ -249,17 +249,6 @@ function parse_excel_file() {
     }
     // Update posts
     $errors = update_fields($all_objects, $updated_file_headers, $related_posts);
-
-    $my_post = array(
-      'post_title'    =>  'test',
-      'post_status'   => 'publish',
-      'post_author'   => 1,
-      'post_type' => 'cities'
-    );
-    $post_id = wp_insert_post( $my_post );
-    update_field('name', $GLOBALS['errors'], $post_id);
-
-    export_to_csv($errors);
   }
 }
 

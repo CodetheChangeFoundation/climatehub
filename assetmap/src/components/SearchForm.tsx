@@ -20,8 +20,8 @@ class SearchForm extends React.Component<MyProps, MyState> {
     super(props);
 
     this.communityOptions = []
-    this.props.cities.map((city: { name: string; }) => this.communityOptions.push({label: city.name, options: []}))
-    this.props.communities.map((community: { communityId: number, name: string, city: number; }) => this.communityOptions[community.city-1].options.push({value: community.communityId, label: community.name}))
+    this.props.cities.map((city: { id: number; name: string; }) => this.communityOptions[city.id] = ({label: city.name, options: []}));
+    this.props.communities.map((community: { community_id: number, name: string, city: number; }) => this.communityOptions[community.city[0]].options.push({value: community.community_id, label: community.name}))
 
     this.state = {
       filterParameter: props.categories[0],
@@ -46,6 +46,10 @@ class SearchForm extends React.Component<MyProps, MyState> {
 
   handleFilter(event: any) {
     this.setState({filterParameter: event.target.value});
+  }
+  // Search for keyword in 'name' field of selected level
+  searchByKeyword(keyword: string, level: any) {
+    return '';
   }
 
   public render() {

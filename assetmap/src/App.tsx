@@ -54,11 +54,12 @@ class Assetmap extends React.Component<{}, MyState> {
   componentDidMount() {
     this.get_all_posts_by_type('cities');
     this.get_all_posts_by_type('communities');
+    this.get_all_posts_by_type('groups');    
     this.get_all_posts_by_type('projects');
     this.get_all_posts_by_type('individuals');
-    this.setState({
-      isLoaded: true,
-    })
+    // this.setState({
+    //   isLoaded: true,
+    // })
   }
 
   // changeLevel() {
@@ -72,26 +73,35 @@ class Assetmap extends React.Component<{}, MyState> {
     const requestUrl = "http://climatehub.local/wp-json/wp/v2/" + postType;
     fetch(requestUrl)
     .then(res => res.json())
-    .then(
-      (result) => {
-        if (filter !== []) {
-          // Filter results 
-        }
-        result.forEach((post: any) =>  {
-          const postObject = {
-            id: post.id,
-          };
-          fieldTypes[postType].forEach((field: string) => {
-            postObject[field] = post[field];
-          })
-          this.cache_post(postType, post.id, postObject);
-          const updatedPosts = {};
-          updatedPosts[postType] = this.state[postType].concat(postObject);
-          this.setState(updatedPosts);
-        }
-      );
-      console.log(this.state[postType]);
-    })     
+    .then((result) => {
+      if (filter !== []) {
+        // Filter results 
+      };
+      const updatedPosts = new Array;
+      result.forEach((post: any) =>  {
+        const postObject = {
+          id: post.id,
+        };
+        fieldTypes[postType].forEach((field: string) => {
+          postObject[field] = post[field];
+        });
+        updatedPosts.push(postObject);
+        this.cache_post(postType, post.id, postObject);
+      });
+      this.updatePostTypeState(postType, updatedPosts);
+      if (postType === 'individuals') {
+        this.setState({
+          isLoaded: true,
+        });
+      };
+    });     
+  }
+
+  updatePostTypeState (postType: string, posts: Array<object>) {
+    const updatedState = {};
+    updatedState[postType] = posts;
+    this.setState(updatedState);
+    console.log(this.state[postType]);
   }
 
   cache_post(postType: string, postId: any, postData: any) {
@@ -99,12 +109,6 @@ class Assetmap extends React.Component<{}, MyState> {
       this.cache[postType] = {};
     }
     this.cache[postType][postId] = postData;
-  }
-
-  // Search for keyword in 'name' field of selected level
-  search_by_keyword(keyword: string, level: any) {
-    console.log(fieldTypes);
-    return '';
   }
 
   public render() {
