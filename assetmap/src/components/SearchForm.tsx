@@ -50,13 +50,20 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.setState(
       { selectedCommunities },
       () => {
-        this.getPostsbyCommunity(selectedCommunities);
+        this.getPostsbyCommunity()
+        .then(() => {
+          if(this.state.searchTerm !== '') {
+            this.searchByKeyword();
+          }
+        })
       }
     );
   }
 
   handleSearch(event: any) {
-    this.setState({searchTerm: event.target.value});
+    this.setState({searchTerm: event.target.value}, () => {
+      this.searchByKeyword();
+    })
   }
 
   handleFilter(event: any) {
@@ -64,30 +71,49 @@ class SearchForm extends React.Component<MyProps, MyState> {
       postType: event.target.value
     }, 
       () => {
-      const postType = this.state.postType.toLowerCase();
-      this.props.getAllPostsByType(postType)
+        this.getPostsbyCommunity()
+        .then(() => {
+          if(this.state.searchTerm !== '') {
+            this.searchByKeyword();
+          }
+        })
+    });
+  }
+
+  getPostsbyCommunity(selectedPosts: any = this.state.selectedCommunities): Promise<any> {
+    return new Promise((resolve) => {
+      let selection: any;
+      if (selectedPosts !== null) {
+        selection = {};
+        selectedPosts.forEach((post: any) => {
+          selection[post.id] = post;
+        });
+      } else {
+        selection = null;
+      }
+      this.props.filterPostsByCommunity(this.state.postType.toLowerCase(), selection)
       .then(() => {
-        this.getPostsbyCommunity(this.state.selectedCommunities);
+        console.log(this.props[this.state.postType.toLowerCase()]);
+        resolve();
       })
     });
   }
 
-  getPostsbyCommunity(selectedPosts: any) {
-    let selection: any;
-    if (selectedPosts !== null) {
-      selection = {};
-      selectedPosts.forEach((post: any) => {
-        selection[post.id] = post;
-      });
-    } else {
-      selection = null;
-    }
-    console.log(selection);
-    this.props.filterPostsByCommunity(this.state.postType.toLowerCase(), selection)
-  }
-
   // Search for keyword in 'name' field of selected level
-  searchByKeyword(keyword: string, level: any) {
+  searchByKeyword(keyword: string = this.state.searchTerm) {
+    const currPosts = this.props[this.state.postType.toLowerCase()];
+    const updatedPosts = {};
+    const searchField = 'name';
+    const formattedKeyword = keyword.toLowerCase();
+    Object.keys(currPosts).forEach((postId) => {
+      const formattedPostName: string = currPosts[postId][searchField].toLowerCase();
+      if (formattedPostName.includes(formattedKeyword)) {
+        updatedPosts[postId] = currPosts[postId];
+      }
+    })
+    console.log("Search Posts");
+    console.log(currPosts);
+    console.log(updatedPosts);
     return '';
   }
 
