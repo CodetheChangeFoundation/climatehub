@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Select from 'react-select';
+import { Dropdown } from './Dropdown';
+import { Table } from './Table';
 
 interface MyProps {
   categories: Array<string>
@@ -50,20 +52,13 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.setState(
       { selectedCommunities },
       () => {
-        this.getPostsbyCommunity()
-        .then(() => {
-          if(this.state.searchTerm !== '') {
-            this.searchByKeyword();
-          }
-        })
+        this.getPostsByCommunity();
       }
     );
   }
 
   handleSearch(event: any) {
-    this.setState({searchTerm: event.target.value}, () => {
-      this.searchByKeyword();
-    })
+    this.setState({searchTerm: event.target.value});
   }
 
   handleFilter(event: any) {
@@ -71,16 +66,11 @@ class SearchForm extends React.Component<MyProps, MyState> {
       postType: event.target.value
     }, 
       () => {
-        this.getPostsbyCommunity()
-        .then(() => {
-          if(this.state.searchTerm !== '') {
-            this.searchByKeyword();
-          }
-        })
+        this.getPostsByCommunity();
     });
   }
 
-  getPostsbyCommunity(selectedPosts: any = this.state.selectedCommunities): Promise<any> {
+  getPostsByCommunity(selectedPosts: any = this.state.selectedCommunities): Promise<any> {
     return new Promise((resolve) => {
       let selection: any;
       if (selectedPosts !== null) {
@@ -99,63 +89,90 @@ class SearchForm extends React.Component<MyProps, MyState> {
     });
   }
 
-  // Search for keyword in 'name' field of selected level
-  searchByKeyword(keyword: string = this.state.searchTerm) {
-    const currPosts = this.props[this.state.postType.toLowerCase()];
-    const updatedPosts = {};
-    const searchField = 'name';
-    const formattedKeyword = keyword.toLowerCase();
-    Object.keys(currPosts).forEach((postId) => {
-      const formattedPostName: string = currPosts[postId][searchField].toLowerCase();
-      if (formattedPostName.includes(formattedKeyword)) {
-        updatedPosts[postId] = currPosts[postId];
-      }
-    })
-    console.log("Search Posts");
-    console.log(currPosts);
-    console.log(updatedPosts);
-    return '';
-  }
-
   public render() {
-    const dropdown = [];
-
-    for (const category of this.props.categories) {
-      dropdown.push(<option key={this.props.categories.indexOf(category)}>{category}</option>);
+    let currPosts = this.props[this.state.postType.toLowerCase()];
+    
+    // Search
+    const searchTerm = this.state.searchTerm.toLowerCase();
+    if (searchTerm !== "") {
+      const updatedPosts = {};
+      Object.keys(currPosts).forEach((postId) => {
+        if (currPosts[postId].name.toLowerCase().includes(searchTerm)) {
+          updatedPosts[postId] = currPosts[postId];
+        }
+      })
+      currPosts = updatedPosts;
     }
 
     return (
-      <form id="SearchForm" className="container mt-5 pt-5">
-        <div className="mt-5 pt-5 row">
-          <div className="col-12 form-group">
+      <div id="SearchForm" className="container">
+        <div className="row">
+          <div className="col-12 mb-4">
             <Select
+              styles={customStyles}
               value={this.state.selectedCommunities}
               onChange={this.handleCommunityChange}
               options={this.communityOptions}
               isMulti={true}
+              placeholder={"Community"}
+              className={"border border-dark "}
             />
           </div>
-          <div className="border border-bottom-0 border-dark col-12 col-sm-3 form-group m-0 p-0">
-            <span className="align-items-center d-inline-flex h-100 pl-3 position-absolute">
-              <svg fill="none" height="20" width="15" viewBox="0 0 15 20" xmlns="http://www.w3.org/2000/svg">
-                <path clipRule="evenodd" fill="#888888" fillRule="evenodd" d="M11.1189 6.55945C11.1189 9.07756 9.07756 11.1189 6.55945 11.1189C4.04133 11.1189 2 9.07756 2 6.55945C2 4.04133 4.04133 2 6.55945 2C9.07756 2 11.1189 4.04133 11.1189 6.55945ZM8.62627 12.7866C7.97647 13.0022 7.28159 13.1189 6.55945 13.1189C2.93676 13.1189 0 10.1821 0 6.55945C0 2.93676 2.93676 0 6.55945 0C10.1821 0 13.1189 2.93676 13.1189 6.55945C13.1189 8.74448 12.0505 10.68 10.4076 11.8721L14.523 19L12.7909 20L8.62627 12.7866Z"/>
-              </svg>
-            </span>
-            <select className="bg-light border-0 custom-select my-2 pl-5 py-1 shadow-none" onChange={this.handleFilter} value={this.state.postType}>
-              {dropdown}
-            </select>
+        </div>
+        <div className="row">
+          <div className="col-12 col-sm-4 col-md-3 pr-sm-0">
+            <Dropdown
+              handleFilter={this.handleFilter}
+              postType={this.state.postType}
+              categories={this.props.categories}
+            />
           </div>
-          <div className="border border-bottom-0 border-dark border-left-0 col-12 col-sm-9 form-group m-0 p-0">
-            <input className="border-0 bg-light form-control my-2 py-1" onChange={this.handleSearch} placeholder="Search" type="text" value={this.state.searchTerm}/>
-          </div>
-          <div className="border border-dark col-12">
-            <div className="mx-4 overflow-hidden">
-              {/* {table} */}
+          <div className="col-12 col-sm-8 col-md-9 pl-sm-0">
+            <div className="border border-bottom-0 border-dark border-left-0 h-100 m-0 p-0">
+              <input
+                className="border-0 bg-light form-control h-100"
+                onChange={this.handleSearch}
+                placeholder="Search"
+                type="text"
+                value={this.state.searchTerm}
+              />
             </div>
           </div>
         </div>
-      </form>
+        <div className="row">
+          <div className="col-12">
+            <div className="border border-dark table-container">
+              <Table
+                data={currPosts}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     );
+  }
+}
+
+const customStyles = {
+  control: (provided: any, state: any) => ({
+    // none of react-select's styles are passed to <Control />
+    ...provided,
+    backgroundColor: 'bg-light',
+    border: 0,
+    boxShadow: 0,
+    outline: 0,
+  }),
+  option: (provided: any, state: any) => ({
+    ...provided,
+    // borderBottom: '1px dotted pink',
+    // color: state.isSelected ? 'red' : 'blue',
+    // padding: 20,
+  }),
+  singleValue: (provided: any, state: any) => {
+    // const opacity = state.isDisabled ? 0.5 : 1;
+    // const transition = 'opacity 300ms';
+
+    return { ...provided };
   }
 }
 
