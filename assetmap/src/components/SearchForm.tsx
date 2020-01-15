@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Select from 'react-select';
 import { Dropdown } from './Dropdown';
-import { Table } from './Table';
+import Table from './Table';
 
 interface MyProps {
   categories: Array<string>
