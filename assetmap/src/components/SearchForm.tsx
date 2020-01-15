@@ -90,14 +90,15 @@ class SearchForm extends React.Component<MyProps, MyState> {
   }
 
   public render() {
-    let currPosts = this.props[this.state.postType.toLowerCase()];
+    const { postType, searchTerm, selectedCommunities } = this.state;
+    let currPosts = this.props[postType.toLowerCase()];
     
     // Search
-    const searchTerm = this.state.searchTerm.toLowerCase();
-    if (searchTerm !== "") {
+    const searchTermFormatted = searchTerm.toLowerCase();
+    if (searchTermFormatted !== "") {
       const updatedPosts = {};
       Object.keys(currPosts).forEach((postId) => {
-        if (currPosts[postId].name.toLowerCase().includes(searchTerm)) {
+        if (currPosts[postId].name.toLowerCase().includes(searchTermFormatted)) {
           updatedPosts[postId] = currPosts[postId];
         }
       })
@@ -110,7 +111,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
           <div className="col-12 mb-4">
             <Select
               styles={customStyles}
-              value={this.state.selectedCommunities}
+              value={selectedCommunities}
               onChange={this.handleCommunityChange}
               options={this.communityOptions}
               isMulti={true}
@@ -123,7 +124,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
           <div className="col-12 col-sm-4 col-md-3 pr-sm-0">
             <Dropdown
               handleFilter={this.handleFilter}
-              postType={this.state.postType}
+              postType={postType}
               categories={this.props.categories}
             />
           </div>
@@ -134,7 +135,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 onChange={this.handleSearch}
                 placeholder="Search"
                 type="text"
-                value={this.state.searchTerm}
+                value={searchTerm}
               />
             </div>
           </div>
@@ -144,6 +145,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
             <div className="border border-dark table-container">
               <Table
                 data={currPosts}
+                postType={postType}
               />
             </div>
           </div>

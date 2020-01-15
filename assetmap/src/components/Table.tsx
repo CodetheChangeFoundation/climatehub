@@ -2,15 +2,27 @@ import * as React from 'react';
 import { Tags } from './Tags';
 
 interface TableProps {
-  data: { wpid: { 
-    name: string, 
-    tag_a: Array<{ post_type: string, post_title: string }>, 
-    tag_b: Array<{ post_type: string, post_title: string }>, 
-    tag_c: Array<{ post_type: string, post_title: string }>}
-  }
+  data: { 
+    wpid: {
+      description: string,
+      director: Array<number>,
+      email: string,
+      groups: Array<number>,
+      individuals: Array<number>,
+      name: string,
+      phone: string,
+      position: string,
+      projects: Array<number>,
+      tag_a: Array<{ post_type: string, post_title: string }>,
+      tag_b: Array<{ post_type: string, post_title: string }>,
+      tag_c: Array<{ post_type: string, post_title: string }>,
+      website: string,
+    }
+  },
+  postType: string
 }
 
-export const Table = ({ data }: TableProps) => 
+export const Table = ({ data, postType }: TableProps) => 
 <table className="table table-hover mb-0 w-100">
   <thead>
     <tr>
@@ -22,15 +34,17 @@ export const Table = ({ data }: TableProps) =>
     {Object.values(data).length > 0 ? 
       Object.values(data).map((line, index) => 
         <React.Fragment key={index}>
-          <tr key={index} className="w-100">
-            <td className="w-50">{line.name}</td>
-            <td className="w-50">
-              <Tags tags={[line.tag_a, line.tag_b, line.tag_c]} />
+          <tr>
+            <td className="text-wrap">{line.name}</td>
+            <td className="text-wrap">
+              { (line.tag_a[0] || line.tag_b[0] || line.tag_c[0]) && <Tags tags={[line.tag_a, line.tag_b, line.tag_c]} /> }
             </td>
           </tr>
-          <tr key={index + "B"} className="d-none w-100">
-            <td colSpan={2}>
-              Additional info
+          <tr>
+            <td colSpan={2} className="text-wrap">
+              {postType === 'Groups' && <div>{line.website} Projects: {line.projects && line.projects.map(p => p + ", ")} Individuals: {line.individuals && line.individuals.map(i => i + ", ")}</div> }
+              {postType === 'Projects' && <div>{line.description} {line.website} Director: {line.director && line.director.map(d => d)} Groups: {line.groups && line.groups.map(g => g + ", ")}</div> }
+              {postType === 'Individuals' && <div>{line.email} {line.phone} {line.position} {line.website} Projects: {line.projects && line.projects.map(p => p)}</div> }
             </td>
           </tr>
         </React.Fragment>
