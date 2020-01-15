@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Select from 'react-select';
-import { Dropdown } from './Dropdown';
 import Table from './Table';
 
 interface MyProps {
@@ -19,6 +18,7 @@ interface MyProps {
 };
 
 interface MyState {
+  filterIds: Array<number>,
   postType: string,
   searchTerm: string,
   selectedCommunities: any,
@@ -39,13 +39,15 @@ class SearchForm extends React.Component<MyProps, MyState> {
     }
     
     this.state = {
+      filterIds: [],
       postType: props.categories[0],
       searchTerm: "",
       selectedCommunities: null
     };
     this.handleCommunityChange = this.handleCommunityChange.bind(this);
+    this.handleFilterIds = this.handleFilterIds.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleFilter = this.handleFilter.bind(this);
+    this.handlePostTypeChange = this.handlePostTypeChange.bind(this);
   }
 
   handleCommunityChange(selectedCommunities: any) {
@@ -61,13 +63,26 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.setState({searchTerm: event.target.value});
   }
 
-  handleFilter(event: any) {
+  handlePostTypeChange(postType: any) {
     this.setState({
-      postType: event.target.value
+      filterIds: [],
+      postType: postType.label
     }, 
       () => {
         this.getPostsByCommunity();
     });
+  }
+
+  handleFilterIds(postType: string, filterIds: Array<number>) {
+    this.setState({
+      postType
+    },
+      () => {
+        this.getPostsByCommunity()
+        .then(() => {
+          this.setState({filterIds});
+        })
+      });
   }
 
   getPostsByCommunity(selectedPosts: any = this.state.selectedCommunities): Promise<any> {
@@ -90,7 +105,11 @@ class SearchForm extends React.Component<MyProps, MyState> {
   }
 
   public render() {
-    const { postType, searchTerm, selectedCommunities } = this.state;
+    const { filterIds, postType, searchTerm, selectedCommunities } = this.state;
+    
+    const categories: Array<object> = [];
+    this.props.categories.map(category => categories.push({ value: category.toLowerCase(), label: category }))
+    
     let currPosts = this.props[postType.toLowerCase()];
     
     // Search
@@ -103,6 +122,16 @@ class SearchForm extends React.Component<MyProps, MyState> {
         }
       })
       currPosts = updatedPosts;
+    }
+
+    // Filter Ids
+    if (filterIds.length !== 0) {
+      currPosts = Object.keys(currPosts)
+      .filter(key => filterIds.includes(parseInt(key, 10)))
+      .reduce((obj, key) => {
+        obj[key] = currPosts[key];
+        return obj;
+      }, {});
     }
 
     return (
@@ -121,23 +150,36 @@ class SearchForm extends React.Component<MyProps, MyState> {
           </div>
         </div>
         <div className="row">
-          <div className="col-12 col-sm-4 col-md-3 pr-sm-0">
-            <Dropdown
-              handleFilter={this.handleFilter}
-              postType={postType}
-              categories={this.props.categories}
+          <div className="col-12 col-sm-4 col-lg-2 pr-sm-0">
+            <Select
+              styles={customStyles}
+              value={{value: postType.toLowerCase(), label: postType}}
+              onChange={this.handlePostTypeChange}
+              options={categories}
+              className={"border border-bottom-0 border-dark h-100 m-0 p-0 "}
             />
           </div>
-          <div className="col-12 col-sm-8 col-md-9 pl-sm-0">
-            <div className="border border-bottom-0 border-dark border-left-0 h-100 m-0 p-0">
+          <div className="col-12 col-sm-4 col-lg-5 px-sm-0">
+            <div className="border border-bottom-0 border-dark border-left-0 border-right-0 h-100 m-0 p-0">
               <input
                 className="border-0 bg-light form-control h-100"
                 onChange={this.handleSearch}
-                placeholder="Search"
+                placeholder="Search by name"
                 type="text"
                 value={searchTerm}
               />
             </div>
+          </div>
+          <div className="col-12 col-sm-4 col-lg-5 pl-sm-0">
+            <Select
+              styles={customStyles}
+              value={selectedCommunities}
+              onChange={this.handleCommunityChange}
+              options={this.communityOptions}
+              isMulti={true}
+              placeholder={"Filter by tag"}
+              className={"border border-bottom-0 border-dark h-100 m-0 p-0 "}
+            />
           </div>
         </div>
         <div className="row">
@@ -146,6 +188,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
               <Table
                 data={currPosts}
                 postType={postType}
+                handleFilterIds={this.handleFilterIds}
               />
             </div>
           </div>

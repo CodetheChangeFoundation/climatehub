@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Button } from './Button';
 import { Tags } from './Tags';
 
 interface MyProps {
@@ -20,6 +21,7 @@ interface MyProps {
       website: string,
     }
   },
+  handleFilterIds: (postType: string, filterIds: Array<number>) => void,
   postType: string
 }
 
@@ -54,18 +56,49 @@ class Table extends React.Component<MyProps, MyState> {
         const clickCallback = () => this.handleRowClick(line.id);
         itemRows.push(
           <React.Fragment key={index}>
-            <tr onClick={clickCallback}>
+            <tr key={"row-data-" + index} onClick={clickCallback}>
               <td className="text-wrap">{line.name}</td>
               <td className="text-wrap">
                 {(line.tag_a[0] || line.tag_b[0] || line.tag_c[0]) && <Tags tags={[line.tag_a, line.tag_b, line.tag_c]} />}
               </td>
             </tr>
             {expandedRow === line.id &&
-              <tr>
-                <td colSpan={2} className="text-wrap">
-                  {postType === 'Groups' && <div>{line.website} Projects: {line.projects && line.projects.map(p => p + ", ")} Individuals: {line.individuals && line.individuals.map(i => i + ", ")}</div>}
-                  {postType === 'Projects' && <div>{line.description} {line.website} Director: {line.director && line.director.map(d => d)} Groups: {line.groups && line.groups.map(g => g + ", ")}</div>}
-                  {postType === 'Individuals' && <div>{line.email} {line.phone} {line.position} {line.website} Projects: {line.projects && line.projects.map(p => p)}</div>}
+              <tr key={"row-expandable-" + index} className="no-hover">
+                <td colSpan={2} className="text-wrap border-top-0 pt-0 px-4 px-sm-5">
+                  <div className="border-top pt-3 container">
+                    { postType === 'Groups' && 
+                      <div className="row">
+                        { line.website &&
+                          <div className="col-3">
+                            <p>Website</p>
+                            <a target="_blank" rel="noopener noreferrer" className="ellipsis d-block" href={line.website}>{line.website}</a>
+                          </div>
+                        }
+                        { line.projects[0] !== 0 &&
+                          <div className="col-3">
+                            <p>Explore projects</p>
+                            {/* {line.projects.map(p => p + ", ")} */}
+                            {/* <button type="button" className="btn btn-outline-primary font-italic" onClick={this.props.handleFilterIds("Projects", line.projects)}>projects</button> */}
+                            <Button
+                              classes="btn btn-outline-primary font-italic"
+                              handleClick={this.props.handleFilterIds}
+                              ids={line.projects}
+                              postType="Projects"
+                              title="projects"
+                            />
+                          </div>
+                        }
+                        { line.individuals[0] !== 0 &&
+                          <div className="col-3">
+                            <p>See individuals</p>
+                            {line.individuals.map(i => i + ", ")}
+                          </div>
+                        }
+                      </div>
+                    }
+                    {postType === 'Projects' && <div className="row">{line.description} {line.website} Director: {line.director && line.director.map(d => d)} Groups: {line.groups && line.groups.map(g => g + ", ")}</div>}
+                    {postType === 'Individuals' && <div className="row">{line.email} {line.phone} {line.position} {line.website} Projects: {line.projects && line.projects.map(p => p)}</div>}
+                  </div>
                 </td>
               </tr>
             }
@@ -73,7 +106,7 @@ class Table extends React.Component<MyProps, MyState> {
         )
       })
     } else {
-      itemRows.push(<tr><td colSpan={2}>No results found.</td></tr>)
+      itemRows.push(<tr key={0}><td colSpan={2}>No results found.</td></tr>)
     }
 
     return itemRows;

@@ -358,3 +358,13 @@ body {
   border-color: var(--warning) !important;
   background-color: rgba(255, 193, 7, 0.25);
 }
+
+.asset-map .table-container tbody tr.no-hover:hover > td {
+  background-color: var(--light);
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
