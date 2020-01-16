@@ -363,8 +363,18 @@ body {
   background-color: var(--light);
 }
 
-.ellipsis {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+.z-index-99 {
+  z-index: 99;
+}
+
+.z-index-110 {
+  z-index: 110;
+}
+
+.z-index-120 {
+  z-index: 120;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

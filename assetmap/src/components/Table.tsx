@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button } from './Button';
+import { RowInfo } from './RowInfo';
 import { Tags } from './Tags';
 
 interface MyProps {
@@ -64,42 +64,11 @@ class Table extends React.Component<MyProps, MyState> {
             </tr>
             {expandedRow === line.id &&
               <tr key={"row-expandable-" + index} className="no-hover">
-                <td colSpan={2} className="text-wrap border-top-0 pt-0 px-4 px-sm-5">
-                  <div className="border-top pt-3 container">
-                    { postType === 'Groups' && 
-                      <div className="row">
-                        { line.website &&
-                          <div className="col-3">
-                            <p>Website</p>
-                            <a target="_blank" rel="noopener noreferrer" className="ellipsis d-block" href={line.website}>{line.website}</a>
-                          </div>
-                        }
-                        { line.projects[0] !== 0 &&
-                          <div className="col-3">
-                            <p>Explore projects</p>
-                            {/* {line.projects.map(p => p + ", ")} */}
-                            {/* <button type="button" className="btn btn-outline-primary font-italic" onClick={this.props.handleFilterIds("Projects", line.projects)}>projects</button> */}
-                            <Button
-                              classes="btn btn-outline-primary font-italic"
-                              handleClick={this.props.handleFilterIds}
-                              ids={line.projects}
-                              postType="Projects"
-                              title="projects"
-                            />
-                          </div>
-                        }
-                        { line.individuals[0] !== 0 &&
-                          <div className="col-3">
-                            <p>See individuals</p>
-                            {line.individuals.map(i => i + ", ")}
-                          </div>
-                        }
-                      </div>
-                    }
-                    {postType === 'Projects' && <div className="row">{line.description} {line.website} Director: {line.director && line.director.map(d => d)} Groups: {line.groups && line.groups.map(g => g + ", ")}</div>}
-                    {postType === 'Individuals' && <div className="row">{line.email} {line.phone} {line.position} {line.website} Projects: {line.projects && line.projects.map(p => p)}</div>}
-                  </div>
-                </td>
+                <RowInfo 
+                  postType={postType}
+                  data={line}
+                  handleFilterIds={this.props.handleFilterIds}
+                />
               </tr>
             }
           </React.Fragment>
@@ -119,8 +88,8 @@ class Table extends React.Component<MyProps, MyState> {
       <table className="table table-hover mb-0 w-100">
         <thead>
           <tr>
-            <th scope="col" className="position-sticky bg-light border-0">Name</th>
-            <th scope="col" className="position-sticky bg-light border-0">Tags</th>
+            <th scope="col" className="position-sticky bg-light border-0 z-index-99">Name</th>
+            <th scope="col" className="position-sticky bg-light border-0 z-index-99">Tags</th>
           </tr>
         </thead>
         <tbody>

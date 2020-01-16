@@ -134,6 +134,8 @@ class SearchForm extends React.Component<MyProps, MyState> {
       }, {});
     }
 
+    const clearFilter = () => this.setState({ filterIds: [] })
+
     return (
       <div id="SearchForm" className="container">
         <div className="row">
@@ -145,7 +147,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
               options={this.communityOptions}
               isMulti={true}
               placeholder={"Community"}
-              className={"border border-dark "}
+              className={"border border-dark z-index-120 "}
             />
           </div>
         </div>
@@ -156,7 +158,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
               value={{value: postType.toLowerCase(), label: postType}}
               onChange={this.handlePostTypeChange}
               options={categories}
-              className={"border border-bottom-0 border-dark h-100 m-0 p-0 "}
+              className={"border border-bottom-0 border-dark h-100 m-0 p-0 z-index-110 "}
             />
           </div>
           <div className="col-12 col-sm-4 col-lg-5 px-sm-0">
@@ -178,8 +180,26 @@ class SearchForm extends React.Component<MyProps, MyState> {
               options={this.communityOptions}
               isMulti={true}
               placeholder={"Filter by tag"}
-              className={"border border-bottom-0 border-dark h-100 m-0 p-0 "}
+              className={"border border-bottom-0 border-dark h-100 m-0 p-0 z-index-110 "}
             />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-4 pr-0">
+            <div className="py-2 border-top border-left border-dark h-100">
+              {filterIds.length !== 0 && 
+              <div className="pl-2 ml-1" onClick={clearFilter}>
+                <p className="cursor-pointer mb-0 d-inline">Remove filter</p>
+              </div>}
+            </div>
+          </div>
+          <div className="col-4 px-0">
+            <div className="py-2 border-top border-dark">
+              <div className="text-center">{Object.keys(currPosts).length} results</div>
+            </div>
+          </div>
+          <div className="col-4 pl-0">
+            <div className="py-2 border-top border-right border-dark h-100" />
           </div>
         </div>
         <div className="row">
