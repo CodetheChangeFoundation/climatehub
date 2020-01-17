@@ -73,10 +73,11 @@ class Assetmap extends React.Component<{}, MyState> {
     ).then(() => 
       this.getAllPostsByType('groups')
     ).then(() => {
-      this.setLoadedState();
-      this.getAllPostsByType('tag_a');    
+      this.getAllPostsByType('tag_a')    
       this.getAllPostsByType('tag_b');
       this.getAllPostsByType('tag_c');
+    }).then(() => {
+      this.setLoadedState();
     }).then(() => {
       console.log(this.cache)
     })
@@ -293,6 +294,9 @@ class Assetmap extends React.Component<{}, MyState> {
       return (
         <div className="asset-map">
           <SearchForm 
+            tag_a={this.state.tag_a}
+            tag_b={this.state.tag_b}
+            tag_c={this.state.tag_c}
             categories={this.categories}
             cities={cities}
             communities={communities}

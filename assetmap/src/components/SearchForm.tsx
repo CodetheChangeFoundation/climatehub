@@ -15,6 +15,9 @@ interface MyProps {
   filterPosts: any
   individuals: any
   projects: any
+  tag_a: any
+  tag_b: any
+  tag_c: any
 };
 
 interface MyState {
@@ -29,14 +32,13 @@ class SearchForm extends React.Component<MyProps, MyState> {
 
   constructor(props: MyProps) {
     super(props);
-
-    this.communityOptions = []
+    this.communityOptions = [];
     if (this.props.cities !== []) { 
       Object.values(this.props.cities).map((city: { id: number; name: string; }) => this.communityOptions[city.id] = ({label: city.name, options: []}));
-    }
+    };
     if (this.props.communities !== []) {
       Object.values(this.props.communities).map((community: { id: number, name: string, city: number; }) => this.communityOptions[community.city[0]].options.push({id: community.id, value: community.id, label: community.name}));
-    }
+    };
     
     this.state = {
       filterIds: [],

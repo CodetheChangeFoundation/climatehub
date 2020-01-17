@@ -1,180 +1,5 @@
 [
     {
-        "key": "group_5dc8e5da83f66",
-        "title": "Asset Map Data",
-        "fields": [
-            {
-                "key": "field_5dc8e5e8ca060",
-                "label": "CITY FILE",
-                "name": "city_file",
-                "type": "file",
-                "instructions": "Available Fields: CITY_ID, NAME, LOCATION",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "return_format": "array",
-                "library": "all",
-                "min_size": "",
-                "max_size": "",
-                "mime_types": ".csv"
-            },
-            {
-                "key": "field_5dc8e6d9311b8",
-                "label": "COMMUNITY FILE",
-                "name": "community_file",
-                "type": "file",
-                "instructions": "Available Fields: COMMUNITY_ID, NAME, CODE, LOCATION, CITY",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "return_format": "array",
-                "library": "all",
-                "min_size": "",
-                "max_size": "",
-                "mime_types": ".csv"
-            },
-            {
-                "key": "field_5dc8e6ec311b9",
-                "label": "GROUP FILE",
-                "name": "group_file",
-                "type": "file",
-                "instructions": "Available Fields: GROUP_ID, NAME, DESCRIPTION, TAG_A, TAG_B, TAG_C, WEBSITE, COMMUNITY, PARENT_GROUP, PROJECTS, INDIVIDUALS\r\n*In PROJECTS and INDIVIDUALS fields, please separate each new ID with a comma.",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "return_format": "array",
-                "library": "all",
-                "min_size": "",
-                "max_size": "",
-                "mime_types": ".csv"
-            },
-            {
-                "key": "field_5dc8e701311ba",
-                "label": "PROJECT FILE",
-                "name": "project_file",
-                "type": "file",
-                "instructions": "Available Fields: PROJECT_ID, NAME, DESCRIPTION, TAG_A, TAG_B, TAG_C, WEBSITE, BLOG_POST, DIRECTOR",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "return_format": "array",
-                "library": "all",
-                "min_size": "",
-                "max_size": "",
-                "mime_types": ".csv"
-            },
-            {
-                "key": "field_5dc8e710311bb",
-                "label": "INDIVIDUAL FILE",
-                "name": "individual_file",
-                "type": "file",
-                "instructions": "Available Fields: INDIVIDUAL_ID, NAME, DESCRIPTION, TAG_A, TAG_B, TAG_C, WEBSITE, POSITION, EMAIL, PHONE, SURVEY_INFO",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "return_format": "array",
-                "library": "all",
-                "min_size": "",
-                "max_size": "",
-                "mime_types": ".csv"
-            },
-            {
-                "key": "field_5e070715d1a59",
-                "label": "TAG_A FILE",
-                "name": "tag_a_file",
-                "type": "file",
-                "instructions": "Available Fields: NAME",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "return_format": "array",
-                "library": "all",
-                "min_size": "",
-                "max_size": "",
-                "mime_types": ".csv"
-            },
-            {
-                "key": "field_5e070774d1a5a",
-                "label": "TAG_B FILE",
-                "name": "tag_b_file",
-                "type": "file",
-                "instructions": "Available Fields: NAME",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "return_format": "array",
-                "library": "all",
-                "min_size": "",
-                "max_size": "",
-                "mime_types": ".csv"
-            },
-            {
-                "key": "field_5e070788d1a5b",
-                "label": "TAG_C FILE",
-                "name": "tag_c_file",
-                "type": "file",
-                "instructions": "Available Fields: NAME",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "return_format": "array",
-                "library": "all",
-                "min_size": "",
-                "max_size": "",
-                "mime_types": ".csv"
-            }
-        ],
-        "location": [
-            [
-                {
-                    "param": "options_page",
-                    "operator": "==",
-                    "value": "asset-map"
-                }
-            ]
-        ],
-        "menu_order": 0,
-        "position": "normal",
-        "style": "default",
-        "label_placement": "top",
-        "instruction_placement": "label",
-        "hide_on_screen": "",
-        "active": 1,
-        "description": ""
-    },
-    {
         "key": "group_5dc7800f62fd5",
         "title": "City",
         "fields": [
@@ -596,7 +421,7 @@
                 "elements": "",
                 "min": "",
                 "max": 1,
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5e040ae28ab49",
@@ -621,7 +446,7 @@
                 "elements": "",
                 "min": "",
                 "max": 1,
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5e040af803a9d",
@@ -646,7 +471,7 @@
                 "elements": "",
                 "min": "",
                 "max": 1,
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5dc78266b775b",
@@ -926,7 +751,7 @@
                 "elements": "",
                 "min": "",
                 "max": 1,
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5e040d67c906a",
@@ -951,7 +776,7 @@
                 "elements": "",
                 "min": "",
                 "max": 1,
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5e040d7bc906b",
@@ -976,7 +801,7 @@
                 "elements": "",
                 "min": "",
                 "max": 1,
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5dc78c3cad3b5",
@@ -1256,7 +1081,7 @@
                 "elements": "",
                 "min": "",
                 "max": 1,
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5e06ea1f3b304",
@@ -1281,7 +1106,7 @@
                 "elements": "",
                 "min": "",
                 "max": 1,
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5e06ea3b3b305",
@@ -1306,7 +1131,7 @@
                 "elements": "",
                 "min": "",
                 "max": 1,
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5dc7896a27596",
@@ -1430,6 +1255,25 @@
         "title": "Tag_A",
         "fields": [
             {
+                "key": "field_5e21266dc0d87",
+                "label": "NAME",
+                "name": "name",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
                 "key": "field_5e06fcbaa759e",
                 "label": "GROUPS",
                 "name": "groups",
@@ -1452,7 +1296,7 @@
                 "elements": "",
                 "min": "",
                 "max": "",
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5e06fd65a759f",
@@ -1477,7 +1321,7 @@
                 "elements": "",
                 "min": "",
                 "max": "",
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5e06fd8ca75a0",
@@ -1502,7 +1346,7 @@
                 "elements": "",
                 "min": "",
                 "max": "",
-                "return_format": "object"
+                "return_format": "id"
             }
         ],
         "location": [
@@ -1528,6 +1372,25 @@
         "title": "Tag_B",
         "fields": [
             {
+                "key": "field_5e21268a3f594",
+                "label": "NAME",
+                "name": "name",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
                 "key": "field_5e06fda6bcefd",
                 "label": "GROUPS",
                 "name": "groups",
@@ -1550,7 +1413,7 @@
                 "elements": "",
                 "min": "",
                 "max": "",
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5e06fda6bcf31",
@@ -1575,7 +1438,7 @@
                 "elements": "",
                 "min": "",
                 "max": "",
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5e06fda6bcf58",
@@ -1600,7 +1463,7 @@
                 "elements": "",
                 "min": "",
                 "max": "",
-                "return_format": "object"
+                "return_format": "id"
             }
         ],
         "location": [
@@ -1626,6 +1489,25 @@
         "title": "Tag_C",
         "fields": [
             {
+                "key": "field_5e2126a2055c2",
+                "label": "NAME",
+                "name": "name",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
                 "key": "field_5e06fdb912a3e",
                 "label": "GROUPS",
                 "name": "groups",
@@ -1648,7 +1530,7 @@
                 "elements": "",
                 "min": "",
                 "max": "",
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5e06fdb912a59",
@@ -1673,7 +1555,7 @@
                 "elements": "",
                 "min": "",
                 "max": "",
-                "return_format": "object"
+                "return_format": "id"
             },
             {
                 "key": "field_5e06fdb912a6f",
@@ -1698,7 +1580,7 @@
                 "elements": "",
                 "min": "",
                 "max": "",
-                "return_format": "object"
+                "return_format": "id"
             }
         ],
         "location": [
@@ -1711,6 +1593,181 @@
             ]
         ],
         "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 1,
+        "description": ""
+    },
+    {
+        "key": "group_5dc8e5da83f66",
+        "title": "Asset Map Data",
+        "fields": [
+            {
+                "key": "field_5dc8e5e8ca060",
+                "label": "CITY FILE",
+                "name": "city_file",
+                "type": "file",
+                "instructions": "Available Fields: CITY_ID, NAME, LOCATION",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_size": "",
+                "max_size": "",
+                "mime_types": ".csv"
+            },
+            {
+                "key": "field_5dc8e6d9311b8",
+                "label": "COMMUNITY FILE",
+                "name": "community_file",
+                "type": "file",
+                "instructions": "Available Fields: COMMUNITY_ID, NAME, CODE, LOCATION, CITY",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_size": "",
+                "max_size": "",
+                "mime_types": ".csv"
+            },
+            {
+                "key": "field_5dc8e6ec311b9",
+                "label": "GROUP FILE",
+                "name": "group_file",
+                "type": "file",
+                "instructions": "Available Fields: GROUP_ID, NAME, DESCRIPTION, TAG_A, TAG_B, TAG_C, WEBSITE, COMMUNITY, PARENT_GROUP, PROJECTS, INDIVIDUALS\r\n*In PROJECTS and INDIVIDUALS fields, please separate each new ID with a comma.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_size": "",
+                "max_size": "",
+                "mime_types": ".csv"
+            },
+            {
+                "key": "field_5dc8e701311ba",
+                "label": "PROJECT FILE",
+                "name": "project_file",
+                "type": "file",
+                "instructions": "Available Fields: PROJECT_ID, NAME, DESCRIPTION, TAG_A, TAG_B, TAG_C, WEBSITE, BLOG_POST, DIRECTOR",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_size": "",
+                "max_size": "",
+                "mime_types": ".csv"
+            },
+            {
+                "key": "field_5dc8e710311bb",
+                "label": "INDIVIDUAL FILE",
+                "name": "individual_file",
+                "type": "file",
+                "instructions": "Available Fields: INDIVIDUAL_ID, NAME, DESCRIPTION, TAG_A, TAG_B, TAG_C, WEBSITE, POSITION, EMAIL, PHONE, SURVEY_INFO",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_size": "",
+                "max_size": "",
+                "mime_types": ".csv"
+            },
+            {
+                "key": "field_5e070715d1a59",
+                "label": "TAG_A FILE",
+                "name": "tag_a_file",
+                "type": "file",
+                "instructions": "Available Fields: NAME",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_size": "",
+                "max_size": "",
+                "mime_types": ".csv"
+            },
+            {
+                "key": "field_5e070774d1a5a",
+                "label": "TAG_B FILE",
+                "name": "tag_b_file",
+                "type": "file",
+                "instructions": "Available Fields: NAME",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_size": "",
+                "max_size": "",
+                "mime_types": ".csv"
+            },
+            {
+                "key": "field_5e070788d1a5b",
+                "label": "TAG_C FILE",
+                "name": "tag_c_file",
+                "type": "file",
+                "instructions": "Available Fields: NAME",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_size": "",
+                "max_size": "",
+                "mime_types": ".csv"
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "options_page",
+                    "operator": "==",
+                    "value": "asset-map"
+                }
+            ]
+        ],
+        "menu_order": 3,
         "position": "normal",
         "style": "default",
         "label_placement": "top",
