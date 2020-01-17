@@ -16,6 +16,9 @@ interface MyState {
   postType: any,
   projects: any,
   selectedCommunities: Array<any>,
+  tag_a: any,
+  tag_b: any,
+  tag_c: any,
 };
 
 const fieldTypes = {
@@ -51,6 +54,9 @@ class Assetmap extends React.Component<{}, MyState> {
       postType: 'groups',
       projects: [],
       selectedCommunities: [],
+      tag_a: [],
+      tag_b: [],
+      tag_c: [],
     };
     
     this.getAllPostsByType = this.getAllPostsByType.bind(this);
@@ -68,6 +74,11 @@ class Assetmap extends React.Component<{}, MyState> {
       this.getAllPostsByType('groups')
     ).then(() => {
       this.setLoadedState();
+      this.getAllPostsByType('tag_a');    
+      this.getAllPostsByType('tag_b');
+      this.getAllPostsByType('tag_c');
+    }).then(() => {
+      console.log(this.cache)
     })
   }
 
@@ -145,19 +156,15 @@ class Assetmap extends React.Component<{}, MyState> {
       this.filterPosts('groups', selectedCommunities, 'communities', 'groups')
       .then(() => {
         if (postType === 'groups') {
-          // console.log("Filtered Groups by Community");
           resolve();
         } else if (postType === 'individuals') {
-          // this.state.groups is an object, not an array 
           this.filterPosts(postType, this.state.groups, 'groups', 'individuals')
           .then(() => {
-            // console.log("Filtered individuals by Community");
             resolve();
           })
         } else if (postType === 'projects') {
           this.filterPosts(postType, this.state.groups, 'groups', 'projects')
           .then(() => {
-            // console.log("Filtered projects by Community");
             resolve();
           })
         } else {
@@ -235,6 +242,7 @@ class Assetmap extends React.Component<{}, MyState> {
     });
   }
 
+  // Should return promise
   appendToPostTypeState (postType: string, posts: Array<any>) {
     const updatedState = {};
     updatedState[postType] = this.state[postType];
@@ -245,6 +253,8 @@ class Assetmap extends React.Component<{}, MyState> {
     // console.log("Updated State");
     // console.log(this.state[postType]);
   }
+
+  // Should return promise
   updatePostTypeState (postType: string, posts: Array<any>) {
     const updatedState = {};
     updatedState[postType] = {};
