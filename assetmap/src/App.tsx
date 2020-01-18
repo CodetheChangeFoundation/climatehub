@@ -19,6 +19,8 @@ interface MyState {
   tag_a: any,
   tag_b: any,
   tag_c: any,
+  tag_types: any,
+  tags: any,
 };
 
 const fieldTypes = {
@@ -32,7 +34,9 @@ const fieldTypes = {
     'tag_c', 'groups', 'director'],
   'tag_a': ['name', 'groups', 'projects', 'individuals'],
   'tag_b': ['name', 'groups', 'projects', 'individuals'],
-  'tag_c': ['name', 'groups', 'projects', 'individuals']
+  'tag_c': ['name', 'groups', 'projects', 'individuals'],
+  'tag_types': ['type_id', 'name', 'colour'],
+  'tags': ['name', 'type'],
 }
 
 class Assetmap extends React.Component<{}, MyState> {
@@ -57,6 +61,8 @@ class Assetmap extends React.Component<{}, MyState> {
       tag_a: [],
       tag_b: [],
       tag_c: [],
+      tag_types: [],
+      tags: [],
     };
     
     this.getAllPostsByType = this.getAllPostsByType.bind(this);
@@ -69,8 +75,11 @@ class Assetmap extends React.Component<{}, MyState> {
   componentDidMount() {
     this.getAllPostsByType('tag_a');    
     this.getAllPostsByType('tag_b');
-    this.getAllPostsByType('tag_c')
-    .then(() => 
+    this.getAllPostsByType('tag_c');
+    this.getAllPostsByType('tags')
+    .then(() => {
+      this.getAllPostsByType('tag_types')
+    }).then(() => 
       this.getAllPostsByType('cities')
     ).then(() => 
       this.getAllPostsByType('communities')

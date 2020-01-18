@@ -56,21 +56,33 @@ function parse_excel_file() {
         'file_field_name' => 'group_file',
         'basic_fields' => array('GROUP_ID', 'NAME', 'DESCRIPTION', 'WEBSITE'),
         'location_fields' => array(),
-        'relationship_fields' => array('TAG_A', 'TAG_B', 'TAG_C', 'COMMUNITY', 
+        'relationship_fields' => array('TAGS', 'TAG_A', 'TAG_B', 'TAG_C', 'COMMUNITY', 
           'PARENT_GROUP', 'PROJECTS', 'INDIVIDUALS'),       
       ),
       'projects' => array(
         'file_field_name' => 'project_file',
         'basic_fields' => array('PROJECT_ID', 'NAME', 'DESCRIPTION', 'WEBSITE', 'BLOG_POST'),
         'location_fields' => array(),
-        'relationship_fields' => array('TAG_A', 'TAG_B', 'TAG_C', 'DIRECTOR'),    
+        'relationship_fields' => array('TAGS', 'TAG_A', 'TAG_B', 'TAG_C', 'DIRECTOR'),    
       ),
       'individuals' => array(
         'file_field_name' => 'individual_file',
         'basic_fields' => array('INDIVIDUAL_ID', 'NAME', 'DESCRIPTION', 'WEBSITE', 
           'POSITION', 'EMAIL', 'PHONE', 'SURVEY_INFO'),
         'location_fields' => array(),
-        'relationship_fields' => array('TAG_A', 'TAG_B', 'TAG_C'), 
+        'relationship_fields' => array('TAGS', 'TAG_A', 'TAG_B', 'TAG_C'), 
+      ),
+      'tags' => array(
+        'file_field_name' => 'tag_file',
+        'basic_fields' => array('NAME'),
+        'location_fields' => array(),
+        'relationship_fields' => array('TYPE'), 
+      ),
+      'tag_types' => array(
+        'file_field_name' => 'tag_type_file',
+        'basic_fields' => array('TYPE_ID', 'NAME', 'COLOUR'),
+        'location_fields' => array(),
+        'relationship_fields' => array(), 
       ),
       'tag_a' => array(
         'file_field_name' => 'tag_a_file',
@@ -129,6 +141,10 @@ function parse_excel_file() {
           'post_type' => 'individuals',
           'field_name' => 'GROUPS'
         ),
+        'TAGS' => array(
+          'post_type' => 'tags', 
+          'field_name' => 'GROUPS'
+        ),
         'TAG_A' => array(
           'post_type' => 'tag_a', 
           'field_name' => 'GROUPS'
@@ -149,6 +165,10 @@ function parse_excel_file() {
         ),
         'DIRECTOR' => array(
           'post_type' => 'individuals',
+          'field_name' => 'PROJECTS'
+        ),
+        'TAGS' => array(
+          'post_type' => 'tags', 
           'field_name' => 'PROJECTS'
         ),
         'TAG_A' => array(
@@ -173,6 +193,10 @@ function parse_excel_file() {
           'post_type' => 'groups',
           'field_name' => 'INDIVIDUALS'
         ),
+        'TAGS' => array(
+          'post_type' => 'tags', 
+          'field_name' => 'INDIVIDUALS'
+        ),
         'TAG_A' => array(
           'post_type' => 'tag_a', 
           'field_name' => 'INDIVIDUALS'
@@ -184,6 +208,30 @@ function parse_excel_file() {
         'TAG_C' => array(
           'post_type' => 'tag_c', 
           'field_name' => 'INDIVIDUALS'
+        ),
+      ),
+      'tags' => array(
+        'TYPE' => array(
+          'post_type' => 'tag_types',
+          'field_name' => 'TAGS'
+        ),
+        'GROUPS' => array(
+          'post_type' => 'groups',
+          'field_name' => 'TAGS'
+        ),
+        'PROJECTS' => array(
+          'post_type' => 'projects',
+          'field_name' => 'TAGS'
+        ),
+        'INDIVIDUALS' => array(
+          'post_type' => 'individuals',
+          'field_name' => 'TAGS'
+        ),
+      ),
+      'tag_types' => array(
+        'TAGS' => array(
+          'post_type' => 'tags',
+          'field_name' => 'TYPE'
         ),
       ),
       'tag_a' => array(
@@ -250,6 +298,18 @@ function parse_excel_file() {
     }
     // Update posts
     $errors = update_fields($all_objects, $updated_file_headers, $related_posts);
+   
+    
+    //TEST POST
+    $my_post = array(
+      'post_title'    =>  'ALL OBJECTS',
+      'post_status'   => 'publish',
+      'post_author'   => 1,
+      'post_type' => 'cities'
+    );
+    // Insert the post into the database
+    $post_id = wp_insert_post( $my_post );
+    update_field('name', $all_objects, $post_id);
   }
 }
 

@@ -43,9 +43,9 @@ class SearchForm extends React.Component<MyProps, MyState> {
     };
 
     this.tagOptions = [{label: "Tag A", options: []}, {label: "Tag B", options: []}, {label: "Tag C", options: []}];
-    Object.values(this.props.tag_a).map((tag: {id: number, title: string}) => this.tagOptions[0].options.push({id: tag.id, value: tag.id, label: tag.title}));
-    Object.values(this.props.tag_b).map((tag: {id: number, title: string}) => this.tagOptions[1].options.push({id: tag.id, value: tag.id, label: tag.title}));
-    Object.values(this.props.tag_c).map((tag: {id: number, title: string}) => this.tagOptions[2].options.push({id: tag.id, value: tag.id, label: tag.title}));
+    Object.values(this.props.tag_a).map((tag: {id: number, name: string}) => this.tagOptions[0].options.push({id: tag.id, value: tag.id, label: tag.name}));
+    Object.values(this.props.tag_b).map((tag: {id: number, name: string}) => this.tagOptions[1].options.push({id: tag.id, value: tag.id, label: tag.name}));
+    Object.values(this.props.tag_c).map((tag: {id: number, name: string}) => this.tagOptions[2].options.push({id: tag.id, value: tag.id, label: tag.name}));
     
     this.state = {
       filterIds: [],
