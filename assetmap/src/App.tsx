@@ -30,9 +30,9 @@ const fieldTypes = {
     'survey_info', 'tag_a', 'tag_b', 'tag_c', 'projects', 'groups'],
   'projects': ['project_id', 'name', 'description', 'website', 'blog_post', 'tag_a', 'tag_b', 
     'tag_c', 'groups', 'director'],
-  'tag_a': ['groups', 'projects', 'individuals'],
-  'tag_b': ['groups', 'projects', 'individuals'],
-  'tag_c': ['groups', 'projects', 'individuals']
+  'tag_a': ['name', 'groups', 'projects', 'individuals'],
+  'tag_b': ['name', 'groups', 'projects', 'individuals'],
+  'tag_c': ['name', 'groups', 'projects', 'individuals']
 }
 
 class Assetmap extends React.Component<{}, MyState> {
@@ -67,16 +67,16 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   componentDidMount() {
-    this.getAllPostsByType('cities')
+    this.getAllPostsByType('tag_a');    
+    this.getAllPostsByType('tag_b');
+    this.getAllPostsByType('tag_c')
     .then(() => 
+      this.getAllPostsByType('cities')
+    ).then(() => 
       this.getAllPostsByType('communities')
     ).then(() => 
       this.getAllPostsByType('groups')
     ).then(() => {
-      this.getAllPostsByType('tag_a')    
-      this.getAllPostsByType('tag_b');
-      this.getAllPostsByType('tag_c');
-    }).then(() => {
       this.setLoadedState();
     }).then(() => {
       console.log(this.cache)
@@ -103,24 +103,25 @@ class Assetmap extends React.Component<{}, MyState> {
         res.json()
         .then((resJSON) => {
           dataResponses.push(this.cacheAllPosts(resJSON, postType));
-        })
-        for (let i = currentPage + 1; i<=numPages ; i++) {
-          dataResponses.push(
-            new Promise((res4) => {
-              const newUrl = baseUrl + '&page=' + i;
-              fetch(newUrl)
-              .then((response) => {
-                response.json()
-                .then((res2) => {
-                  dataResponses.push(this.cacheAllPosts(res2, postType));
-                  res4();
+          
+          for (let i = currentPage + 1; i<=numPages ; i++) {
+            dataResponses.push(
+              new Promise((res4) => {
+                const newUrl = baseUrl + '&page=' + i;
+                fetch(newUrl)
+                .then((response) => {
+                  response.json()
+                  .then((res2) => {
+                    dataResponses.push(this.cacheAllPosts(res2, postType));
+                    res4();
+                  })
                 })
               })
-            })
-          )
-        }
-        Promise.all(dataResponses).then(() => {
-          resolve();
+            )
+          }
+          Promise.all(dataResponses).then(() => {
+            resolve();
+          })
         })
       });  
     })
@@ -135,6 +136,8 @@ class Assetmap extends React.Component<{}, MyState> {
           new Promise((res) => {
             const postObject = {
               id: post.id,
+              // TODO: used for tag name right now. remove and use name ACF instead
+              title: post.title.rendered,
             };
             fieldTypes[postType].forEach((field: string) => {
               postObject[field] = post[field];

@@ -15,12 +15,13 @@ interface MyProps {
       phone: string,
       position: string,
       projects: Array<number>,
-      tag_a: Array<{ post_type: string, post_title: string }>,
-      tag_b: Array<{ post_type: string, post_title: string }>,
-      tag_c: Array<{ post_type: string, post_title: string }>,
+      tag_a: Array<number>,
+      tag_b: Array<number>,
+      tag_c: Array<number>,
       website: string,
     }
   },
+  getTagName: (tagGroup: string, id: number) => string,
   handleFilterIds: (postType: string, filterIds: Array<number>) => void,
   postType: string
 }
@@ -47,7 +48,7 @@ class Table extends React.Component<MyProps, MyState> {
   }
 
   renderItems() {
-    const { data, postType } = this.props;
+    const { data, getTagName, handleFilterIds, postType } = this.props;
     const { expandedRow } = this.state;
     const itemRows: Array<any> = []
 
@@ -57,9 +58,9 @@ class Table extends React.Component<MyProps, MyState> {
         itemRows.push(
           <React.Fragment key={index}>
             <tr key={"row-data-" + index} onClick={clickCallback}>
-              <td className="text-wrap">{line.name}</td>
+              <td className="text-wrap align-middle">{line.name}</td>
               <td className="text-wrap">
-                {(line.tag_a[0] || line.tag_b[0] || line.tag_c[0]) && <Tags tags={[line.tag_a, line.tag_b, line.tag_c]} />}
+                {(line.tag_a[0] || line.tag_b[0] || line.tag_c[0]) && <Tags getTagName={getTagName} tag_a={line.tag_a} tag_b={line.tag_b} tag_c={line.tag_c} />}
               </td>
             </tr>
             {expandedRow === line.id &&
@@ -67,7 +68,7 @@ class Table extends React.Component<MyProps, MyState> {
                 <RowInfo 
                   postType={postType}
                   data={line}
-                  handleFilterIds={this.props.handleFilterIds}
+                  handleFilterIds={handleFilterIds}
                 />
               </tr>
             }

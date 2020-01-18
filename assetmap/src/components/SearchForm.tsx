@@ -25,10 +25,12 @@ interface MyState {
   postType: string,
   searchTerm: string,
   selectedCommunities: any,
+  selectedTags: any,
 };
 
 class SearchForm extends React.Component<MyProps, MyState> {
   communityOptions: any;
+  tagOptions: any;
 
   constructor(props: MyProps) {
     super(props);
@@ -39,17 +41,25 @@ class SearchForm extends React.Component<MyProps, MyState> {
     if (this.props.communities !== []) {
       Object.values(this.props.communities).map((community: { id: number, name: string, city: number; }) => this.communityOptions[community.city[0]].options.push({id: community.id, value: community.id, label: community.name}));
     };
+
+    this.tagOptions = [{label: "Tag A", options: []}, {label: "Tag B", options: []}, {label: "Tag C", options: []}];
+    Object.values(this.props.tag_a).map((tag: {id: number, title: string}) => this.tagOptions[0].options.push({id: tag.id, value: tag.id, label: tag.title}));
+    Object.values(this.props.tag_b).map((tag: {id: number, title: string}) => this.tagOptions[1].options.push({id: tag.id, value: tag.id, label: tag.title}));
+    Object.values(this.props.tag_c).map((tag: {id: number, title: string}) => this.tagOptions[2].options.push({id: tag.id, value: tag.id, label: tag.title}));
     
     this.state = {
       filterIds: [],
       postType: props.categories[0],
       searchTerm: "",
-      selectedCommunities: null
+      selectedCommunities: null,
+      selectedTags: null
     };
     this.handleCommunityChange = this.handleCommunityChange.bind(this);
     this.handleFilterIds = this.handleFilterIds.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handlePostTypeChange = this.handlePostTypeChange.bind(this);
+    this.handleTagFilterChange = this.handleTagFilterChange.bind(this);
+    this.getTagName = this.getTagName.bind(this);
   }
 
   handleCommunityChange(selectedCommunities: any) {
@@ -63,6 +73,15 @@ class SearchForm extends React.Component<MyProps, MyState> {
 
   handleSearch(event: any) {
     this.setState({searchTerm: event.target.value});
+  }
+
+  handleTagFilterChange(selectedTags: any) {
+    this.setState(
+      { selectedTags },
+      () => {
+        // this.getPostsByCommunity();
+      }
+    );
   }
 
   handlePostTypeChange(postType: any) {
@@ -106,8 +125,12 @@ class SearchForm extends React.Component<MyProps, MyState> {
     });
   }
 
+  getTagName(tagGroup: string, id: number): string {
+    return this.props[tagGroup][id].title;
+  }
+
   public render() {
-    const { filterIds, postType, searchTerm, selectedCommunities } = this.state;
+    const { filterIds, postType, searchTerm, selectedCommunities, selectedTags } = this.state;
     
     const categories: Array<object> = [];
     this.props.categories.map(category => categories.push({ value: category.toLowerCase(), label: category }))
@@ -177,9 +200,9 @@ class SearchForm extends React.Component<MyProps, MyState> {
           <div className="col-12 col-sm-4 col-lg-5 pl-sm-0">
             <Select
               styles={customStyles}
-              value={selectedCommunities}
-              onChange={this.handleCommunityChange}
-              options={this.communityOptions}
+              value={selectedTags}
+              onChange={this.handleTagFilterChange}
+              options={this.tagOptions}
               isMulti={true}
               placeholder={"Filter by tag"}
               className={"border border-bottom-0 border-dark h-100 m-0 p-0 z-index-110 "}
@@ -211,6 +234,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 data={currPosts}
                 postType={postType}
                 handleFilterIds={this.handleFilterIds}
+                getTagName={this.getTagName}
               />
             </div>
           </div>
