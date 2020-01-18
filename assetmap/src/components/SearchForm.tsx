@@ -126,7 +126,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
   }
 
   getTagName(tagGroup: string, id: number): string {
-    return this.props[tagGroup][id].title;
+    return this.props[tagGroup][id].name
   }
 
   public render() {

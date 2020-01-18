@@ -135,9 +135,7 @@ class Assetmap extends React.Component<{}, MyState> {
         promiseArray.push(
           new Promise((res) => {
             const postObject = {
-              id: post.id,
-              // TODO: used for tag name right now. remove and use name ACF instead
-              title: post.title.rendered,
+              id: post.id
             };
             fieldTypes[postType].forEach((field: string) => {
               postObject[field] = post[field];

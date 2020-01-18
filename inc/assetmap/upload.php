@@ -33,6 +33,7 @@ function my_custom_mime_types( $mimes ) {
 }
 
 add_filter( 'upload_mimes', 'my_custom_mime_types' );
+
 $errors = [];
 function parse_excel_file() {
 	$screen = get_current_screen();
@@ -73,19 +74,19 @@ function parse_excel_file() {
       ),
       'tag_a' => array(
         'file_field_name' => 'tag_a_file',
-        'basic_fields' => array(),
+        'basic_fields' => array('NAME'),
         'location_fields' => array(),
         'relationship_fields' => array(), 
       ),
       'tag_b' => array(
         'file_field_name' => 'tag_b_file',
-        'basic_fields' => array(),
+        'basic_fields' => array('NAME'),
         'location_fields' => array(),
         'relationship_fields' => array(), 
       ),
       'tag_c' => array(
         'file_field_name' => 'tag_c_file',
-        'basic_fields' => array(),
+        'basic_fields' => array('NAME'),
         'location_fields' => array(),
         'relationship_fields' => array(), 
       )
