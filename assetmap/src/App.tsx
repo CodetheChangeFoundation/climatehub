@@ -26,11 +26,11 @@ interface MyState {
 const fieldTypes = {
   'cities': ['city_id', 'name', 'location', 'communities'],
   'communities': ['community_id', 'name', 'code', 'location', 'city', 'groups'],
-  'groups': ['group_id', 'name', 'description', 'website', 'tag_a', 'tag_b', 'tag_c', 'community', 
+  'groups': ['group_id', 'name', 'description', 'website', 'tags', 'tag_a', 'tag_b', 'tag_c', 'community', 
     'parent_group', 'child_groups', 'projects', 'individuals'],
   'individuals': ['individual_id', 'name', 'description', 'website', 'position', 'email', 'phone', 
-    'survey_info', 'tag_a', 'tag_b', 'tag_c', 'projects', 'groups'],
-  'projects': ['project_id', 'name', 'description', 'website', 'blog_post', 'tag_a', 'tag_b', 
+    'survey_info', 'tags', 'tag_a', 'tag_b', 'tag_c', 'projects', 'groups'],
+  'projects': ['project_id', 'name', 'description', 'website', 'blog_post', 'tags', 'tag_a', 'tag_b', 
     'tag_c', 'groups', 'director'],
   'tag_a': ['name', 'groups', 'projects', 'individuals'],
   'tag_b': ['name', 'groups', 'projects', 'individuals'],
@@ -295,7 +295,7 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   public render() {
-    const { cities, communities, error, groups, isLoaded } = this.state;
+    const { cities, communities, error, groups, isLoaded, tags, tag_types} = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -307,6 +307,8 @@ class Assetmap extends React.Component<{}, MyState> {
             tag_a={this.state.tag_a}
             tag_b={this.state.tag_b}
             tag_c={this.state.tag_c}
+            tags={tags}
+            tag_types={tag_types}
             categories={this.categories}
             cities={cities}
             communities={communities}

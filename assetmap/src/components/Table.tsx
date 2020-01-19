@@ -18,10 +18,12 @@ interface MyProps {
       tag_a: Array<number>,
       tag_b: Array<number>,
       tag_c: Array<number>,
+      tags: Array<number>,
       website: string,
     }
   },
   getTagName: (tagGroup: string, id: number) => string,
+  getTagColor: (tagGroup: string, id: number) => string,
   handleFilterIds: (postType: string, filterIds: Array<number>) => void,
   postType: string
 }
@@ -48,19 +50,20 @@ class Table extends React.Component<MyProps, MyState> {
   }
 
   renderItems() {
-    const { data, getTagName, handleFilterIds, postType } = this.props;
+    const { data, getTagName, getTagColor, handleFilterIds, postType } = this.props;
     const { expandedRow } = this.state;
     const itemRows: Array<any> = []
 
     if (Object.values(data).length > 0) {
       Object.values(data).map((line, index) => {
+        console.log(line);
         const clickCallback = () => this.handleRowClick(line.id);
         itemRows.push(
           <React.Fragment key={index}>
             <tr key={"row-data-" + index} onClick={clickCallback}>
               <td className="text-wrap align-middle">{line.name}</td>
               <td className="text-wrap">
-                {(line.tag_a[0] || line.tag_b[0] || line.tag_c[0]) && <Tags getTagName={getTagName} tag_a={line.tag_a} tag_b={line.tag_b} tag_c={line.tag_c} />}
+                {(line.tags[0] || line.tag_a[0] || line.tag_b[0] || line.tag_c[0]) && <Tags getTagName={getTagName} getTagColor={getTagColor} tags={line.tags} tag_a={line.tag_a} tag_b={line.tag_b} tag_c={line.tag_c} />}
               </td>
             </tr>
             {expandedRow === line.id &&

@@ -18,6 +18,8 @@ interface MyProps {
   tag_a: any
   tag_b: any
   tag_c: any
+  tags: any
+  tag_types: any
 };
 
 interface MyState {
@@ -41,12 +43,15 @@ class SearchForm extends React.Component<MyProps, MyState> {
     if (this.props.communities !== []) {
       Object.values(this.props.communities).map((community: { id: number, name: string, city: number; }) => this.communityOptions[community.city[0]].options.push({id: community.id, value: community.id, label: community.name}));
     };
-
-    this.tagOptions = [{label: "Tag A", options: []}, {label: "Tag B", options: []}, {label: "Tag C", options: []}];
-    Object.values(this.props.tag_a).map((tag: {id: number, name: string}) => this.tagOptions[0].options.push({id: tag.id, value: tag.id, label: tag.name}));
-    Object.values(this.props.tag_b).map((tag: {id: number, name: string}) => this.tagOptions[1].options.push({id: tag.id, value: tag.id, label: tag.name}));
-    Object.values(this.props.tag_c).map((tag: {id: number, name: string}) => this.tagOptions[2].options.push({id: tag.id, value: tag.id, label: tag.name}));
     
+    this.tagOptions = [];
+    if (this.props.tag_types !== []) {
+      Object.values(this.props.tag_types).map((tagType: {id: number, name: string, color: string}) => this.tagOptions[tagType.id] = ({label: tagType.name, options: []}))
+    };
+    if (this.props.tags !== []) {
+      Object.values(this.props.tags).map((tag: {name: string, type: string}) => this.tagOptions[tag.type[0]].options.push({id: tag.name, label: tag.name, value: tag.name}));
+    };
+
     this.state = {
       filterIds: [],
       postType: props.categories[0],
@@ -60,6 +65,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.handlePostTypeChange = this.handlePostTypeChange.bind(this);
     this.handleTagFilterChange = this.handleTagFilterChange.bind(this);
     this.getTagName = this.getTagName.bind(this);
+    this.getTagColor = this.getTagColor.bind(this);
   }
 
   handleCommunityChange(selectedCommunities: any) {
@@ -126,7 +132,22 @@ class SearchForm extends React.Component<MyProps, MyState> {
   }
 
   getTagName(tagGroup: string, id: number): string {
-    return this.props[tagGroup][id].name
+    if (this.props[tagGroup][id]) {
+      return this.props[tagGroup][id].name;
+    }
+    return '';
+  }
+
+  // TODO
+  getTagColor(tagGroup: string, id: number): string {
+    if (tagGroup === 'tags') {
+      if (this.props.tags[id]) {
+        const typeId = this.props.tags[id].type;
+        const color = this.props.tag_types[typeId].colour;
+        return '#' + color;
+      }
+    }
+    return '#123456';
   }
 
   public render() {
@@ -234,6 +255,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 data={currPosts}
                 postType={postType}
                 handleFilterIds={this.handleFilterIds}
+                getTagColor={this.getTagColor}
                 getTagName={this.getTagName}
               />
             </div>
