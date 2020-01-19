@@ -34,6 +34,7 @@ function my_custom_mime_types( $mimes ) {
 
 add_filter( 'upload_mimes', 'my_custom_mime_types' );
 
+$errors = [];
 function parse_excel_file() {
 	$screen = get_current_screen();
 	if (strpos($screen->id, "asset-map") == true) {
@@ -55,22 +56,34 @@ function parse_excel_file() {
         'file_field_name' => 'group_file',
         'basic_fields' => array('GROUP_ID', 'NAME', 'DESCRIPTION', 'WEBSITE'),
         'location_fields' => array(),
-        'relationship_fields' => array('COMMUNITY', 
+        'relationship_fields' => array('TAGS', 'COMMUNITY', 
           'PARENT_GROUP', 'PROJECTS', 'INDIVIDUALS'),       
       ),
       'projects' => array(
         'file_field_name' => 'project_file',
         'basic_fields' => array('PROJECT_ID', 'NAME', 'DESCRIPTION', 'WEBSITE', 'BLOG_POST'),
         'location_fields' => array(),
-        'relationship_fields' => array('DIRECTOR'),    
+        'relationship_fields' => array('TAGS', 'DIRECTOR'),    
       ),
       'individuals' => array(
         'file_field_name' => 'individual_file',
         'basic_fields' => array('INDIVIDUAL_ID', 'NAME', 'DESCRIPTION', 'WEBSITE', 
           'POSITION', 'EMAIL', 'PHONE', 'SURVEY_INFO'),
         'location_fields' => array(),
+        'relationship_fields' => array('TAGS'), 
+      ),
+      'tags' => array(
+        'file_field_name' => 'tag_file',
+        'basic_fields' => array('NAME'),
+        'location_fields' => array(),
+        'relationship_fields' => array('TYPE'), 
+      ),
+      'tag_types' => array(
+        'file_field_name' => 'tag_type_file',
+        'basic_fields' => array('TYPE_ID', 'NAME', 'COLOUR'),
+        'location_fields' => array(),
         'relationship_fields' => array(), 
-      )
+      ),
     );
     $related_posts = array(
       'cities' => array( 
@@ -110,6 +123,10 @@ function parse_excel_file() {
           'post_type' => 'individuals',
           'field_name' => 'GROUPS'
         ),
+        'TAGS' => array(
+          'post_type' => 'tags', 
+          'field_name' => 'GROUPS'
+        ),
       ),
       'projects' => array(
         'GROUPS' => array(
@@ -118,6 +135,10 @@ function parse_excel_file() {
         ),
         'DIRECTOR' => array(
           'post_type' => 'individuals',
+          'field_name' => 'PROJECTS'
+        ),
+        'TAGS' => array(
+          'post_type' => 'tags', 
           'field_name' => 'PROJECTS'
         ),
       ),
@@ -129,6 +150,34 @@ function parse_excel_file() {
         'GROUPS' => array(
           'post_type' => 'groups',
           'field_name' => 'INDIVIDUALS'
+        ),
+        'TAGS' => array(
+          'post_type' => 'tags', 
+          'field_name' => 'INDIVIDUALS'
+        ),
+      ),
+      'tags' => array(
+        'TYPE' => array(
+          'post_type' => 'tag_types',
+          'field_name' => 'TAGS'
+        ),
+        'GROUPS' => array(
+          'post_type' => 'groups',
+          'field_name' => 'TAGS'
+        ),
+        'PROJECTS' => array(
+          'post_type' => 'projects',
+          'field_name' => 'TAGS'
+        ),
+        'INDIVIDUALS' => array(
+          'post_type' => 'individuals',
+          'field_name' => 'TAGS'
+        ),
+      ),
+      'tag_types' => array(
+        'TAGS' => array(
+          'post_type' => 'tags',
+          'field_name' => 'TYPE'
         ),
       ),
     );

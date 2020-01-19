@@ -15,13 +15,12 @@ interface MyProps {
       phone: string,
       position: string,
       projects: Array<number>,
-      tag_a: Array<number>,
-      tag_b: Array<number>,
-      tag_c: Array<number>,
+      tags: Array<number>,
       website: string,
     }
   },
   getTagName: (tagGroup: string, id: number) => string,
+  getTagColor: (tagGroup: string, id: number) => string,
   handleFilterIds: (postType: string, filterIds: Array<number>) => void,
   postType: string
 }
@@ -48,7 +47,7 @@ class Table extends React.Component<MyProps, MyState> {
   }
 
   renderItems() {
-    const { data, getTagName, handleFilterIds, postType } = this.props;
+    const { data, getTagName, getTagColor, handleFilterIds, postType } = this.props;
     const { expandedRow } = this.state;
     const itemRows: Array<any> = []
 
@@ -60,7 +59,7 @@ class Table extends React.Component<MyProps, MyState> {
             <tr key={"row-data-" + index} onClick={clickCallback}>
               <td className="text-wrap align-middle">{line.name}</td>
               <td className="text-wrap">
-                {(line.tag_a[0] || line.tag_b[0] || line.tag_c[0]) && <Tags getTagName={getTagName} tag_a={line.tag_a} tag_b={line.tag_b} tag_c={line.tag_c} />}
+                {<Tags getTagName={getTagName} getTagColor={getTagColor} tags={line.tags}/>}
               </td>
             </tr>
             {expandedRow === line.id &&
