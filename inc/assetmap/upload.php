@@ -202,18 +202,6 @@ function parse_excel_file() {
     }
     // Update posts
     $errors = update_fields($all_objects, $updated_file_headers, $related_posts);
-   
-    
-    //TEST POST
-    $my_post = array(
-      'post_title'    =>  'ALL OBJECTS',
-      'post_status'   => 'publish',
-      'post_author'   => 1,
-      'post_type' => 'cities'
-    );
-    // Insert the post into the database
-    $post_id = wp_insert_post( $my_post );
-    update_field('name', $all_objects, $post_id);
   }
 }
 
