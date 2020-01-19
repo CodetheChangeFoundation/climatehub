@@ -1297,6 +1297,25 @@
         "title": "Tag_A",
         "fields": [
             {
+                "key": "field_5e21266dc0d87",
+                "label": "NAME",
+                "name": "name",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
                 "key": "field_5e06fcbaa759e",
                 "label": "GROUPS",
                 "name": "groups",
@@ -1395,6 +1414,25 @@
         "title": "Tag_B",
         "fields": [
             {
+                "key": "field_5e21268a3f594",
+                "label": "NAME",
+                "name": "name",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
                 "key": "field_5e06fda6bcefd",
                 "label": "GROUPS",
                 "name": "groups",
@@ -1492,6 +1530,25 @@
         "key": "group_5e06fdb90ea0f",
         "title": "Tag_C",
         "fields": [
+            {
+                "key": "field_5e2126a2055c2",
+                "label": "NAME",
+                "name": "name",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
             {
                 "key": "field_5e06fdb912a3e",
                 "label": "GROUPS",

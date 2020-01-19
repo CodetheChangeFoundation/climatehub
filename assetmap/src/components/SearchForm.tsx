@@ -1,84 +1,269 @@
 import * as React from 'react';
+import Select from 'react-select';
+import Table from './Table';
 
 interface MyProps {
-  categories: Array<string>,
-  columns: Array<string>,
-  data: Array<Array<string>>,
-  onChange: any
+  categories: Array<string>
+  cities: any
+  communities: any
+  groups: any
+  getAllPostsByType: any
+  filterPostsByCommunity: any
+  getPostsFromCache: any
+  cache: any
+  getPostbyId: any
+  filterPosts: any
+  individuals: any
+  projects: any
+  tag_a: any
+  tag_b: any
+  tag_c: any
 };
 
 interface MyState {
-  filterParameter: string,
-  searchTerm: string
+  filterIds: Array<number>,
+  postType: string,
+  searchTerm: string,
+  selectedCommunities: any,
+  selectedTags: any,
 };
 
 class SearchForm extends React.Component<MyProps, MyState> {
+  communityOptions: any;
+  tagOptions: any;
+
   constructor(props: MyProps) {
     super(props);
-    this.state = {
-      filterParameter: props.categories[0],
-      searchTerm: ""
+    this.communityOptions = [];
+    if (this.props.cities !== []) { 
+      Object.values(this.props.cities).map((city: { id: number; name: string; }) => this.communityOptions[city.id] = ({label: city.name, options: []}));
     };
+    if (this.props.communities !== []) {
+      Object.values(this.props.communities).map((community: { id: number, name: string, city: number; }) => this.communityOptions[community.city[0]].options.push({id: community.id, value: community.id, label: community.name}));
+    };
+
+    this.tagOptions = [{label: "Tag A", options: []}, {label: "Tag B", options: []}, {label: "Tag C", options: []}];
+    Object.values(this.props.tag_a).map((tag: {id: number, title: string}) => this.tagOptions[0].options.push({id: tag.id, value: tag.id, label: tag.title}));
+    Object.values(this.props.tag_b).map((tag: {id: number, title: string}) => this.tagOptions[1].options.push({id: tag.id, value: tag.id, label: tag.title}));
+    Object.values(this.props.tag_c).map((tag: {id: number, title: string}) => this.tagOptions[2].options.push({id: tag.id, value: tag.id, label: tag.title}));
+    
+    this.state = {
+      filterIds: [],
+      postType: props.categories[0],
+      searchTerm: "",
+      selectedCommunities: null,
+      selectedTags: null
+    };
+    this.handleCommunityChange = this.handleCommunityChange.bind(this);
+    this.handleFilterIds = this.handleFilterIds.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleFilter = this.handleFilter.bind(this);
+    this.handlePostTypeChange = this.handlePostTypeChange.bind(this);
+    this.handleTagFilterChange = this.handleTagFilterChange.bind(this);
+    this.getTagName = this.getTagName.bind(this);
+  }
+
+  handleCommunityChange(selectedCommunities: any) {
+    this.setState(
+      { selectedCommunities },
+      () => {
+        this.getPostsByCommunity();
+      }
+    );
   }
 
   handleSearch(event: any) {
     this.setState({searchTerm: event.target.value});
   }
-  handleFilter(event: any) {
-    this.props.onChange();
-    this.setState({filterParameter: event.target.value});
+
+  handleTagFilterChange(selectedTags: any) {
+    this.setState(
+      { selectedTags },
+      () => {
+        // this.getPostsByCommunity();
+      }
+    );
+  }
+
+  handlePostTypeChange(postType: any) {
+    this.setState({
+      filterIds: [],
+      postType: postType.label
+    }, 
+      () => {
+        this.getPostsByCommunity();
+    });
+  }
+
+  handleFilterIds(postType: string, filterIds: Array<number>) {
+    this.setState({
+      postType
+    },
+      () => {
+        this.getPostsByCommunity()
+        .then(() => {
+          this.setState({filterIds});
+        })
+      });
+  }
+
+  getPostsByCommunity(selectedPosts: any = this.state.selectedCommunities): Promise<any> {
+    return new Promise((resolve) => {
+      let selection: any;
+      if (selectedPosts !== null) {
+        selection = {};
+        selectedPosts.forEach((post: any) => {
+          selection[post.id] = post;
+        });
+      } else {
+        selection = null;
+      }
+      this.props.filterPostsByCommunity(this.state.postType.toLowerCase(), selection)
+      .then(() => {
+        console.log(this.props[this.state.postType.toLowerCase()]);
+        resolve();
+      })
+    });
+  }
+
+  getTagName(tagGroup: string, id: number): string {
+    return this.props[tagGroup][id].title;
   }
 
   public render() {
-    const dropdown = [];
-    const tableColumns = [];
-    const tableRows = [];
-    const table = [];
-
-    for (const category of this.props.categories) {
-      dropdown.push(<option key={this.props.categories.indexOf(category)}>{category}</option>);
+    const { filterIds, postType, searchTerm, selectedCommunities, selectedTags } = this.state;
+    
+    const categories: Array<object> = [];
+    this.props.categories.map(category => categories.push({ value: category.toLowerCase(), label: category }))
+    
+    let currPosts = this.props[postType.toLowerCase()];
+    
+    // Search
+    const searchTermFormatted = searchTerm.toLowerCase();
+    if (searchTermFormatted !== "") {
+      const updatedPosts = {};
+      Object.keys(currPosts).forEach((postId) => {
+        if (currPosts[postId].name.toLowerCase().includes(searchTermFormatted)) {
+          updatedPosts[postId] = currPosts[postId];
+        }
+      })
+      currPosts = updatedPosts;
     }
 
-    for (const column of this.props.columns) {
-      tableColumns.push(<th className="border-top-0" key={this.props.columns.indexOf(column)} scope="col">{column}</th>);
+    // Filter Ids
+    if (filterIds.length !== 0) {
+      currPosts = Object.keys(currPosts)
+      .filter(key => filterIds.includes(parseInt(key, 10)))
+      .reduce((obj, key) => {
+        obj[key] = currPosts[key];
+        return obj;
+      }, {});
     }
 
-    for (const row of this.props.data) {
-      const cells = []
-      for (const cell of row) {
-        cells.push(<td key={row.indexOf(cell)}>{cell}</td>);
-      }
-      tableRows.push(<tr key={this.props.data.indexOf(row)}>{cells}</tr>);
-    }
-
-    table.push(<table key="0" className="mb-0 table text-center"><thead><tr>{tableColumns}</tr></thead><tbody>{tableRows}</tbody></table>);
+    const clearFilter = () => this.setState({ filterIds: [] })
 
     return (
-      <form id="SearchForm" className="container mt-5 pt-5">
-        <div className="mt-5 pt-5 row">
-          <div className="border border-bottom-0 border-dark col-12 col-sm-3 form-group m-0 p-0">
-            <span className="align-items-center d-inline-flex h-100 pl-3 position-absolute">
-              <svg fill="none" height="20" width="15" viewBox="0 0 15 20" xmlns="http://www.w3.org/2000/svg">
-                <path clipRule="evenodd" fill="#888888" fillRule="evenodd" d="M11.1189 6.55945C11.1189 9.07756 9.07756 11.1189 6.55945 11.1189C4.04133 11.1189 2 9.07756 2 6.55945C2 4.04133 4.04133 2 6.55945 2C9.07756 2 11.1189 4.04133 11.1189 6.55945ZM8.62627 12.7866C7.97647 13.0022 7.28159 13.1189 6.55945 13.1189C2.93676 13.1189 0 10.1821 0 6.55945C0 2.93676 2.93676 0 6.55945 0C10.1821 0 13.1189 2.93676 13.1189 6.55945C13.1189 8.74448 12.0505 10.68 10.4076 11.8721L14.523 19L12.7909 20L8.62627 12.7866Z"/>
-              </svg>
-            </span>
-            <select className="bg-light border-0 custom-select my-2 pl-5 py-1 shadow-none" onChange={this.handleFilter} value={this.state.filterParameter}>
-              {dropdown}
-            </select>
+      <div id="SearchForm" className="container">
+        <div className="row">
+          <div className="col-12 mb-4">
+            <Select
+              styles={customStyles}
+              value={selectedCommunities}
+              onChange={this.handleCommunityChange}
+              options={this.communityOptions}
+              isMulti={true}
+              placeholder={"Community"}
+              className={"border border-dark z-index-120 "}
+            />
           </div>
-          <div className="border border-bottom-0 border-dark border-left-0 col-12 col-sm-9 form-group m-0 p-0">
-            <input className="border-0 bg-light form-control my-2 py-1" onChange={this.handleSearch} placeholder="Search" type="text" value={this.state.searchTerm}/>
+        </div>
+        <div className="row">
+          <div className="col-12 col-sm-4 col-lg-2 pr-sm-0">
+            <Select
+              styles={customStyles}
+              value={{value: postType.toLowerCase(), label: postType}}
+              onChange={this.handlePostTypeChange}
+              options={categories}
+              className={"border border-bottom-0 border-dark h-100 m-0 p-0 z-index-110 "}
+            />
           </div>
-          <div className="border border-dark col-12">
-            <div className="mx-4 overflow-hidden">
-              {table}
+          <div className="col-12 col-sm-4 col-lg-5 px-sm-0">
+            <div className="border border-bottom-0 border-dark border-left-0 border-right-0 h-100 m-0 p-0">
+              <input
+                className="border-0 bg-light form-control h-100"
+                onChange={this.handleSearch}
+                placeholder="Search by name"
+                type="text"
+                value={searchTerm}
+              />
+            </div>
+          </div>
+          <div className="col-12 col-sm-4 col-lg-5 pl-sm-0">
+            <Select
+              styles={customStyles}
+              value={selectedTags}
+              onChange={this.handleTagFilterChange}
+              options={this.tagOptions}
+              isMulti={true}
+              placeholder={"Filter by tag"}
+              className={"border border-bottom-0 border-dark h-100 m-0 p-0 z-index-110 "}
+            />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-4 pr-0">
+            <div className="py-2 border-top border-left border-dark h-100">
+              {filterIds.length !== 0 && 
+              <div className="pl-2 ml-1" onClick={clearFilter}>
+                <p className="cursor-pointer mb-0 d-inline">Remove filter</p>
+              </div>}
+            </div>
+          </div>
+          <div className="col-4 px-0">
+            <div className="py-2 border-top border-dark">
+              <div className="text-center">{Object.keys(currPosts).length} results</div>
+            </div>
+          </div>
+          <div className="col-4 pl-0">
+            <div className="py-2 border-top border-right border-dark h-100" />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            <div className="border border-dark table-container">
+              <Table
+                data={currPosts}
+                postType={postType}
+                handleFilterIds={this.handleFilterIds}
+                getTagName={this.getTagName}
+              />
             </div>
           </div>
         </div>
-      </form>
+      </div>
     );
+  }
+}
+
+const customStyles = {
+  control: (provided: any, state: any) => ({
+    // none of react-select's styles are passed to <Control />
+    ...provided,
+    backgroundColor: 'bg-light',
+    border: 0,
+    boxShadow: 0,
+    outline: 0,
+  }),
+  option: (provided: any, state: any) => ({
+    ...provided,
+    // borderBottom: '1px dotted pink',
+    // color: state.isSelected ? 'red' : 'blue',
+    // padding: 20,
+  }),
+  singleValue: (provided: any, state: any) => {
+    // const opacity = state.isDisabled ? 0.5 : 1;
+    // const transition = 'opacity 300ms';
+
+    return { ...provided };
   }
 }
 

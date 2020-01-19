@@ -326,3 +326,59 @@ body {
   object-fit: contain;
   object-position: center center;
 }
+
+/* Asset Map */
+
+.asset-map .table-container {
+  height: 500px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.asset-map .table-container table {
+  table-layout: fixed;
+}
+
+.asset-map .table-container thead th {
+  top: 0;
+  box-shadow: 0px 1px 0px 0px #DFDFDF;
+}
+
+.asset-map .table-container .tag {
+  white-space: nowrap;
+}
+
+.asset-map .table-container .tag_a {
+  border-color: var(--primary) !important;
+  background-color: var(--secondary);
+}
+
+.asset-map .table-container .tag_b {
+  border-color: var(--info) !important;
+  background-color: rgba(0, 123, 255, 0.25);
+}
+
+.asset-map .table-container .tag_c {
+  border-color: var(--warning) !important;
+  background-color: rgba(255, 193, 7, 0.25);
+}
+
+.asset-map .table-container tbody tr.no-hover:hover > td {
+  background-color: var(--light);
+}
+
+.z-index-99 {
+  z-index: 99;
+}
+
+.z-index-110 {
+  z-index: 110;
+}
+
+.z-index-120 {
+  z-index: 120;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
