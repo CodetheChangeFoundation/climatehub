@@ -29,7 +29,7 @@ const fieldTypes = {
     'survey_info', 'tags', 'projects', 'groups'],
   'projects': ['project_id', 'name', 'description', 'website', 'blog_post', 'tags', 'groups', 'director'],
   'tag_types': ['type_id', 'name', 'colour'],
-  'tags': ['name', 'type'],
+  'tags': ['name', 'type', 'groups', 'projects', 'individuals'],
 }
 
 class Assetmap extends React.Component<{}, MyState> {
@@ -58,6 +58,7 @@ class Assetmap extends React.Component<{}, MyState> {
     this.getAllPostsByType = this.getAllPostsByType.bind(this);
     this.getPostsFromCache = this.getPostsFromCache.bind(this);
     this.filterPostsByCommunity = this.filterPostsByCommunity.bind(this);
+    this.filterPostsByTag = this.filterPostsByTag.bind(this);
     this.getPostbyId = this.getPostbyId.bind(this);
     this.filterPosts = this.filterPosts.bind(this);
   }
@@ -74,6 +75,8 @@ class Assetmap extends React.Component<{}, MyState> {
       this.getAllPostsByType('groups')
     ).then(() => {
       this.setLoadedState();
+      this.getAllPostsByType('individuals');
+      this.getAllPostsByType('projects');
     }).then(() => {
       console.log(this.cache)
     })
@@ -142,6 +145,18 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
+  filterPostsByTag(postType: string, selectedTags: Array<number>): Promise<any> {
+    return new Promise((resolve) => {
+      console.log(selectedTags);
+      this.filterPosts(postType, selectedTags, 'tags', postType)
+      .then(() => {
+        resolve();
+      }).catch(() => {
+        console.log("Invalid post type");
+      })
+    })
+  }
+
   filterPostsByCommunity(postType: string, selectedCommunities: Array<number>): Promise<any> {
     return new Promise((resolve, reject) => {
       this.filterPosts('groups', selectedCommunities, 'communities', 'groups')
@@ -172,7 +187,10 @@ class Assetmap extends React.Component<{}, MyState> {
     return new Promise((resolve) => {
       this.getPostsFromCache(filterPostType)
       .then(() => {
-        const allPosts = this.cache[filterPostType];
+        let allPosts = this.cache[filterPostType];
+        if (relatedPostType === 'tags') {
+          allPosts = this.state[filterPostType];
+        }
         const filteredPosts = new Set; 
         const updatedPosts = new Array;
         if (selectedPosts === [] || selectedPosts === null) {
@@ -204,7 +222,6 @@ class Assetmap extends React.Component<{}, MyState> {
       })
     });
   }
-
 
   getPostbyId (postType: string, ID: number) {
     if (this.cache[postType]) {
@@ -290,6 +307,7 @@ class Assetmap extends React.Component<{}, MyState> {
             cache={this.cache}
             getAllPostsByType={this.getAllPostsByType}
             filterPostsByCommunity={this.filterPostsByCommunity}
+            filterPostsByTag={this.filterPostsByTag}
             getPostsFromCache={this.getPostsFromCache}
             getPostbyId = {this.getPostbyId}
             filterPosts = {this.filterPosts}

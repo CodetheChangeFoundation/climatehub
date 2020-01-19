@@ -9,6 +9,7 @@ interface MyProps {
   groups: any
   getAllPostsByType: any
   filterPostsByCommunity: any
+  filterPostsByTag: any
   getPostsFromCache: any
   cache: any
   getPostbyId: any
@@ -46,7 +47,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
       Object.values(this.props.tag_types).map((tagType: {id: number, name: string, color: string}) => this.tagOptions[tagType.id] = ({label: tagType.name, options: []}))
     };
     if (this.props.tags !== []) {
-      Object.values(this.props.tags).map((tag: {name: string, type: string}) => this.tagOptions[tag.type[0]].options.push({id: tag.name, label: tag.name, value: tag.name}));
+      Object.values(this.props.tags).map((tag: {id: number, name: string, type: string}) => this.tagOptions[tag.type[0]].options.push({id: tag.id, label: tag.name, value: tag.name}));
     };
 
     this.state = {
@@ -69,7 +70,10 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.setState(
       { selectedCommunities },
       () => {
-        this.getPostsByCommunity();
+        this.getPostsByCommunity()
+        .then(() => {
+          this.getPostsByTag();
+        })
       }
     );
   }
@@ -82,7 +86,11 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.setState(
       { selectedTags },
       () => {
-        // this.getPostsByCommunity();
+        console.log(this.state.selectedTags);
+        this.getPostsByCommunity()
+        .then(() => {
+          this.getPostsByTag(selectedTags);
+        })
       }
     );
   }
@@ -93,7 +101,10 @@ class SearchForm extends React.Component<MyProps, MyState> {
       postType: postType.label
     }, 
       () => {
-        this.getPostsByCommunity();
+        this.getPostsByCommunity()
+        .then(() => {
+          this.getPostsByTag();
+        })
     });
   }
 
@@ -126,6 +137,25 @@ class SearchForm extends React.Component<MyProps, MyState> {
         resolve();
       })
     });
+  }
+
+  getPostsByTag(selectedTags: any = this.state.selectedTags): Promise<any> {
+    return new Promise((resolve) => {
+      let selection: any;
+      if (selectedTags !== null) {
+        selection = {};
+        selectedTags.forEach((post:any) => {
+          selection[post.id] = post;
+        });
+      } else {
+        selection = null;
+      }
+      this.props.filterPostsByTag(this.state.postType.toLowerCase(), selection)
+      .then(() => {
+        console.log(this.props[this.state.postType.toLowerCase()]);
+        resolve();
+      })
+    })
   }
 
   getTagName(tagGroup: string, id: number): string {

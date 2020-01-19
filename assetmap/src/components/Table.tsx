@@ -53,7 +53,6 @@ class Table extends React.Component<MyProps, MyState> {
 
     if (Object.values(data).length > 0) {
       Object.values(data).map((line, index) => {
-        console.log(line);
         const clickCallback = () => this.handleRowClick(line.id);
         itemRows.push(
           <React.Fragment key={index}>
