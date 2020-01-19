@@ -56,3 +56,56 @@ function asset_map_individual_add_acf($data, $post, $request) {
   return $data;
 }
 add_filter("rest_prepare_individuals", 'asset_map_individual_add_acf', 10, 3);
+
+// Add Id Column in Wordpress Backend
+add_filter( 'manage_individuals_posts_columns', 'climatehub_filter_individual_columns' );
+function climatehub_filter_individual_columns( $columns ) {
+  $columns = array(
+      'individual_id' => __('Individual ID'),
+      'title' => __( 'Title' ),
+      'date' => __( 'Date published' )
+    );
+  return $columns;
+}
+
+add_action( 'manage_individuals_posts_custom_column', 'climatehub_individuals_column', 10, 2);
+function climatehub_individuals_column( $column, $post_id ) {
+  $column_names = ['individual_id'];
+  foreach ($column_names as $key => $value) {
+    if ( $value === $column ) {
+      $column_name = get_field($value);
+      if ( ! $column_name ) {
+        _e( 'n/a' );  
+      } else {
+        echo $column_name;
+      }
+    }
+  }
+}
+
+add_filter( 'manage_edit-individuals_sortable_columns', 'climatehub_individuals_sortable_columns');
+function climatehub_individuals_sortable_columns( $columns ) {
+  $columns['individual_id'] = 'individual_id';
+  return $columns;
+}
+
+add_action( 'pre_get_posts', 'climatehub_individuals_orderby' );
+function climatehub_individuals_orderby( $query ) {
+  if( ! is_admin() || ! $query->is_main_query() ) {
+    return;
+  }
+
+  if ( 'individual_id' === $query->get( 'orderby') ) {
+    $query->set( 'orderby', 'meta_value' );
+    $query->set( 'meta_key', 'individual_id' );
+    $query->set( 'meta_type', 'numeric' );
+  }
+}
+
+add_action('admin_head', 'individuals_column_width');
+
+function individuals_column_width() {
+    echo '<style type="text/css">';
+    echo '#individual_id { text-align: center; width:125px !important; overflow:hidden }';
+    echo '</style>';
+}

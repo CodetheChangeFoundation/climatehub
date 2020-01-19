@@ -56,3 +56,56 @@ function asset_map_project_add_acf($data, $post, $request) {
   return $data;
 }
 add_filter("rest_prepare_projects", 'asset_map_project_add_acf', 10, 3);
+
+// Add Id Column in Wordpress Backend
+add_filter( 'manage_projects_posts_columns', 'climatehub_filter_project_columns' );
+function climatehub_filter_project_columns( $columns ) {
+  $columns = array(
+      'project_id' => __('Project ID'),
+      'title' => __( 'Title' ),
+      'date' => __( 'Date published' )
+    );
+  return $columns;
+}
+
+add_action( 'manage_projects_posts_custom_column', 'climatehub_projects_column', 10, 2);
+function climatehub_projects_column( $column, $post_id ) {
+  $column_names = ['project_id'];
+  foreach ($column_names as $key => $value) {
+    if ( $value === $column ) {
+      $column_name = get_field($value);
+      if ( ! $column_name ) {
+        _e( 'n/a' );  
+      } else {
+        echo $column_name;
+      }
+    }
+  }
+}
+
+add_filter( 'manage_edit-projects_sortable_columns', 'climatehub_projects_sortable_columns');
+function climatehub_projects_sortable_columns( $columns ) {
+  $columns['project_id'] = 'project_id';
+  return $columns;
+}
+
+add_action( 'pre_get_posts', 'climatehub_projects_orderby' );
+function climatehub_projects_orderby( $query ) {
+  if( ! is_admin() || ! $query->is_main_query() ) {
+    return;
+  }
+
+  if ( 'project_id' === $query->get( 'orderby') ) {
+    $query->set( 'orderby', 'meta_value' );
+    $query->set( 'meta_key', 'project_id' );
+    $query->set( 'meta_type', 'numeric' );
+  }
+}
+
+add_action('admin_head', 'projects_column_width');
+
+function projects_column_width() {
+    echo '<style type="text/css">';
+    echo '#project_id { text-align: center; width:100px !important; overflow:hidden }';
+    echo '</style>';
+}
