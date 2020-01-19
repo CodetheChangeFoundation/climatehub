@@ -15,9 +15,6 @@ interface MyProps {
   filterPosts: any
   individuals: any
   projects: any
-  tag_a: any
-  tag_b: any
-  tag_c: any
   tags: any
   tag_types: any
 };

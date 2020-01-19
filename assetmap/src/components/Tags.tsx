@@ -3,13 +3,11 @@ import * as React from 'react';
 interface TagsProps {
   getTagColor: (tagGroup: string, id: number) => string,
   getTagName: (tagGroup: string, id: number) => string,
-  tag_a: Array<number>
-  tag_b: Array<number>
-  tag_c: Array<number>
+
   tags: Array<number>
 }
 
-export const Tags = ({ getTagName, getTagColor, tags, tag_a, tag_b, tag_c }: TagsProps) => {
+export const Tags = ({ getTagName, getTagColor, tags}: TagsProps) => {
 
   function renderTag(tagGroup:string, id: number) {
     if (id) {
@@ -46,9 +44,6 @@ export const Tags = ({ getTagName, getTagColor, tags, tag_a, tag_b, tag_c }: Tag
   return (
     <div>
       {tags.map((id) => renderTag('tags', id))}
-      {/* {tag_a.map((id) => renderTag('tag_a', id))}
-      {tag_b.map((id) => renderTag('tag_b', id))}
-      {tag_c.map((id) => renderTag('tag_c', id))} */}
     </div>
   )
 }

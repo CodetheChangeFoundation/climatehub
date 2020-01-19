@@ -15,9 +15,6 @@ interface MyProps {
       phone: string,
       position: string,
       projects: Array<number>,
-      tag_a: Array<number>,
-      tag_b: Array<number>,
-      tag_c: Array<number>,
       tags: Array<number>,
       website: string,
     }
@@ -63,7 +60,7 @@ class Table extends React.Component<MyProps, MyState> {
             <tr key={"row-data-" + index} onClick={clickCallback}>
               <td className="text-wrap align-middle">{line.name}</td>
               <td className="text-wrap">
-                {(line.tags[0] || line.tag_a[0] || line.tag_b[0] || line.tag_c[0]) && <Tags getTagName={getTagName} getTagColor={getTagColor} tags={line.tags} tag_a={line.tag_a} tag_b={line.tag_b} tag_c={line.tag_c} />}
+                {<Tags getTagName={getTagName} getTagColor={getTagColor} tags={line.tags}/>}
               </td>
             </tr>
             {expandedRow === line.id &&

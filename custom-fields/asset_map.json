@@ -399,9 +399,9 @@
                 "new_lines": ""
             },
             {
-                "key": "field_5dc78274b775c",
-                "label": "TAG_A",
-                "name": "tag_a",
+                "key": "field_5e238b01a0ef0",
+                "label": "TAGS",
+                "name": "tags",
                 "type": "relationship",
                 "instructions": "",
                 "required": 0,
@@ -412,7 +412,7 @@
                     "id": ""
                 },
                 "post_type": [
-                    "tag_a"
+                    "tags"
                 ],
                 "taxonomy": "",
                 "filters": [
@@ -420,57 +420,7 @@
                 ],
                 "elements": "",
                 "min": "",
-                "max": 1,
-                "return_format": "id"
-            },
-            {
-                "key": "field_5e040ae28ab49",
-                "label": "TAG_B",
-                "name": "tag_b",
-                "type": "relationship",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "post_type": [
-                    "tag_b"
-                ],
-                "taxonomy": "",
-                "filters": [
-                    "search"
-                ],
-                "elements": "",
-                "min": "",
-                "max": 1,
-                "return_format": "id"
-            },
-            {
-                "key": "field_5e040af803a9d",
-                "label": "TAG_C",
-                "name": "tag_c",
-                "type": "relationship",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "post_type": [
-                    "tag_c"
-                ],
-                "taxonomy": "",
-                "filters": [
-                    "search"
-                ],
-                "elements": "",
-                "min": "",
-                "max": 1,
+                "max": "",
                 "return_format": "id"
             },
             {
@@ -650,6 +600,48 @@
         "description": ""
     },
     {
+        "key": "group_5e0ebb40c7b05",
+        "title": "Import Status",
+        "fields": [
+            {
+                "key": "field_5e0ebb4f9225c",
+                "label": "Import Status File",
+                "name": "import_status_file",
+                "type": "file",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "id",
+                "library": "all",
+                "min_size": "",
+                "max_size": "",
+                "mime_types": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "options_page",
+                    "operator": "==",
+                    "value": "asset-map"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 1,
+        "description": ""
+    },
+    {
         "key": "group_5dc78ae53a014",
         "title": "Individual",
         "fields": [
@@ -729,9 +721,9 @@
                 "new_lines": ""
             },
             {
-                "key": "field_5dc78ae54033d",
-                "label": "TAG_A",
-                "name": "tag_a",
+                "key": "field_5e238be6babcb",
+                "label": "TAGS",
+                "name": "tags",
                 "type": "relationship",
                 "instructions": "",
                 "required": 0,
@@ -742,7 +734,7 @@
                     "id": ""
                 },
                 "post_type": [
-                    "tag_a"
+                    "tags"
                 ],
                 "taxonomy": "",
                 "filters": [
@@ -750,57 +742,7 @@
                 ],
                 "elements": "",
                 "min": "",
-                "max": 1,
-                "return_format": "id"
-            },
-            {
-                "key": "field_5e040d67c906a",
-                "label": "TAG_B",
-                "name": "tag_b",
-                "type": "relationship",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "post_type": [
-                    "tag_b"
-                ],
-                "taxonomy": "",
-                "filters": [
-                    "search"
-                ],
-                "elements": "",
-                "min": "",
-                "max": 1,
-                "return_format": "id"
-            },
-            {
-                "key": "field_5e040d7bc906b",
-                "label": "TAG_C",
-                "name": "tag_c",
-                "type": "relationship",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "post_type": [
-                    "tag_c"
-                ],
-                "taxonomy": "",
-                "filters": [
-                    "search"
-                ],
-                "elements": "",
-                "min": "",
-                "max": 1,
+                "max": "",
                 "return_format": "id"
             },
             {
@@ -1059,9 +1001,9 @@
                 "new_lines": ""
             },
             {
-                "key": "field_5e06ea033b303",
-                "label": "TAG_A",
-                "name": "tag_a",
+                "key": "field_5e238b60c508f",
+                "label": "TAGS",
+                "name": "tags",
                 "type": "relationship",
                 "instructions": "",
                 "required": 0,
@@ -1072,7 +1014,7 @@
                     "id": ""
                 },
                 "post_type": [
-                    "tag_a"
+                    "tags"
                 ],
                 "taxonomy": "",
                 "filters": [
@@ -1080,57 +1022,7 @@
                 ],
                 "elements": "",
                 "min": "",
-                "max": 1,
-                "return_format": "id"
-            },
-            {
-                "key": "field_5e06ea1f3b304",
-                "label": "TAG_B",
-                "name": "tag_b",
-                "type": "relationship",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "post_type": [
-                    "tag_b"
-                ],
-                "taxonomy": "",
-                "filters": [
-                    "search"
-                ],
-                "elements": "",
-                "min": "",
-                "max": 1,
-                "return_format": "id"
-            },
-            {
-                "key": "field_5e06ea3b3b305",
-                "label": "TAG_C",
-                "name": "tag_c",
-                "type": "relationship",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "post_type": [
-                    "tag_c"
-                ],
-                "taxonomy": "",
-                "filters": [
-                    "search"
-                ],
-                "elements": "",
-                "min": "",
-                "max": 1,
+                "max": "",
                 "return_format": "id"
             },
             {
@@ -1251,11 +1143,11 @@
         "description": ""
     },
     {
-        "key": "group_5e06fcaceb532",
-        "title": "Tag_A",
+        "key": "group_5e237b4c88f2f",
+        "title": "Tag",
         "fields": [
             {
-                "key": "field_5e21266dc0d87",
+                "key": "field_5e237b4fa293b",
                 "label": "NAME",
                 "name": "name",
                 "type": "text",
@@ -1271,10 +1163,35 @@
                 "placeholder": "",
                 "prepend": "",
                 "append": "",
-                "maxlength": ""
+                "maxlength": 119
             },
             {
-                "key": "field_5e06fcbaa759e",
+                "key": "field_5e237e6194f3d",
+                "label": "TYPE",
+                "name": "type",
+                "type": "relationship",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "post_type": [
+                    "tag_types"
+                ],
+                "taxonomy": "",
+                "filters": [
+                    "search"
+                ],
+                "elements": "",
+                "min": "",
+                "max": "",
+                "return_format": "id"
+            },
+            {
+                "key": "field_5e237ef49ff95",
                 "label": "GROUPS",
                 "name": "groups",
                 "type": "relationship",
@@ -1299,7 +1216,7 @@
                 "return_format": "id"
             },
             {
-                "key": "field_5e06fd65a759f",
+                "key": "field_5e237f3f9ff96",
                 "label": "PROJECTS",
                 "name": "projects",
                 "type": "relationship",
@@ -1324,7 +1241,7 @@
                 "return_format": "id"
             },
             {
-                "key": "field_5e06fd8ca75a0",
+                "key": "field_5e237f589ff97",
                 "label": "INDIVIDUALS",
                 "name": "individuals",
                 "type": "relationship",
@@ -1336,9 +1253,7 @@
                     "class": "",
                     "id": ""
                 },
-                "post_type": [
-                    "individuals"
-                ],
+                "post_type": "",
                 "taxonomy": "",
                 "filters": [
                     "search"
@@ -1354,7 +1269,7 @@
                 {
                     "param": "post_type",
                     "operator": "==",
-                    "value": "tag_a"
+                    "value": "tags"
                 }
             ]
         ],
@@ -1368,11 +1283,32 @@
         "description": ""
     },
     {
-        "key": "group_5e06fda6b8410",
-        "title": "Tag_B",
+        "key": "group_5e237f7e779d5",
+        "title": "Tag Type",
         "fields": [
             {
-                "key": "field_5e21268a3f594",
+                "key": "field_5e237f888d032",
+                "label": "TYPE_ID",
+                "name": "type_id",
+                "type": "number",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "min": 1,
+                "max": "",
+                "step": 1
+            },
+            {
+                "key": "field_5e237fa68d033",
                 "label": "NAME",
                 "name": "name",
                 "type": "text",
@@ -1391,11 +1327,11 @@
                 "maxlength": ""
             },
             {
-                "key": "field_5e06fda6bcefd",
-                "label": "GROUPS",
-                "name": "groups",
-                "type": "relationship",
-                "instructions": "",
+                "key": "field_5e237fb48d034",
+                "label": "COLOUR",
+                "name": "colour",
+                "type": "text",
+                "instructions": "Please enter a 6-character HEX value for the colour:",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -1403,95 +1339,16 @@
                     "class": "",
                     "id": ""
                 },
-                "post_type": [
-                    "groups"
-                ],
-                "taxonomy": "",
-                "filters": [
-                    "search"
-                ],
-                "elements": "",
-                "min": "",
-                "max": "",
-                "return_format": "id"
+                "default_value": "A0A0A0",
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "maxlength": 6
             },
             {
-                "key": "field_5e06fda6bcf31",
-                "label": "PROJECTS",
-                "name": "projects",
-                "type": "relationship",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "post_type": [
-                    "projects"
-                ],
-                "taxonomy": "",
-                "filters": [
-                    "search"
-                ],
-                "elements": "",
-                "min": "",
-                "max": "",
-                "return_format": "id"
-            },
-            {
-                "key": "field_5e06fda6bcf58",
-                "label": "INDIVIDUALS",
-                "name": "individuals",
-                "type": "relationship",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "post_type": [
-                    "individuals"
-                ],
-                "taxonomy": "",
-                "filters": [
-                    "search"
-                ],
-                "elements": "",
-                "min": "",
-                "max": "",
-                "return_format": "id"
-            }
-        ],
-        "location": [
-            [
-                {
-                    "param": "post_type",
-                    "operator": "==",
-                    "value": "tag_b"
-                }
-            ]
-        ],
-        "menu_order": 0,
-        "position": "normal",
-        "style": "default",
-        "label_placement": "top",
-        "instruction_placement": "label",
-        "hide_on_screen": "",
-        "active": 1,
-        "description": ""
-    },
-    {
-        "key": "group_5e06fdb90ea0f",
-        "title": "Tag_C",
-        "fields": [
-            {
-                "key": "field_5e2126a2055c2",
-                "label": "NAME",
-                "name": "name",
+                "key": "field_5e238a28aa6c6",
+                "label": "TAGS",
+                "name": "tags",
                 "type": "text",
                 "instructions": "",
                 "required": 0,
@@ -1502,85 +1359,10 @@
                     "id": ""
                 },
                 "default_value": "",
+                "maxlength": "",
                 "placeholder": "",
                 "prepend": "",
-                "append": "",
-                "maxlength": ""
-            },
-            {
-                "key": "field_5e06fdb912a3e",
-                "label": "GROUPS",
-                "name": "groups",
-                "type": "relationship",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "post_type": [
-                    "groups"
-                ],
-                "taxonomy": "",
-                "filters": [
-                    "search"
-                ],
-                "elements": "",
-                "min": "",
-                "max": "",
-                "return_format": "id"
-            },
-            {
-                "key": "field_5e06fdb912a59",
-                "label": "PROJECTS",
-                "name": "projects",
-                "type": "relationship",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "post_type": [
-                    "projects"
-                ],
-                "taxonomy": "",
-                "filters": [
-                    "search"
-                ],
-                "elements": "",
-                "min": "",
-                "max": "",
-                "return_format": "id"
-            },
-            {
-                "key": "field_5e06fdb912a6f",
-                "label": "INDIVIDUALS",
-                "name": "individuals",
-                "type": "relationship",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "post_type": [
-                    "individuals"
-                ],
-                "taxonomy": "",
-                "filters": [
-                    "search"
-                ],
-                "elements": "",
-                "min": "",
-                "max": "",
-                "return_format": "id"
+                "append": ""
             }
         ],
         "location": [
@@ -1588,7 +1370,7 @@
                 {
                     "param": "post_type",
                     "operator": "==",
-                    "value": "tag_c"
+                    "value": "tag_types"
                 }
             ]
         ],
@@ -1701,11 +1483,11 @@
                 "mime_types": ".csv"
             },
             {
-                "key": "field_5e070715d1a59",
-                "label": "TAG_A FILE",
-                "name": "tag_a_file",
+                "key": "field_5e23868060419",
+                "label": "TAG FILE",
+                "name": "tag_file",
                 "type": "file",
-                "instructions": "Available Fields: NAME",
+                "instructions": "Available Fields: NAME, TYPE",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -1717,14 +1499,14 @@
                 "library": "all",
                 "min_size": "",
                 "max_size": "",
-                "mime_types": ".csv"
+                "mime_types": ""
             },
             {
-                "key": "field_5e070774d1a5a",
-                "label": "TAG_B FILE",
-                "name": "tag_b_file",
+                "key": "field_5e238917c9165",
+                "label": "TAG_TYPE FILE",
+                "name": "tag_type_file",
                 "type": "file",
-                "instructions": "Available Fields: NAME",
+                "instructions": "Available Fields: TYPE_ID, NAME, COLOUR",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -1736,26 +1518,7 @@
                 "library": "all",
                 "min_size": "",
                 "max_size": "",
-                "mime_types": ".csv"
-            },
-            {
-                "key": "field_5e070788d1a5b",
-                "label": "TAG_C FILE",
-                "name": "tag_c_file",
-                "type": "file",
-                "instructions": "Available Fields: NAME",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "return_format": "array",
-                "library": "all",
-                "min_size": "",
-                "max_size": "",
-                "mime_types": ".csv"
+                "mime_types": ""
             }
         ],
         "location": [

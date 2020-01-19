@@ -56,21 +56,21 @@ function parse_excel_file() {
         'file_field_name' => 'group_file',
         'basic_fields' => array('GROUP_ID', 'NAME', 'DESCRIPTION', 'WEBSITE'),
         'location_fields' => array(),
-        'relationship_fields' => array('TAGS', 'TAG_A', 'TAG_B', 'TAG_C', 'COMMUNITY', 
+        'relationship_fields' => array('TAGS', 'COMMUNITY', 
           'PARENT_GROUP', 'PROJECTS', 'INDIVIDUALS'),       
       ),
       'projects' => array(
         'file_field_name' => 'project_file',
         'basic_fields' => array('PROJECT_ID', 'NAME', 'DESCRIPTION', 'WEBSITE', 'BLOG_POST'),
         'location_fields' => array(),
-        'relationship_fields' => array('TAGS', 'TAG_A', 'TAG_B', 'TAG_C', 'DIRECTOR'),    
+        'relationship_fields' => array('TAGS', 'DIRECTOR'),    
       ),
       'individuals' => array(
         'file_field_name' => 'individual_file',
         'basic_fields' => array('INDIVIDUAL_ID', 'NAME', 'DESCRIPTION', 'WEBSITE', 
           'POSITION', 'EMAIL', 'PHONE', 'SURVEY_INFO'),
         'location_fields' => array(),
-        'relationship_fields' => array('TAGS', 'TAG_A', 'TAG_B', 'TAG_C'), 
+        'relationship_fields' => array('TAGS'), 
       ),
       'tags' => array(
         'file_field_name' => 'tag_file',
@@ -84,24 +84,6 @@ function parse_excel_file() {
         'location_fields' => array(),
         'relationship_fields' => array(), 
       ),
-      'tag_a' => array(
-        'file_field_name' => 'tag_a_file',
-        'basic_fields' => array('NAME'),
-        'location_fields' => array(),
-        'relationship_fields' => array(), 
-      ),
-      'tag_b' => array(
-        'file_field_name' => 'tag_b_file',
-        'basic_fields' => array('NAME'),
-        'location_fields' => array(),
-        'relationship_fields' => array(), 
-      ),
-      'tag_c' => array(
-        'file_field_name' => 'tag_c_file',
-        'basic_fields' => array('NAME'),
-        'location_fields' => array(),
-        'relationship_fields' => array(), 
-      )
     );
     $related_posts = array(
       'cities' => array( 
@@ -145,18 +127,6 @@ function parse_excel_file() {
           'post_type' => 'tags', 
           'field_name' => 'GROUPS'
         ),
-        'TAG_A' => array(
-          'post_type' => 'tag_a', 
-          'field_name' => 'GROUPS'
-        ),
-        'TAG_B' => array(
-          'post_type' => 'tag_b', 
-          'field_name' => 'GROUPS'
-        ),
-        'TAG_C' => array(
-          'post_type' => 'tag_c', 
-          'field_name' => 'GROUPS'
-        ),
       ),
       'projects' => array(
         'GROUPS' => array(
@@ -171,18 +141,6 @@ function parse_excel_file() {
           'post_type' => 'tags', 
           'field_name' => 'PROJECTS'
         ),
-        'TAG_A' => array(
-          'post_type' => 'tag_a', 
-          'field_name' => 'PROJECTS'
-        ),
-        'TAG_B' => array(
-          'post_type' => 'tag_b', 
-          'field_name' => 'PROJECTS'
-        ),
-        'TAG_C' => array(
-          'post_type' => 'tag_c', 
-          'field_name' => 'PROJECTS'
-        ),
       ),
       'individuals' => array(
         'PROJECTS' => array(
@@ -195,18 +153,6 @@ function parse_excel_file() {
         ),
         'TAGS' => array(
           'post_type' => 'tags', 
-          'field_name' => 'INDIVIDUALS'
-        ),
-        'TAG_A' => array(
-          'post_type' => 'tag_a', 
-          'field_name' => 'INDIVIDUALS'
-        ),
-        'TAG_B' => array(
-          'post_type' => 'tag_b', 
-          'field_name' => 'INDIVIDUALS'
-        ),
-        'TAG_C' => array(
-          'post_type' => 'tag_c', 
           'field_name' => 'INDIVIDUALS'
         ),
       ),
@@ -234,48 +180,6 @@ function parse_excel_file() {
           'field_name' => 'TYPE'
         ),
       ),
-      'tag_a' => array(
-        'GROUPS' => array(
-          'post_type' => 'groups',
-          'field_name' => 'TAG_A'
-        ),
-        'PROJECTS' => array(
-          'post_type' => 'projects',
-          'field_name' => 'TAG_A'
-        ),
-        'INDIVIDUALS' => array(
-          'post_type' => 'individuals',
-          'field_name' => 'TAG_A'
-        ),
-      ),
-      'tag_b' => array(
-        'GROUPS' => array(
-          'post_type' => 'groups',
-          'field_name' => 'TAG_B'
-        ),
-        'PROJECTS' => array(
-          'post_type' => 'projects',
-          'field_name' => 'TAG_B'
-        ),
-        'INDIVIDUALS' => array(
-          'post_type' => 'individuals',
-          'field_name' => 'TAG_B'
-        ),
-      ),
-      'tag_c' => array(
-        'GROUPS' => array(
-          'post_type' => 'groups',
-          'field_name' => 'TAG_C'
-        ),
-        'PROJECTS' => array(
-          'post_type' => 'projects',
-          'field_name' => 'TAG_C'
-        ),
-        'INDIVIDUALS' => array(
-          'post_type' => 'individuals',
-          'field_name' => 'TAG_C'
-        ),
-      )
     );
     $all_objects = [];
     $updated_file_data = [];

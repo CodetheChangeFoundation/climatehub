@@ -16,9 +16,6 @@ interface MyState {
   postType: any,
   projects: any,
   selectedCommunities: Array<any>,
-  tag_a: any,
-  tag_b: any,
-  tag_c: any,
   tag_types: any,
   tags: any,
 };
@@ -26,15 +23,11 @@ interface MyState {
 const fieldTypes = {
   'cities': ['city_id', 'name', 'location', 'communities'],
   'communities': ['community_id', 'name', 'code', 'location', 'city', 'groups'],
-  'groups': ['group_id', 'name', 'description', 'website', 'tags', 'tag_a', 'tag_b', 'tag_c', 'community', 
+  'groups': ['group_id', 'name', 'description', 'website', 'tags', 'community', 
     'parent_group', 'child_groups', 'projects', 'individuals'],
   'individuals': ['individual_id', 'name', 'description', 'website', 'position', 'email', 'phone', 
-    'survey_info', 'tags', 'tag_a', 'tag_b', 'tag_c', 'projects', 'groups'],
-  'projects': ['project_id', 'name', 'description', 'website', 'blog_post', 'tags', 'tag_a', 'tag_b', 
-    'tag_c', 'groups', 'director'],
-  'tag_a': ['name', 'groups', 'projects', 'individuals'],
-  'tag_b': ['name', 'groups', 'projects', 'individuals'],
-  'tag_c': ['name', 'groups', 'projects', 'individuals'],
+    'survey_info', 'tags', 'projects', 'groups'],
+  'projects': ['project_id', 'name', 'description', 'website', 'blog_post', 'tags', 'groups', 'director'],
   'tag_types': ['type_id', 'name', 'colour'],
   'tags': ['name', 'type'],
 }
@@ -58,9 +51,6 @@ class Assetmap extends React.Component<{}, MyState> {
       postType: 'groups',
       projects: [],
       selectedCommunities: [],
-      tag_a: [],
-      tag_b: [],
-      tag_c: [],
       tag_types: [],
       tags: [],
     };
@@ -73,9 +63,6 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   componentDidMount() {
-    this.getAllPostsByType('tag_a');    
-    this.getAllPostsByType('tag_b');
-    this.getAllPostsByType('tag_c');
     this.getAllPostsByType('tags')
     .then(() => {
       this.getAllPostsByType('tag_types')
@@ -91,13 +78,6 @@ class Assetmap extends React.Component<{}, MyState> {
       console.log(this.cache)
     })
   }
-
-  // changeLevel() {
-  //   this.setState({
-  //     columns: [],
-  //     items: []
-  //   });
-  // }
 
   getAllPostsByType(postType: string): Promise<any> {
     return new Promise((resolve) => {
@@ -261,8 +241,6 @@ class Assetmap extends React.Component<{}, MyState> {
       updatedState[postType][post.id] = post;
     })
     this.setState(updatedState);
-    // console.log("Updated State");
-    // console.log(this.state[postType]);
   }
 
   // Should return promise
@@ -273,8 +251,6 @@ class Assetmap extends React.Component<{}, MyState> {
       updatedState[postType][post.id] = post;
     })
     this.setState(updatedState);
-    // console.log("Updated State");
-    // console.log(this.state[postType]);
   }
 
   cachePost(postType: string, postId: any, postData: any): Promise<any> {
@@ -283,7 +259,6 @@ class Assetmap extends React.Component<{}, MyState> {
         this.cache[postType] = {};
       }
       this.cache[postType][postId] = postData;
-      // console.log(this.cache);
       resolve();
     })
   }
@@ -304,9 +279,6 @@ class Assetmap extends React.Component<{}, MyState> {
       return (
         <div className="asset-map">
           <SearchForm 
-            tag_a={this.state.tag_a}
-            tag_b={this.state.tag_b}
-            tag_c={this.state.tag_c}
             tags={tags}
             tag_types={tag_types}
             categories={this.categories}
