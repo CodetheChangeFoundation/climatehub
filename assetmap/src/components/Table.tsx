@@ -21,35 +21,29 @@ interface MyProps {
   },
   getTagName: (tagGroup: string, id: number) => string,
   getTagColor: (tagGroup: string, id: number) => string,
-  handleFilterIds: (postType: string, filterIds: Array<number>) => void,
-  postType: string
+  handlePostQuery: (postType: string, postIds: Array<number>) => void,
+  setSelectedPost: (postId: number) => void,
+  postType: string,
+  selectedPost: number
 }
-
-interface MyState {
-  expandedRow: number
-};
-
-class Table extends React.Component<MyProps, MyState> {
+class Table extends React.Component<MyProps> {
   constructor(props: MyProps) {
     super(props);
-    this.state = {
-      expandedRow: -1
-    }
   }
 
   // rowId = postId
   handleRowClick(rowId: number) {
-    const { expandedRow } = this.state;
-    if (expandedRow === rowId) {
-      this.setState({ expandedRow: -1 });
+    const { selectedPost } = this.props;
+    if (selectedPost === rowId) {
+      this.props.setSelectedPost(0);
     } else {
-      this.setState({ expandedRow: rowId });
+      this.props.setSelectedPost(rowId);
     }
   }
 
   renderItems() {
-    const { data, getTagName, getTagColor, handleFilterIds, postType } = this.props;
-    const { expandedRow } = this.state;
+    const { data, getTagName, getTagColor, handlePostQuery: handlePostQuery, postType } = this.props;
+    const { selectedPost } = this.props;
     const itemRows: Array<any> = []
 
     if (Object.values(data).length > 0) {
@@ -63,12 +57,12 @@ class Table extends React.Component<MyProps, MyState> {
                 {<Tags getTagName={getTagName} getTagColor={getTagColor} tags={line.tags}/>}
               </td>
             </tr>
-            {expandedRow === line.id &&
+            {selectedPost === line.id &&
               <tr key={"row-expandable-" + index} className="no-hover">
                 <RowInfo 
                   postType={postType}
                   data={line}
-                  handleFilterIds={handleFilterIds}
+                  handlePostQuery={handlePostQuery}
                 />
               </tr>
             }

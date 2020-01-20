@@ -61,6 +61,7 @@ class Assetmap extends React.Component<{}, MyState> {
     this.filterPostsByTag = this.filterPostsByTag.bind(this);
     this.getPostbyId = this.getPostbyId.bind(this);
     this.filterPosts = this.filterPosts.bind(this);
+    this.updatePostTypeState = this.updatePostTypeState.bind(this);
   }
 
   componentDidMount() {
@@ -309,6 +310,7 @@ class Assetmap extends React.Component<{}, MyState> {
             filterPostsByCommunity={this.filterPostsByCommunity}
             filterPostsByTag={this.filterPostsByTag}
             getPostsFromCache={this.getPostsFromCache}
+            updatePostTypeState={this.updatePostTypeState}
             getPostbyId = {this.getPostbyId}
             filterPosts = {this.filterPosts}
           />

@@ -2,11 +2,11 @@ import * as React from 'react';
 
 interface RowInfo {
   data: any,
-  handleFilterIds: (postType: string, filterIds: Array<number>) => void,
+  handlePostQuery: (postType: string, filterIds: Array<number>) => void,
   postType: string
 }
 
-export const RowInfo = ({ data, handleFilterIds, postType }: RowInfo) => {
+export const RowInfo = ({ data, handlePostQuery: handlePostQuery, postType }: RowInfo) => {
   function renderTitle(title: string) {
     return <p className="mb-0 text-muted">{title}</p>
   }
@@ -39,7 +39,7 @@ export const RowInfo = ({ data, handleFilterIds, postType }: RowInfo) => {
   function renderButton(buttonPostType: string, ids: Array<number>, title: string, text: string) {
     if (ids !== undefined) {
       if (ids.length > 0) {
-        const clickCallback = () => handleFilterIds(buttonPostType, ids);
+        const clickCallback = () => handlePostQuery(buttonPostType, ids);
         return (
           <div className="col-4 col-md-3 col-xl-2">
             {renderTitle(title)}
