@@ -364,6 +364,28 @@ body {
   z-index: 120;
 }
 
+.z-index-130 {
+  z-index: 130;
+}
+
 .cursor-pointer {
   cursor: pointer;
+}
+
+@media (min-width: 576px) {
+  .border-sm-left {
+    border-left: 2px solid !important;
+  }
+
+  .border-sm-right {
+    border-right: 2px solid !important;
+  }
+
+  .border-top-sm-0 {
+    border-top: 0 !important;
+  }
+  
+  .border-bottom-sm-0 {
+    border-bottom: 0 !important;
+  }
 }
