@@ -50,7 +50,7 @@ export const RowInfo = ({ data, handlePostQuery: handlePostQuery, postType }: Ro
     }
     return;
   }
-
+  console.log(postType);
   let rowInfo;
   if (postType === 'Groups') {
     rowInfo = <>{rowInfo}{renderText('Website', data.website, 'col-4 col-lg-3', true)}</>

@@ -70,6 +70,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.getTagName = this.getTagName.bind(this);
     this.getTagColor = this.getTagColor.bind(this);
     this.setSelectedPost = this.setSelectedPost.bind(this);
+    this.handleBack = this.handleBack.bind(this);
   }
 
   setSelectedPost(selectedPost: number) {
@@ -156,7 +157,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
         });
         console.log(this.state.filterStack);
         console.log(this.state.postQueries);
-        // render back button
       });
     })
   }
@@ -217,6 +217,24 @@ class SearchForm extends React.Component<MyProps, MyState> {
     return '#123456';
   }
 
+  handleBack() {
+    const prevState = this.state.filterStack.pop();
+    const postQuery = this.state.postQueries.pop();
+    console.log(prevState);
+    console.log(postQuery);
+    this.setState ({
+      postType: prevState.postType.charAt(0).toUpperCase() + prevState.postType.slice(1),
+      searchTerm: prevState.searchTerm,
+      selectedPost: postQuery[1],
+      selectedTags: prevState.selectedTags,
+    }, () => {
+      this.getPostsByCommunity()
+      .then(() => {
+        this.getPostsByTag();
+      })
+    });
+  }
+
   public render() {
     const { postQueries, postType, searchTerm, selectedCommunities, selectedTags, selectedPost } = this.state;
     
@@ -236,7 +254,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
       })
       currPosts = updatedPosts;
     }
-    const handleBack = () => console.log("Going Back");
 
     return (
       <div id="SearchForm" className="container">
@@ -290,7 +307,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
           <div className="col-4 pr-0">
             <div className="py-2 border-top border-left border-dark h-100">
               {postQueries.length !== 0 && 
-              <div className="pl-2 ml-1" onClick={handleBack}>
+              <div className="pl-2 ml-1" onClick={this.handleBack}>
                 <p className="cursor-pointer mb-0 d-inline">Back to {postQueries[postQueries.length-1][2]}</p>
               </div>}
             </div>
