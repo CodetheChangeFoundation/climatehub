@@ -258,53 +258,57 @@ class SearchForm extends React.Component<MyProps, MyState> {
     return (
       <div id="SearchForm" className="container">
         <div className="row">
-          <div className="col-12 mb-4">
+          <div className="col-12">
             <Select
               styles={customStyles}
               value={selectedCommunities}
               onChange={this.handleCommunityChange}
               options={this.communityOptions}
               isMulti={true}
-              placeholder={"Community"}
-              className={"border border-dark z-index-120 "}
+              placeholder={"Filter by community"}
+              className={"border border-bottom-0 border-dark z-index-130 "}
             />
           </div>
         </div>
-        <div className="row">
-          <div className="col-12 col-sm-4 col-lg-2 pr-sm-0">
-            <Select
-              styles={customStyles}
-              value={{value: postType.toLowerCase(), label: postType}}
-              onChange={this.handlePostTypeChange}
-              options={categories}
-              className={"border border-bottom-0 border-dark h-100 m-0 p-0 z-index-110 "}
-            />
-          </div>
-          <div className="col-12 col-sm-4 col-lg-5 px-sm-0">
-            <div className="border border-bottom-0 border-dark border-left-0 border-right-0 h-100 m-0 p-0">
-              <input
-                className="border-0 bg-light form-control h-100"
-                onChange={this.handleSearch}
-                placeholder="Search by name"
-                type="text"
-                value={searchTerm}
-              />
+        <div className="row mb-4">
+          <div className="col-12">
+            <div className="d-flex flex-column flex-sm-row border 0 border-dark">
+              <div className="order-1 col-12 col-sm-4 col-lg-2 px-0">
+                <Select
+                  styles={customStyles}
+                  value={{value: postType.toLowerCase(), label: postType}}
+                  onChange={this.handlePostTypeChange}
+                  options={categories}
+                  className={"h-100 m-0 p-0 z-index-120 d-flex flex-column justify-content-center "}
+                />
+              </div>
+              <div className="order-3 order-sm-2 col-12 col-sm-4 col-lg-5 px-0">
+                <div className="border-left-0 border-right-0 border-sm-left border-sm-right border-dark h-100 m-0 p-0">
+                  <input
+                    className="border-0 bg-light form-control h-100 px-2 py-11px"
+                    onChange={this.handleSearch}
+                    placeholder="Search by name"
+                    type="text"
+                    value={searchTerm}
+                  />
+                </div>
+              </div>
+              <div className="order-2 order-sm-3 col-12 col-sm-4 col-lg-5 px-0">
+                <Select
+                  styles={customStyles}
+                  value={selectedTags}
+                  onChange={this.handleTagFilterChange}
+                  options={this.tagOptions}
+                  isMulti={true}
+                  placeholder={"Filter by tag"}
+                  className={"border-top border-bottom border-top-sm-0 border-bottom-sm-0 border-dark h-100 m-0 p-0 z-index-110 "}
+                />
+              </div>
             </div>
           </div>
-          <div className="col-12 col-sm-4 col-lg-5 pl-sm-0">
-            <Select
-              styles={customStyles}
-              value={selectedTags}
-              onChange={this.handleTagFilterChange}
-              options={this.tagOptions}
-              isMulti={true}
-              placeholder={"Filter by tag"}
-              className={"border border-bottom-0 border-dark h-100 m-0 p-0 z-index-110 "}
-            />
-          </div>
         </div>
         <div className="row">
-          <div className="col-4 pr-0">
+          <div className="col-6 pr-0">
             <div className="py-2 border-top border-left border-dark h-100">
               {postQueries.length !== 0 && 
               <div className="pl-2 ml-1" onClick={this.handleBack}>
@@ -312,13 +316,10 @@ class SearchForm extends React.Component<MyProps, MyState> {
               </div>}
             </div>
           </div>
-          <div className="col-4 px-0">
-            <div className="py-2 border-top border-dark">
-              <div className="text-center">{Object.keys(currPosts).length} results</div>
+          <div className="col-6 pl-0">
+            <div className="py-2 border-top border-right border-dark">
+              <div className="text-right pr-2">{Object.keys(currPosts).length} results</div>
             </div>
-          </div>
-          <div className="col-4 pl-0">
-            <div className="py-2 border-top border-right border-dark h-100" />
           </div>
         </div>
         <div className="row">
@@ -348,6 +349,7 @@ const customStyles = {
     backgroundColor: 'bg-light',
     border: 0,
     boxShadow: 0,
+    height: '100%',
     outline: 0,
   }),
   option: (provided: any, state: any) => ({
