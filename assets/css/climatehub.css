@@ -372,6 +372,11 @@ body {
   cursor: pointer;
 }
 
+.py-11px {
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
 @media (min-width: 576px) {
   .border-sm-left {
     border-left: 2px solid !important;

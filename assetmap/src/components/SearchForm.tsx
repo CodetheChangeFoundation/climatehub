@@ -228,14 +228,14 @@ class SearchForm extends React.Component<MyProps, MyState> {
               options={this.communityOptions}
               isMulti={true}
               placeholder={"Filter by community"}
-              className={"border border-dark z-index-130 "}
+              className={"border border-bottom-0 border-dark z-index-130 "}
             />
           </div>
         </div>
         <div className="row mb-4">
           <div className="col-12">
-            <div className="d-flex flex-column flex-sm-row border border-top-0 border-dark">
-              <div className="col-12 col-sm-4 col-lg-2 px-0">
+            <div className="d-flex flex-column flex-sm-row border 0 border-dark">
+              <div className="order-1 col-12 col-sm-4 col-lg-2 px-0">
                 <Select
                   styles={customStyles}
                   value={{value: postType.toLowerCase(), label: postType}}
@@ -244,10 +244,10 @@ class SearchForm extends React.Component<MyProps, MyState> {
                   className={"h-100 m-0 p-0 z-index-120 d-flex flex-column justify-content-center "}
                 />
               </div>
-              <div className="col-12 col-sm-4 col-lg-5 px-0">
-                <div className="border-left-0 border-right-0 border-sm-left border-sm-right border-top border-bottom border-top-sm-0 border-bottom-sm-0 border-dark h-100 m-0 p-0">
+              <div className="order-3 order-sm-2 col-12 col-sm-4 col-lg-5 px-0">
+                <div className="border-left-0 border-right-0 border-sm-left border-sm-right border-dark h-100 m-0 p-0">
                   <input
-                    className="border-0 bg-light form-control h-100 p-2"
+                    className="border-0 bg-light form-control h-100 px-2 py-11px"
                     onChange={this.handleSearch}
                     placeholder="Search by name"
                     type="text"
@@ -255,7 +255,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                   />
                 </div>
               </div>
-              <div className="col-12 col-sm-4 col-lg-5 px-0">
+              <div className="order-2 order-sm-3 col-12 col-sm-4 col-lg-5 px-0">
                 <Select
                   styles={customStyles}
                   value={selectedTags}
@@ -263,7 +263,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                   options={this.tagOptions}
                   isMulti={true}
                   placeholder={"Filter by tag"}
-                  className={"h-100 m-0 p-0 z-index-110 "}
+                  className={"border-top border-bottom border-top-sm-0 border-bottom-sm-0 border-dark h-100 m-0 p-0 z-index-110 "}
                 />
               </div>
             </div>
