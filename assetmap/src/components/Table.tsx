@@ -37,6 +37,7 @@ class Table extends React.Component<MyProps, MyState> {
     }
   }
 
+  // rowId = postId
   handleRowClick(rowId: number) {
     const { expandedRow } = this.state;
     if (expandedRow === rowId) {

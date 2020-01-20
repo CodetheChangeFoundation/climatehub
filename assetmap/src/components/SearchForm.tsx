@@ -66,7 +66,11 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.getTagColor = this.getTagColor.bind(this);
   }
 
-  handleCommunityChange(selectedCommunities: any) {
+  handleCommunityChange(communities: any) {
+    let selectedCommunities = communities;
+    if (communities!== null && communities.length === 0) {
+      selectedCommunities = null;
+    }
     this.setState(
       { selectedCommunities },
       () => {
@@ -82,7 +86,11 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.setState({searchTerm: event.target.value});
   }
 
-  handleTagFilterChange(selectedTags: any) {
+  handleTagFilterChange(tags: any) {
+    let selectedTags = tags;
+    if (tags!== null && tags.length === 0) {
+      selectedTags = null;
+    }
     this.setState(
       { selectedTags },
       () => {
