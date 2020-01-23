@@ -51,7 +51,7 @@ class Table extends React.Component<MyProps> {
         const clickCallback = () => this.handleRowClick(line.id);
         itemRows.push(
           <React.Fragment key={index}>
-            <tr key={"row-data-" + index} onClick={clickCallback}>
+            <tr key={"row-data-" + index} onClick={clickCallback} className="row-data">
               <td className="text-wrap align-middle">{line.name}</td>
               <td className="text-wrap">
                 {<Tags getTagName={getTagName} getTagColor={getTagColor} tags={line.tags}/>}

@@ -368,7 +368,8 @@ body {
   z-index: 130;
 }
 
-.back-button {
+.back-button,
+.row-data {
   cursor: pointer;
 }
 
