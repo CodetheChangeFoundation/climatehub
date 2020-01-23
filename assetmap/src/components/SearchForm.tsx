@@ -309,16 +309,23 @@ class SearchForm extends React.Component<MyProps, MyState> {
         </div>
         <div className="row">
           <div className="col-6 pr-0">
-            <div className="py-2 border-top border-left border-dark h-100">
+            <div className="border-top border-left border-dark h-100">
               {postQueries.length !== 0 && 
-              <div className="pl-2 ml-1" onClick={this.handleBack}>
-                <p className="cursor-pointer mb-0 d-inline">Back to {postQueries[postQueries.length-1][2]}</p>
+              <div className="pl-2 ml-1 h-100 d-flex align-items-center">
+                <a role="button" className="d-flex align-items-center back-button" onClick={this.handleBack}>
+                  <svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" transform="rotate(90)">
+                    <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z" />
+                  </svg>
+                  <p className="mb-0 mt-1 d-inline-block">Back to {postQueries[postQueries.length-1][2]}</p>
+                </a>
               </div>}
             </div>
           </div>
           <div className="col-6 pl-0">
             <div className="py-2 border-top border-right border-dark">
-              <div className="text-right pr-2">{Object.keys(currPosts).length} results</div>
+              <div className="text-right pr-2">
+                <p className="mb-0 mt-1">{Object.keys(currPosts).length} results</p>
+              </div>
             </div>
           </div>
         </div>
