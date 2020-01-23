@@ -348,7 +348,7 @@ body {
   white-space: nowrap;
 }
 
-.asset-map .table-container tbody tr.no-hover:hover > td {
+.asset-map .table-container tbody tr.row-expandable:hover>td {
   background-color: var(--light);
 }
 
@@ -368,8 +368,24 @@ body {
   z-index: 130;
 }
 
-.cursor-pointer {
+.back-button {
   cursor: pointer;
+}
+
+.back-button svg {
+  fill: var(--primary)
+}
+
+.back-button:hover svg {
+  fill: #5d9a22
+}
+
+.back-button p {
+  color: var(--primary)
+}
+
+.back-button:hover p {
+  color: #5d9a22
 }
 
 .py-11px {
@@ -393,4 +409,15 @@ body {
   .border-bottom-sm-0 {
     border-bottom: 0 !important;
   }
+}
+
+.down-arrow {
+  fill: var(--dark);
+  transform: rotateX(0deg);
+  transition: all 250ms ease-in-out;
+}
+
+.down-arrow.active {
+  transform: rotateX(180deg);
+  transition: all 250ms ease-in-out;
 }

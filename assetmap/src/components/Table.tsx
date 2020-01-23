@@ -56,9 +56,14 @@ class Table extends React.Component<MyProps> {
               <td className="text-wrap">
                 {<Tags getTagName={getTagName} getTagColor={getTagColor} tags={line.tags}/>}
               </td>
+              <td className="align-middle">
+                <svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" className={selectedPost === line.id ? 'down-arrow active' : 'down-arrow'}>
+                  <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z" />
+                </svg>
+              </td>
             </tr>
             {selectedPost === line.id &&
-              <tr key={"row-expandable-" + index} className="no-hover">
+              <tr key={"row-expandable-" + index} className="row-expandable">
                 <RowInfo 
                   postType={postType}
                   data={line}
@@ -85,6 +90,7 @@ class Table extends React.Component<MyProps> {
           <tr>
             <th scope="col" className="position-sticky bg-light border-0 z-index-99">Name</th>
             <th scope="col" className="position-sticky bg-light border-0 z-index-99">Tags</th>
+            <th scope="col" className="position-sticky bg-light border-0 z-index-99" style={{width: '50px'}}/>
           </tr>
         </thead>
         <tbody>
