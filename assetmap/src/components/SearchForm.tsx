@@ -257,19 +257,21 @@ class SearchForm extends React.Component<MyProps, MyState> {
 
     return (
       <div id="SearchForm" className="container">
-        <div className="row">
-          <div className="col-12">
-            <Select
-              styles={customStyles}
-              value={selectedCommunities}
-              onChange={this.handleCommunityChange}
-              options={this.communityOptions}
-              isMulti={true}
-              placeholder={"Filter by community"}
-              className={"border border-bottom-0 border-dark z-index-130 "}
-            />
+        {Object.values(this.props.communities).length > 1 && (
+          <div className="row">
+            <div className="col-12">
+              <Select
+                styles={customStyles}
+                value={selectedCommunities}
+                onChange={this.handleCommunityChange}
+                options={this.communityOptions}
+                isMulti={true}
+                placeholder={"Filter by community"}
+                className={"border border-bottom-0 border-dark z-index-130 "}
+              />
+            </div>
           </div>
-        </div>
+        )}
         <div className="row mb-4">
           <div className="col-12">
             <div className="d-flex flex-column flex-sm-row border 0 border-dark">
