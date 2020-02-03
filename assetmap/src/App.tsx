@@ -162,15 +162,19 @@ class Assetmap extends React.Component<{}, MyState> {
     return new Promise((resolve, reject) => {
       this.filterPosts('groups', selectedCommunities, 'communities', 'groups')
       .then(() => {
+        let filterParameter = selectedCommunities;
+        if (selectedCommunities !== [] && selectedCommunities !== null) {
+          filterParameter = this.state.groups;
+        }
         if (postType === 'groups') {
           resolve();
         } else if (postType === 'individuals') {
-          this.filterPosts(postType, this.state.groups, 'groups', 'individuals')
+          this.filterPosts(postType, filterParameter, 'groups', 'individuals')
           .then(() => {
             resolve();
           })
         } else if (postType === 'projects') {
-          this.filterPosts(postType, this.state.groups, 'groups', 'projects')
+          this.filterPosts(postType, filterParameter, 'groups', 'projects')
           .then(() => {
             resolve();
           })
