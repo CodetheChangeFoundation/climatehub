@@ -53,6 +53,7 @@ export const RowInfo = ({ data, handlePostQuery: handlePostQuery, postType }: Ro
 
   let rowInfo;
   if (postType === 'Groups') {
+    rowInfo = <>{rowInfo}{renderText("Description", data.description, "col-12 col-xl-5")}</>
     rowInfo = <>{rowInfo}{renderText('Website', data.website, 'col-4 col-lg-3', true)}</>
     rowInfo = <>{rowInfo}{renderButton('Projects', data.projects, 'Explore projects', 'projects')}</>
     rowInfo = <>{rowInfo}{renderButton('Individuals', data.individuals, 'See individuals', 'individuals')}</>
