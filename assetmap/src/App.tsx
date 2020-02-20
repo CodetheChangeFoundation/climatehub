@@ -65,21 +65,27 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   componentDidMount() {
-    this.getAllPostsByType('tags')
-    .then(() => {
-      this.getAllPostsByType('tag_types')
-    }).then(() => 
-      this.getAllPostsByType('cities')
-    ).then(() => 
-      this.getAllPostsByType('communities')
-    ).then(() => 
-      this.getAllPostsByType('groups')
-    ).then(() => {
+    const postTypes = ['tags', 'tag_types', 'cities', 'communities', 'groups'];
+    const onLoad = new Array<Promise<any>>();
+    postTypes.forEach((type: string) => {
+      onLoad.push(this.getPostsOnLoad(type));
+    })
+    Promise.all(onLoad).then(() => {
       this.setLoadedState();
       this.getAllPostsByType('individuals');
       this.getAllPostsByType('projects');
     }).then(() => {
       console.log(this.cache)
+    });
+  }
+
+  getPostsOnLoad(postType: string): Promise<any> {
+    return new Promise((resolve) => {
+      this.getAllPostsByType(postType).then(() => {
+        console.log(this.cache[postType]);
+        this.appendToPostTypeState(postType, this.cache[postType])
+        resolve();
+      })
     })
   }
 
@@ -140,8 +146,7 @@ class Assetmap extends React.Component<{}, MyState> {
         )
       })
       Promise.all(promiseArray).then(() => {
-        this.appendToPostTypeState(postType, pageUpdatedPosts);
-        resolve(pageUpdatedPosts);
+        resolve();
       })
     })
   }
@@ -228,6 +233,7 @@ class Assetmap extends React.Component<{}, MyState> {
     });
   }
 
+  //
   getPostbyId (postType: string, ID: number) {
     if (this.cache[postType]) {
       const post = this.cache[postType][ID];
@@ -236,6 +242,7 @@ class Assetmap extends React.Component<{}, MyState> {
       }
       else {
         console.log("Post does not exist");
+        return undefined;
       }
     } else {
       this.getAllPostsByType(postType)
@@ -255,11 +262,10 @@ class Assetmap extends React.Component<{}, MyState> {
     });
   }
 
-  // Should return promise
   appendToPostTypeState (postType: string, posts: Array<any>) {
     const updatedState = {};
     updatedState[postType] = this.state[postType];
-    posts.forEach((post: any) => {
+    Object.values(posts).forEach((post: any) => {
       updatedState[postType][post.id] = post;
     })
     this.setState(updatedState);

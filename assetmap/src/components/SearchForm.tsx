@@ -146,17 +146,20 @@ class SearchForm extends React.Component<MyProps, MyState> {
         filterStack,
       }, () => {
         const posts = Array<any>();
+        console.log(postsToRender);
         postsToRender.forEach((postId: number) => {
-          posts.push(this.props.getPostbyId(postType.toLowerCase(), postId));
+          const post = this.props.getPostbyId(postType.toLowerCase(), postId);
+          if (post) {
+            posts.push(post);
+          };
         })
+        console.log(posts);
         this.props.updatePostTypeState(postType.toLowerCase(), posts);
         this.setState({
           postType,
           searchTerm: '',
           selectedTags: null,
         });
-        console.log(this.state.filterStack);
-        console.log(this.state.postQueries);
       });
     })
   }
