@@ -153,7 +153,6 @@ class Assetmap extends React.Component<{}, MyState> {
 
   filterPostsByTag(postType: string, selectedTags: Array<number>): Promise<any> {
     return new Promise((resolve) => {
-      console.log(selectedTags);
       this.filterPosts(postType, selectedTags, 'tags', postType)
       .then(() => {
         resolve();
