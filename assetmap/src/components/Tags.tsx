@@ -22,7 +22,6 @@ export class Tags extends React.Component<TagsProps> {
         }
       })
     }    
-    console.log(id + " " + alreadySelected);
     return alreadySelected;
   }
 
@@ -35,7 +34,6 @@ export class Tags extends React.Component<TagsProps> {
       const tagStyle = {
         '--tag-color': tagColor,
         backgroundColor: 'none !important',
-        // backgroundColor: (!this.isTagSelected(id)? 'none' : backgroundColor),
         border,
       }
       if (this.isTagSelected(id)) {
