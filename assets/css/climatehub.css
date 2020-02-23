@@ -348,6 +348,11 @@ body {
   white-space: nowrap;
 }
 
+.tag:hover {
+  background-color: var(--tag-color) !important;
+  color: #DFDFDF;
+}
+
 .asset-map .table-container tbody tr.row-expandable:hover>td {
   background-color: var(--light);
 }
