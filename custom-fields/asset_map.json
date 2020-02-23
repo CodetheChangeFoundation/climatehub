@@ -1430,7 +1430,7 @@
                 "label": "GROUP FILE",
                 "name": "group_file",
                 "type": "file",
-                "instructions": "Available Fields: GROUP_ID, NAME, DESCRIPTION, TAG_A, TAG_B, TAG_C, WEBSITE, COMMUNITY, PARENT_GROUP, PROJECTS, INDIVIDUALS\r\n*In PROJECTS and INDIVIDUALS fields, please separate each new ID with a comma.",
+                "instructions": "Available Fields: GROUP_ID, NAME, DESCRIPTION, WEBSITE, TAGS, COMMUNITY, PARENT_GROUP, PROJECTS, INDIVIDUALS\r\n*In PROJECTS and INDIVIDUALS fields, please separate each new ID with a comma.\r\n*In TAGS field, please separate each new Tag Name with a comma.",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -1449,7 +1449,7 @@
                 "label": "PROJECT FILE",
                 "name": "project_file",
                 "type": "file",
-                "instructions": "Available Fields: PROJECT_ID, NAME, DESCRIPTION, TAG_A, TAG_B, TAG_C, WEBSITE, BLOG_POST, DIRECTOR",
+                "instructions": "Available Fields: PROJECT_ID, NAME, DESCRIPTION, WEBSITE, BLOG_POST, TAGS, DIRECTOR\r\n*In TAGS field, please separate each new Tag Name with a comma.",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -1468,7 +1468,7 @@
                 "label": "INDIVIDUAL FILE",
                 "name": "individual_file",
                 "type": "file",
-                "instructions": "Available Fields: INDIVIDUAL_ID, NAME, DESCRIPTION, TAG_A, TAG_B, TAG_C, WEBSITE, POSITION, EMAIL, PHONE, SURVEY_INFO",
+                "instructions": "Available Fields: INDIVIDUAL_ID, NAME, DESCRIPTION, TAGS, WEBSITE, POSITION, EMAIL, PHONE, SURVEY_INFO\r\n*In TAGS field, please separate each new Tag Name with a comma.",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -1506,7 +1506,7 @@
                 "label": "TAG_TYPE FILE",
                 "name": "tag_type_file",
                 "type": "file",
-                "instructions": "Available Fields: TYPE_ID, NAME, COLOUR",
+                "instructions": "Available Fields: TYPE_ID, NAME, COLOUR\r\n*In COLOUR field, please enter a six digit hexadecimal value without the hex symbol. Ex. \"F0F0F0\".",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
