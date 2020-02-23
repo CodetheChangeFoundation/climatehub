@@ -43,7 +43,7 @@ export const Tags = ({ getTagName, getTagColor, tags}: TagsProps) => {
 
   return (
     <div>
-      {tags.map((id) => renderTag('tags', id))}
+      {tags.length > 0 && tags.map((id) => renderTag('tags', id))}
     </div>
   )
 }
