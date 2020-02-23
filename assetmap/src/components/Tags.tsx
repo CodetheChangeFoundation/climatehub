@@ -2,6 +2,7 @@ import * as React from 'react';
 interface TagsProps {
   getTagColor: (tagGroup: string, id: number) => string,
   getTagName: (tagGroup: string, id: number) => string,
+  appendToSelectedTags: (tag: any) => void,
   tags: Array<number>
 }
 
@@ -22,7 +23,7 @@ export class Tags extends React.Component<TagsProps> {
         backgroundColor,
         border,
       }
-      const handleClick = () => this.handleTagClick(tagName);
+      const handleClick = () => this.handleTagClick(id);
       const classes = "tag d-inline-block p-1 my-1 mr-3";
       return (
         <div key={id} className={classes} style={tagStyle} onClick={handleClick}>
@@ -34,9 +35,9 @@ export class Tags extends React.Component<TagsProps> {
     }
   }
 
-  handleTagClick(tagName: string) {
-    console.log(tagName + 'Clicked');
-
+  handleTagClick(tagId: number) {
+    console.log(tagId + ' clicked:');
+    this.props.appendToSelectedTags(tagId);
   }
 
   getBackgroundColor(color: string) {
@@ -53,7 +54,7 @@ export class Tags extends React.Component<TagsProps> {
   public render() {
     return (
       <div>
-        {this.props.tags.map((id) => this.renderTag('tags', id))}
+        {(this.props.tags.length > 0) && this.props.tags.map((id) => this.renderTag('tags', id))}
       </div>
     )
   }

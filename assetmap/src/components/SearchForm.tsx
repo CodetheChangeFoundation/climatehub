@@ -71,6 +71,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.getTagColor = this.getTagColor.bind(this);
     this.setSelectedPost = this.setSelectedPost.bind(this);
     this.handleBack = this.handleBack.bind(this);
+    this.appendToSelectedTags = this.appendToSelectedTags.bind(this);
   }
 
   setSelectedPost(selectedPost: number) {
@@ -105,7 +106,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.setState(
       { selectedTags },
       () => {
-        console.log(this.state.selectedTags);
         this.getPostsByCommunity()
         .then(() => {
           this.getPostsByTag(selectedTags);
@@ -127,11 +127,38 @@ class SearchForm extends React.Component<MyProps, MyState> {
     });
   }
 
+  appendToSelectedTags(tagId: number) {
+    if (this.props.tags[tagId]) {
+      const newTag = this.props.tags[tagId];
+      const currSelectedTags = this.state.selectedTags;
+      const selectedTag = {
+        id: newTag.id,
+        label: newTag.name,
+        value: newTag.name,
+      }
+      let newTags = [selectedTag];
+      if (currSelectedTags !== null && currSelectedTags !== []) {     
+        let unique = true;
+        currSelectedTags.forEach((tag: any) => {
+          if (tag.id === newTag.id) {
+            console.log("Already Selected  " + newTag.name);
+            unique = false;
+          }
+        })
+        if (unique) {
+          newTags =  currSelectedTags.concat(selectedTag);
+          this.handleTagFilterChange(newTags);
+        }
+      } else {
+        this.handleTagFilterChange(newTags);
+      }
+    }
+  }
+
   handlePostQuery(postType: string, postsToRender: Array<number>) {
     const {filterStack, postQueries, selectedPost} = this.state;
     const currPost = this.props[this.state.postType.toLowerCase()][selectedPost];
     postQueries.push([this.state.postType.toLowerCase(), selectedPost, currPost.name]);
-    console.log(postQueries);
     this.setState({
       postQueries, 
     }, () => {
@@ -220,8 +247,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
   handleBack() {
     const prevState = this.state.filterStack.pop();
     const postQuery = this.state.postQueries.pop();
-    console.log(prevState);
-    console.log(postQuery);
     this.setState ({
       postType: prevState.postType.charAt(0).toUpperCase() + prevState.postType.slice(1),
       searchTerm: prevState.searchTerm,
@@ -342,6 +367,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 getTagName={this.getTagName}
                 selectedPost={selectedPost}
                 setSelectedPost={this.setSelectedPost}
+                appendToSelectedTags={this.appendToSelectedTags}
               />
             </div>
           </div>
