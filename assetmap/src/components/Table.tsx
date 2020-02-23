@@ -25,7 +25,8 @@ interface MyProps {
   setSelectedPost: (postId: number) => void,
   appendToSelectedTags: (tag: any) => void,
   postType: string,
-  selectedPost: number
+  selectedPost: number,
+  selectedTags: any
 }
 class Table extends React.Component<MyProps> {
   constructor(props: MyProps) {
@@ -43,8 +44,7 @@ class Table extends React.Component<MyProps> {
   }
 
   renderItems() {
-    const { data, getTagName, getTagColor, handlePostQuery: handlePostQuery, postType, appendToSelectedTags } = this.props;
-    const { selectedPost} = this.props;
+    const { data, getTagName, getTagColor, handlePostQuery: handlePostQuery, postType, appendToSelectedTags, selectedPost, selectedTags } = this.props;
     const itemRows: Array<any> = []
 
     if (Object.values(data).length > 0) {
@@ -55,7 +55,13 @@ class Table extends React.Component<MyProps> {
             <tr key={"row-data-" + index} onClick={clickCallback} className="row-data">
               <td className="text-wrap align-middle">{line.name}</td>
               <td className="text-wrap">
-                {<Tags getTagName={getTagName} getTagColor={getTagColor} tags={line.tags} appendToSelectedTags={appendToSelectedTags}/>}
+                {<Tags 
+                  getTagName={getTagName} 
+                  getTagColor={getTagColor} 
+                  tags={line.tags} 
+                  selectedTags={selectedTags} 
+                  appendToSelectedTags={appendToSelectedTags}
+                />}
               </td>
               <td className="align-middle">
                 <svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" className={selectedPost === line.id ? 'down-arrow active' : 'down-arrow'}>

@@ -102,6 +102,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
     let selectedTags = tags;
     if (tags!== null && tags.length === 0) {
       selectedTags = null;
+      this.forceUpdate();
     }
     this.setState(
       { selectedTags },
@@ -366,6 +367,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 getTagColor={this.getTagColor}
                 getTagName={this.getTagName}
                 selectedPost={selectedPost}
+                selectedTags={selectedTags}
                 setSelectedPost={this.setSelectedPost}
                 appendToSelectedTags={this.appendToSelectedTags}
               />

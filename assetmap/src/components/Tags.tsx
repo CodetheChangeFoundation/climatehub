@@ -4,12 +4,26 @@ interface TagsProps {
   getTagName: (tagGroup: string, id: number) => string,
   appendToSelectedTags: (tag: any) => void,
   tags: Array<number>
+  selectedTags: any
 }
 
 export class Tags extends React.Component<TagsProps> {
   constructor(props: TagsProps) {
     super(props);
 
+  }
+
+  isTagSelected(id: number): boolean {
+    let alreadySelected = false;
+    if (this.props.selectedTags !== null && this.props.selectedTags !== []) {     
+      this.props.selectedTags.forEach((tag: any) => {
+        if (tag.id === id) {
+          alreadySelected = true;
+        }
+      })
+    }    
+    console.log(id + " " + alreadySelected);
+    return alreadySelected;
   }
 
   renderTag(tagGroup:string, id: number) {
@@ -20,8 +34,13 @@ export class Tags extends React.Component<TagsProps> {
       const border = '2px solid ' + tagColor;
       const tagStyle = {
         '--tag-color': tagColor,
-        backgroundColor,
+        backgroundColor: 'none !important',
+        // backgroundColor: (!this.isTagSelected(id)? 'none' : backgroundColor),
         border,
+      }
+      if (this.isTagSelected(id)) {
+        const property = 'backgroundColor';
+        tagStyle[property] = backgroundColor;
       }
       const handleClick = () => this.handleTagClick(id);
       const classes = "tag d-inline-block p-1 my-1 mr-3";
