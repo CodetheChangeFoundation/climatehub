@@ -58,7 +58,6 @@ class Assetmap extends React.Component<{}, MyState> {
     this.getAllPostsByType = this.getAllPostsByType.bind(this);
     this.getPostsFromCache = this.getPostsFromCache.bind(this);
     this.filterPostsByCommunity = this.filterPostsByCommunity.bind(this);
-    this.filterPostsByTag = this.filterPostsByTag.bind(this);
     this.getPostbyId = this.getPostbyId.bind(this);
     this.filterPosts = this.filterPosts.bind(this);
     this.updatePostTypeState = this.updatePostTypeState.bind(this);
@@ -147,17 +146,6 @@ class Assetmap extends React.Component<{}, MyState> {
       })
       Promise.all(promiseArray).then(() => {
         resolve();
-      })
-    })
-  }
-
-  filterPostsByTag(postType: string, selectedTags: Array<number>): Promise<any> {
-    return new Promise((resolve) => {
-      this.filterPosts(postType, selectedTags, 'tags', postType)
-      .then(() => {
-        resolve();
-      }).catch(() => {
-        console.log("Invalid post type");
       })
     })
   }
@@ -317,7 +305,6 @@ class Assetmap extends React.Component<{}, MyState> {
             cache={this.cache}
             getAllPostsByType={this.getAllPostsByType}
             filterPostsByCommunity={this.filterPostsByCommunity}
-            filterPostsByTag={this.filterPostsByTag}
             getPostsFromCache={this.getPostsFromCache}
             updatePostTypeState={this.updatePostTypeState}
             getPostbyId = {this.getPostbyId}

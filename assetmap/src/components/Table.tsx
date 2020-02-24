@@ -16,6 +16,7 @@ interface MyProps {
       position: string,
       projects: Array<number>,
       tags: Array<number>,
+      tagsCount: number,
       website: string,
     }
   },
@@ -68,7 +69,13 @@ class Table extends React.Component<MyProps, TableState> {
     const itemRows: Array<any> = []
 
     if (Object.values(data).length > 0) {
-      Object.values(data).map((line, index) => {
+      const sortedPosts = Object.values(data);
+      if (sortedPosts[0].tagsCount) {
+        sortedPosts.sort((a: any, b: any) => {
+          return b.tagsCount - a.tagsCount;
+        });
+      }
+      sortedPosts.map((line, index) => {
         const clickCallback = () => this.handleRowClick(line.id);
         itemRows.push(
           <React.Fragment key={index}>
