@@ -4,7 +4,6 @@ interface TagsProps {
   getTagName: (tagGroup: string, id: number) => string,
   appendToSelectedTags: (tag: number) => void,
   setSelectedPost: (post: number) => void,
-  negateRowSelect: () => void,
   tags: Array<number>
   selectedTags: any
 }

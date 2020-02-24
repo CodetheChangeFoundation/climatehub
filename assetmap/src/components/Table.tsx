@@ -30,37 +30,19 @@ interface MyProps {
   selectedPost: number,
   selectedTags: any,
 }
-
-interface TableState {
-  tagClicked: boolean,
-}
-class Table extends React.Component<MyProps, TableState> {
+class Table extends React.Component<MyProps> {
   constructor(props: MyProps) {
     super(props);
-
-    this.state = {
-      tagClicked: false,
-    }
-
-    this.negateRowSelect = this.negateRowSelect.bind(this);
   }
 
   // rowId = postId
   handleRowClick(rowId: number) {
     const selectedPost = this.props.getSelectedPost();
-    if (this.state.tagClicked) {
-      this.setState({tagClicked: false})
+      if (selectedPost === rowId) {
+      this.props.setSelectedPost(0);
     } else {
-        if (selectedPost === rowId) {
-        this.props.setSelectedPost(0);
-      } else {
-        this.props.setSelectedPost(rowId);
-      }
+      this.props.setSelectedPost(rowId);
     }
-  }
-
-  negateRowSelect() {
-    this.setState({tagClicked: true})
   }
 
   renderItems() {
@@ -89,7 +71,6 @@ class Table extends React.Component<MyProps, TableState> {
                   selectedTags={selectedTags} 
                   appendToSelectedTags={appendToSelectedTags}
                   setSelectedPost={setSelectedPost}
-                  negateRowSelect={this.negateRowSelect}
                   key={selectedTags}
                 />}
               </td>

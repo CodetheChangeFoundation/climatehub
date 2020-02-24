@@ -205,25 +205,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
     });
   }
 
-  // getPostsByTag(selectedTags: any = this.state.selectedTags): Promise<any> {
-  //   return new Promise((resolve) => {
-  //     let selection: any;
-  //     if (selectedTags !== null) {
-  //       selection = {};
-  //       selectedTags.forEach((post:any) => {
-  //         selection[post.id] = post;
-  //       });
-  //     } else {
-  //       selection = null;
-  //     }
-  //     this.props.filterPostsByTag(this.state.postType.toLowerCase(), selection)
-  //     .then(() => {
-  //       console.log(this.props[this.state.postType.toLowerCase()]);
-  //       resolve();
-  //     })
-  //   })
-  // }
-
   getTagName(tagGroup: string, id: number): string {
     if (this.props[tagGroup][id]) {
       return this.props[tagGroup][id].name;
