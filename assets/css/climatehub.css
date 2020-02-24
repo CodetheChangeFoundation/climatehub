@@ -293,6 +293,7 @@ body {
 }
 
 .item img {
+  height: 9.25rem;
   overflow: hidden;
   object-fit: cover;
   object-position: center center;
@@ -316,6 +317,17 @@ body {
 }
 
 /* Blog page */
+.blog-card-content {
+  max-height: 8.25rem;
+  overflow: hidden;
+  border: solid 1.5rem white;
+}
+
+.blog-card-img {
+  height: 9.25rem;
+  width: auto;
+}
+
 .blog-gutter-image {
   max-height: 200px;
 }
