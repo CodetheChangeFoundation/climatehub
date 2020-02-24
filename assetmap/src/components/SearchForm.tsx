@@ -171,6 +171,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
       const filterState = {
         postQueries: this.state.postQueries,
         postType: this.state.postType.toLowerCase(),
+        renderedPosts: this.props[this.state.postType.toLowerCase()],
         searchTerm: this.state.searchTerm,
         selectedTags: this.state.selectedTags,
       }
@@ -180,7 +181,10 @@ class SearchForm extends React.Component<MyProps, MyState> {
       }, () => {
         const posts = Array<any>();
         postsToRender.forEach((postId: number) => {
-          posts.push(this.props.getPostbyId(postType.toLowerCase(), postId));
+          const post = this.props.getPostbyId(postType.toLowerCase(), postId);
+          if (post) {
+            posts.push(post);
+          };
         })
         this.props.updatePostTypeState(postType.toLowerCase(), posts);
         this.setState({
@@ -188,8 +192,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
           searchTerm: '',
           selectedTags: null,
         });
-        console.log(this.state.filterStack);
-        console.log(this.state.postQueries);
       });
     })
   }
@@ -253,17 +255,17 @@ class SearchForm extends React.Component<MyProps, MyState> {
   handleBack() {
     const prevState = this.state.filterStack.pop();
     const postQuery = this.state.postQueries.pop();
+    const postsToRender = prevState.renderedPosts;
+    // console.log(prevState);
+    // console.log(postQuery);
     this.setState ({
       postType: prevState.postType.charAt(0).toUpperCase() + prevState.postType.slice(1),
       searchTerm: prevState.searchTerm,
       selectedPost: postQuery[1],
       selectedTags: prevState.selectedTags,
     }, () => {
-      this.getPostsByCommunity()
-      .then(() => {
-        this.getPostsByTag();
-      })
-    });
+      this.props.updatePostTypeState(prevState.postType, Object.values(postsToRender));
+    })
   }
 
   public render() {
