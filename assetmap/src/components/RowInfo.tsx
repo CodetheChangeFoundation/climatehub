@@ -65,6 +65,7 @@ export const RowInfo = ({ data, handlePostQuery: handlePostQuery, postType }: Ro
   } else if (postType === 'Individuals') {
     rowInfo = <>{rowInfo}{renderPositionWebsiteEmailPhone()}</>
     rowInfo = <>{rowInfo}{renderButton('Projects', data.projects, 'See their projects', 'projects')}</>
+    rowInfo = <>{rowInfo}{renderButton('Groups', data.groups, 'See their groups', 'groups')}</>
   }
 
   return(

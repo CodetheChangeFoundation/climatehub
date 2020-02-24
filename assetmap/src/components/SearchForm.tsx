@@ -70,12 +70,17 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.getTagName = this.getTagName.bind(this);
     this.getTagColor = this.getTagColor.bind(this);
     this.setSelectedPost = this.setSelectedPost.bind(this);
+    this.getSelectedPost = this.getSelectedPost.bind(this);
     this.handleBack = this.handleBack.bind(this);
     this.appendToSelectedTags = this.appendToSelectedTags.bind(this);
   }
 
   setSelectedPost(selectedPost: number) {
     this.setState({selectedPost});
+  }
+  
+  getSelectedPost(): number {
+    return this.state.selectedPost;
   }
 
   handleCommunityChange(communities: any) {
@@ -369,6 +374,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 selectedPost={selectedPost}
                 selectedTags={selectedTags}
                 setSelectedPost={this.setSelectedPost}
+                getSelectedPost={this.getSelectedPost}
                 appendToSelectedTags={this.appendToSelectedTags}
               />
             </div>

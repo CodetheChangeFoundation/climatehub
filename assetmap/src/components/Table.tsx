@@ -23,28 +23,48 @@ interface MyProps {
   getTagColor: (tagGroup: string, id: number) => string,
   handlePostQuery: (postType: string, postIds: Array<number>) => void,
   setSelectedPost: (postId: number) => void,
+  getSelectedPost: () => number,
   appendToSelectedTags: (tag: any) => void,
   postType: string,
   selectedPost: number,
-  selectedTags: any
+  selectedTags: any,
 }
-class Table extends React.Component<MyProps> {
+
+interface TableState {
+  tagClicked: boolean,
+}
+class Table extends React.Component<MyProps, TableState> {
   constructor(props: MyProps) {
     super(props);
+
+    this.state = {
+      tagClicked: false,
+    }
+
+    this.negateRowSelect = this.negateRowSelect.bind(this);
   }
 
   // rowId = postId
   handleRowClick(rowId: number) {
-    const { selectedPost } = this.props;
-    if (selectedPost === rowId) {
-      this.props.setSelectedPost(0);
+    const selectedPost = this.props.getSelectedPost();
+    if (this.state.tagClicked) {
+      this.setState({tagClicked: false})
     } else {
-      this.props.setSelectedPost(rowId);
+        if (selectedPost === rowId) {
+        this.props.setSelectedPost(0);
+      } else {
+        this.props.setSelectedPost(rowId);
+      }
     }
   }
 
+  negateRowSelect() {
+    this.setState({tagClicked: true})
+  }
+
   renderItems() {
-    const { data, getTagName, getTagColor, handlePostQuery: handlePostQuery, postType, appendToSelectedTags, selectedPost, selectedTags } = this.props;
+    const { data, getTagName, getTagColor, handlePostQuery: handlePostQuery, postType, appendToSelectedTags, selectedTags, setSelectedPost } = this.props;
+    const selectedPost = this.props.getSelectedPost();
     const itemRows: Array<any> = []
 
     if (Object.values(data).length > 0) {
@@ -61,6 +81,8 @@ class Table extends React.Component<MyProps> {
                   tags={line.tags} 
                   selectedTags={selectedTags} 
                   appendToSelectedTags={appendToSelectedTags}
+                  setSelectedPost={setSelectedPost}
+                  negateRowSelect={this.negateRowSelect}
                   key={selectedTags}
                 />}
               </td>

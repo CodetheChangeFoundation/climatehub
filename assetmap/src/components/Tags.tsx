@@ -2,7 +2,9 @@ import * as React from 'react';
 interface TagsProps {
   getTagColor: (tagGroup: string, id: number) => string,
   getTagName: (tagGroup: string, id: number) => string,
-  appendToSelectedTags: (tag: any) => void,
+  appendToSelectedTags: (tag: number) => void,
+  setSelectedPost: (post: number) => void,
+  negateRowSelect: () => void,
   tags: Array<number>
   selectedTags: any
 }
@@ -40,7 +42,11 @@ export class Tags extends React.Component<TagsProps> {
         const property = 'backgroundColor';
         tagStyle[property] = backgroundColor;
       }
-      const handleClick = () => this.handleTagClick(id);
+      const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        event.stopPropagation();
+        event.preventDefault();
+        this.handleTagClick(id);
+      }
       const classes = "tag d-inline-block p-1 my-1 mr-3";
       return (
         <div key={id} className={classes} style={tagStyle} onClick={handleClick}>
