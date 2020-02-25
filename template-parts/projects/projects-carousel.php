@@ -9,12 +9,15 @@
 <?php function climatehub_create_card() {
   ob_start(); ?>
   <article id="post-<?php the_ID();?>" <?php post_class();?>>
-    <a class="item d-flex bg-white justify-content-between text-body" href="<?php if (get_field('post_behaviour') == 'link') {the_field('post_link');} else {the_permalink();} ?>">
+    <a class="item d-flex bg-white justify-content-between text-body" target="<?php echo (get_field('post_behaviour') == 'link') ? get_field('post_link')['target'] : '_self'; ?>" href="<?php echo (get_field('post_behaviour') == 'link') ? get_field('post_link')['url'] : the_permalink() ?>">
       <div class="p-4">
         <h4 class="mb-0 font-weight-bold fade-line-ending"><?php the_title() ?></h4>
       </div>
-      <?php if (get_the_post_thumbnail_url()): ?>
-        <img class="card-img-top" src="<?php echo get_the_post_thumbnail_url(); ?>" alt="Card image cap"/>
+      <?php if (get_the_post_thumbnail_url()): 
+        $image_id = get_post_thumbnail_id();
+        $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', TRUE);
+        ?>
+        <img class="card-img-top" src="<?php echo get_the_post_thumbnail_url(); ?>" alt="<?php echo $image_alt; ?>"/>
       <?php endif; ?>
     </a>
   </article>

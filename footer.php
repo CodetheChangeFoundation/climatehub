@@ -53,10 +53,12 @@
             $footer_button_link = (isset($footer_button['url'])) ? $footer_button['url'] : '';
             $footer_button_text = (isset($footer_button['title'])) ? $footer_button['title'] : '';
             $footer_button_target = (isset($footer_button['target'])) ? $footer_button['target'] : '';
+            if($footer_button_link != '' && $footer_button_text != ''):
           ?>
           <div class="d-flex align-items-center justify-content-center pt-3 pt-md-0">
             <a role="button" href="<?php echo $footer_button_link ?>" target="<?php echo $footer_button_target ?>" class="btn btn-outline-primary font-italic"><?php echo $footer_button_text ?></a>
           </div>
+          <?php endif; ?>
         </div>
       </div>
     </div>
