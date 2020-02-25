@@ -37,8 +37,9 @@ export const RowInfo = ({ data, handlePostQuery: handlePostQuery, postType }: Ro
   }
 
   function renderButton(buttonPostType: string, ids: Array<number>, title: string, text: string) {
-    if (ids !== undefined) {
-      if (ids.length > 0) {
+    if ((ids !== undefined) 
+        && (ids.length > 0)
+        && !(ids.length===1 && ids[0]===0)) {
         const clickCallback = () => handlePostQuery(buttonPostType, ids);
         return (
           <div className="col-4 col-md-3 col-xl-2">
@@ -47,7 +48,6 @@ export const RowInfo = ({ data, handlePostQuery: handlePostQuery, postType }: Ro
           </div>
         )
       }
-    }
     return;
   }
 
@@ -65,6 +65,7 @@ export const RowInfo = ({ data, handlePostQuery: handlePostQuery, postType }: Ro
   } else if (postType === 'Individuals') {
     rowInfo = <>{rowInfo}{renderPositionWebsiteEmailPhone()}</>
     rowInfo = <>{rowInfo}{renderButton('Projects', data.projects, 'See their projects', 'projects')}</>
+    rowInfo = <>{rowInfo}{renderButton('Groups', data.groups, 'See their groups', 'groups')}</>
   }
 
   return(
