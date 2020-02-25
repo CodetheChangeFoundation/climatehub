@@ -245,25 +245,27 @@ function create_posts($post_data, $post_type, $field_types) {
 }
 
 // Creates new WP post and returns object containing post_id and row data
-function create_new_post($post_data, $post_type, $file_header) { 
-  $my_post = array(
-    'post_title'    =>  $post_data[0] . ($post_data[1]!==null? ': ' . $post_data[1] : ''),
-    'post_status'   => 'publish',
-    'post_author'   => 1,
-    'post_type' => $post_type
-  );
-  // Insert the post into the database
-  $post_id = wp_insert_post( $my_post );
-  // Create object to cache
-  $formatted_post_data = [];
-  for($i=0 ; $i < count($file_header) ; $i++) {
-    $formatted_post_data[$file_header[$i]] = $post_data[$i];
-  };
-  $post_obj = array(
-    'post_id' => $post_id,
-    'data' => $formatted_post_data
-  );
-  return $post_obj;
+function create_new_post($post_data, $post_type, $file_header) {
+  if ($post_data[0] !== "" || $post_data[1] !== "") {
+    $my_post = array(
+      'post_title'    =>  $post_data[0] . ($post_data[1]!==null? ': ' . $post_data[1] : ''),
+      'post_status'   => 'publish',
+      'post_author'   => 1,
+      'post_type' => $post_type
+    );
+    // Insert the post into the database
+    $post_id = wp_insert_post( $my_post );
+    // Create object to cache
+    $formatted_post_data = [];
+    for($i=0 ; $i < count($file_header) ; $i++) {
+      $formatted_post_data[$file_header[$i]] = $post_data[$i];
+    };
+    $post_obj = array(
+      'post_id' => $post_id,
+      'data' => $formatted_post_data
+    );
+    return $post_obj;
+  }
 }
 
 function update_fields($all_objects, $file_headers, $related_posts) {
@@ -286,7 +288,8 @@ function update_basic_fields($posts, $fields_to_update) {
     foreach($fields_to_update as $field) {
       update_field(strtolower($field), $post_data[$field], $post_id);
       $value = get_field(strtolower($field), $post_id);
-      if (!$value || $value !== $post_data[$field]) {
+      if ((!$value || $value !== $post_data[$field]) 
+          && (trim($post_data[$field]) !== "")) {
         $response[] = ([$post_data['NAME'], $field, "'" . $value . 
         "' does not match '" . $post_data[$field] . "'"]);
       }
