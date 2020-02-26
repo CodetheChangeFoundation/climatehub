@@ -264,7 +264,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
       Object.keys(currPosts).forEach((postId: any) => {
         currPosts[postId][property] = 0;
         selectedTags.forEach((tag: any) => {
-          if (currPosts[postId].tags.includes(tag.id)) {
+          if (currPosts[postId].tags.length > 0 && currPosts[postId].tags.includes(tag.id)) {
             currPosts[postId][property]+= 1;
           }
         })
