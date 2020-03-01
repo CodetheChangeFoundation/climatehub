@@ -9,7 +9,6 @@ interface MyProps {
   groups: any
   getAllPostsByType: any
   filterPostsByCommunity: any
-  filterPostsByTag: any
   getPostsFromCache: any
   cache: any
   getPostbyId: any
@@ -70,13 +69,20 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.getTagName = this.getTagName.bind(this);
     this.getTagColor = this.getTagColor.bind(this);
     this.setSelectedPost = this.setSelectedPost.bind(this);
+    this.getSelectedPost = this.getSelectedPost.bind(this);
     this.handleBack = this.handleBack.bind(this);
+    this.appendToSelectedTags = this.appendToSelectedTags.bind(this);
   }
 
   setSelectedPost(selectedPost: number) {
     this.setState({selectedPost});
   }
+  
+  getSelectedPost(): number {
+    return this.state.selectedPost;
+  }
 
+  // TODO
   handleCommunityChange(communities: any) {
     let selectedCommunities = communities;
     if (communities!== null && communities.length === 0) {
@@ -86,9 +92,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
       { selectedCommunities },
       () => {
         this.getPostsByCommunity()
-        .then(() => {
-          this.getPostsByTag();
-        })
       }
     );
   }
@@ -103,28 +106,49 @@ class SearchForm extends React.Component<MyProps, MyState> {
       selectedTags = null;
     }
     this.setState(
-      { selectedTags },
-      () => {
-        console.log(this.state.selectedTags);
-        this.getPostsByCommunity()
-        .then(() => {
-          this.getPostsByTag(selectedTags);
-        })
-      }
+      { selectedTags }
     );
   }
 
   handlePostTypeChange(postType: any) {
     this.setState({
       postQueries: [],
-      postType: postType.label
+      postType: postType.label,
+      searchTerm: "",
+      selectedPost: 0,
+      selectedTags: null
     }, 
       () => {
         this.getPostsByCommunity()
-        .then(() => {
-          this.getPostsByTag();
-        })
     });
+  }
+
+  appendToSelectedTags(tagId: number) {
+    if (this.props.tags[tagId]) {
+      const newTag = this.props.tags[tagId];
+      const currSelectedTags = this.state.selectedTags;
+      const selectedTag = {
+        id: newTag.id,
+        label: newTag.name,
+        value: newTag.name,
+      }
+      let newTags = [selectedTag];
+      if (currSelectedTags !== null && currSelectedTags !== []) {     
+        let unique = true;
+        currSelectedTags.forEach((tag: any) => {
+          if (tag.id === newTag.id) {
+            console.log("Already Selected  " + newTag.name);
+            unique = false;
+          }
+        })
+        if (unique) {
+          newTags =  currSelectedTags.concat(selectedTag);
+          this.handleTagFilterChange(newTags);
+        }
+      } else {
+        this.handleTagFilterChange(newTags);
+      }
+    }
   }
 
   handlePostQuery(postType: string, postsToRender: Array<number>) {
@@ -181,25 +205,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
     });
   }
 
-  getPostsByTag(selectedTags: any = this.state.selectedTags): Promise<any> {
-    return new Promise((resolve) => {
-      let selection: any;
-      if (selectedTags !== null) {
-        selection = {};
-        selectedTags.forEach((post:any) => {
-          selection[post.id] = post;
-        });
-      } else {
-        selection = null;
-      }
-      this.props.filterPostsByTag(this.state.postType.toLowerCase(), selection)
-      .then(() => {
-        console.log(this.props[this.state.postType.toLowerCase()]);
-        resolve();
-      })
-    })
-  }
-
   getTagName(tagGroup: string, id: number): string {
     if (this.props[tagGroup][id]) {
       return this.props[tagGroup][id].name;
@@ -222,8 +227,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
     const prevState = this.state.filterStack.pop();
     const postQuery = this.state.postQueries.pop();
     const postsToRender = prevState.renderedPosts;
-    // console.log(prevState);
-    // console.log(postQuery);
     this.setState ({
       postType: prevState.postType.charAt(0).toUpperCase() + prevState.postType.slice(1),
       searchTerm: prevState.searchTerm,
@@ -248,6 +251,24 @@ class SearchForm extends React.Component<MyProps, MyState> {
       const updatedPosts = {};
       Object.keys(currPosts).forEach((postId) => {
         if (currPosts[postId].name.toLowerCase().includes(searchTermFormatted)) {
+          updatedPosts[postId] = currPosts[postId];
+        }
+      })
+      currPosts = updatedPosts;
+    }
+
+    // Filter Selected Tags
+    if (selectedTags !== null && selectedTags !== {}){
+      const property = 'tagsCount';
+      const updatedPosts = {};
+      Object.keys(currPosts).forEach((postId: any) => {
+        currPosts[postId][property] = 0;
+        selectedTags.forEach((tag: any) => {
+          if (currPosts[postId].tags.length > 0 && currPosts[postId].tags.includes(tag.id)) {
+            currPosts[postId][property]+= 1;
+          }
+        })
+        if (currPosts[postId][property] > 0) {
           updatedPosts[postId] = currPosts[postId];
         }
       })
@@ -340,7 +361,10 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 getTagColor={this.getTagColor}
                 getTagName={this.getTagName}
                 selectedPost={selectedPost}
+                selectedTags={selectedTags}
                 setSelectedPost={this.setSelectedPost}
+                getSelectedPost={this.getSelectedPost}
+                appendToSelectedTags={this.appendToSelectedTags}
               />
             </div>
           </div>

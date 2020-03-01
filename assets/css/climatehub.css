@@ -360,6 +360,12 @@ body {
   white-space: nowrap;
 }
 
+.tag:hover {
+  background-color: var(--tag-color) !important;
+  color: #DFDFDF;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
 .asset-map .table-container tbody tr.row-expandable:hover>td {
   background-color: var(--light);
 }

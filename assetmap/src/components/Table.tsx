@@ -16,6 +16,7 @@ interface MyProps {
       position: string,
       projects: Array<number>,
       tags: Array<number>,
+      tagsCount: number,
       website: string,
     }
   },
@@ -23,8 +24,11 @@ interface MyProps {
   getTagColor: (tagGroup: string, id: number) => string,
   handlePostQuery: (postType: string, postIds: Array<number>) => void,
   setSelectedPost: (postId: number) => void,
+  getSelectedPost: () => number,
+  appendToSelectedTags: (tag: any) => void,
   postType: string,
-  selectedPost: number
+  selectedPost: number,
+  selectedTags: any,
 }
 class Table extends React.Component<MyProps> {
   constructor(props: MyProps) {
@@ -33,8 +37,8 @@ class Table extends React.Component<MyProps> {
 
   // rowId = postId
   handleRowClick(rowId: number) {
-    const { selectedPost } = this.props;
-    if (selectedPost === rowId) {
+    const selectedPost = this.props.getSelectedPost();
+      if (selectedPost === rowId) {
       this.props.setSelectedPost(0);
     } else {
       this.props.setSelectedPost(rowId);
@@ -42,19 +46,33 @@ class Table extends React.Component<MyProps> {
   }
 
   renderItems() {
-    const { data, getTagName, getTagColor, handlePostQuery: handlePostQuery, postType } = this.props;
-    const { selectedPost } = this.props;
+    const { data, getTagName, getTagColor, handlePostQuery: handlePostQuery, postType, appendToSelectedTags, selectedTags, setSelectedPost } = this.props;
+    const selectedPost = this.props.getSelectedPost();
     const itemRows: Array<any> = []
 
     if (Object.values(data).length > 0) {
-      Object.values(data).map((line, index) => {
+      const sortedPosts = Object.values(data);
+      if (sortedPosts[0].tagsCount) {
+        sortedPosts.sort((a: any, b: any) => {
+          return b.tagsCount - a.tagsCount;
+        });
+      }
+      sortedPosts.map((line, index) => {
         const clickCallback = () => this.handleRowClick(line.id);
         itemRows.push(
           <React.Fragment key={index}>
             <tr key={"row-data-" + index} onClick={clickCallback} className="row-data">
               <td className="text-wrap align-middle">{line.name}</td>
               <td className="text-wrap">
-                {<Tags getTagName={getTagName} getTagColor={getTagColor} tags={line.tags}/>}
+                {<Tags 
+                  getTagName={getTagName} 
+                  getTagColor={getTagColor} 
+                  tags={line.tags} 
+                  selectedTags={selectedTags} 
+                  appendToSelectedTags={appendToSelectedTags}
+                  setSelectedPost={setSelectedPost}
+                  key={selectedTags}
+                />}
               </td>
               <td className="align-middle">
                 <svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" className={selectedPost === line.id ? 'down-arrow active' : 'down-arrow'}>
