@@ -28,3 +28,4 @@ wp-content/plugins/hello.php
 /assetmap/yarn-error.log*
 /assetmap/.changelog
 /assetmap/.npm/
+**/node_modules

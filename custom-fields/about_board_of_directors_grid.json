@@ -1,0 +1,46 @@
+[
+    {
+        "key": "group_5c9fd90dd6909",
+        "title": "About Page Board of Directors",
+        "fields": [
+            {
+                "key": "field_5c9fd91123c06",
+                "label": "Board of Directors",
+                "name": "board_of_directors",
+                "type": "clone",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "clone": [
+                    "group_5c7f4a6821073"
+                ],
+                "display": "seamless",
+                "layout": "block",
+                "prefix_label": 0,
+                "prefix_name": 1
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "page",
+                    "operator": "==",
+                    "value": "46"
+                }
+            ]
+        ],
+        "menu_order": 33,
+        "position": "normal",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": 1,
+        "description": ""
+    }
+]
