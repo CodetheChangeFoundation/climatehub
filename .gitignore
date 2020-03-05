@@ -18,8 +18,7 @@ wp-content/plugins/hello.php
 /sitemap.xml.gz
 .DS_Store
 
-**/node_modules
-
+/assetmap/node_modules/
 /assetmap/build
 /assetmap/*.tgz
 /assetmap/template/src/__tests__/__snapshots__/
@@ -29,3 +28,4 @@ wp-content/plugins/hello.php
 /assetmap/yarn-error.log*
 /assetmap/.changelog
 /assetmap/.npm/
+**/node_modules
