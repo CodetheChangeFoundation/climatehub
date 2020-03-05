@@ -338,3 +338,105 @@ body {
   object-fit: contain;
   object-position: center center;
 }
+
+/* Asset Map */
+
+.asset-map .table-container {
+  height: 500px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.asset-map .table-container table {
+  table-layout: fixed;
+}
+
+.asset-map .table-container thead th {
+  top: 0;
+  box-shadow: 0px 1px 0px 0px #DFDFDF;
+}
+
+.asset-map .table-container .tag {
+  white-space: nowrap;
+}
+
+.tag:hover {
+  background-color: var(--tag-color) !important;
+  color: #DFDFDF;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.asset-map .table-container tbody tr.row-expandable:hover>td {
+  background-color: var(--light);
+}
+
+.z-index-99 {
+  z-index: 99;
+}
+
+.z-index-110 {
+  z-index: 110;
+}
+
+.z-index-120 {
+  z-index: 120;
+}
+
+.z-index-130 {
+  z-index: 130;
+}
+
+.back-button,
+.row-data {
+  cursor: pointer;
+}
+
+.back-button svg {
+  fill: var(--primary)
+}
+
+.back-button:hover svg {
+  fill: #5d9a22
+}
+
+.back-button p {
+  color: var(--primary)
+}
+
+.back-button:hover p {
+  color: #5d9a22
+}
+
+.py-11px {
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+@media (min-width: 576px) {
+  .border-sm-left {
+    border-left: 2px solid !important;
+  }
+
+  .border-sm-right {
+    border-right: 2px solid !important;
+  }
+
+  .border-top-sm-0 {
+    border-top: 0 !important;
+  }
+  
+  .border-bottom-sm-0 {
+    border-bottom: 0 !important;
+  }
+}
+
+.down-arrow {
+  fill: var(--dark);
+  transform: rotateX(0deg);
+  transition: all 250ms ease-in-out;
+}
+
+.down-arrow.active {
+  transform: rotateX(180deg);
+  transition: all 250ms ease-in-out;
+}

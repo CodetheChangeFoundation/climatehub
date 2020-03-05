@@ -4,14 +4,17 @@
   "private": true,
   "dependencies": {
     "@types/d3": "^5.0.1",
+    "@types/react-select": "^3.0.8",
     "d3": "^5.7.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts-ts": "3.1.0"
+    "react-redux": "^6.0.1",
+    "react-scripts-ts": "3.1.0",
+    "react-select": "^3.0.8"
   },
   "scripts": {
     "start": "sed -i '' '/.*ModuleScopePlugin.*/d' node_modules/react-scripts-ts/config/webpack.config.dev.js; react-scripts-ts start",
-    "build": "sed -i '' \"/.*assets.*css.*/ s/^/\\/\\/ /\" src/*; react-scripts-ts build; sed -i '' 's/.*import/import/' src/*",
+    "build": "sed -i '' \"/.*assets.*css.*/ s/^/\\/\\/ /\" src/*.tsx; react-scripts-ts build; sed -i '' 's/.*import/import/' src/*.tsx",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
@@ -20,6 +23,7 @@
     "@types/node": "^10.12.11",
     "@types/react": "^16.7.11",
     "@types/react-dom": "^16.0.11",
+    "@types/react-redux": "^7.0.5",
     "typescript": "^3.2.1"
   }
 }
