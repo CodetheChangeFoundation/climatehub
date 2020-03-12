@@ -237,15 +237,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
     })
   }
 
-  public render() {
-    const { postQueries, postType, searchTerm, selectedCommunities, selectedTags, selectedPost } = this.state;
-    
-    const categories: Array<object> = [];
-    this.props.categories.map(category => categories.push({ value: category.toLowerCase(), label: category }))
-    
-    let currPosts = this.props[postType.toLowerCase()];
-    
-    // Search
+  private searchFilter(searchTerm: string, currPosts: any) {
     const searchTermFormatted = searchTerm.toLowerCase();
     if (searchTermFormatted !== "") {
       const updatedPosts = {};
@@ -253,27 +245,41 @@ class SearchForm extends React.Component<MyProps, MyState> {
         if (currPosts[postId].name.toLowerCase().includes(searchTermFormatted)) {
           updatedPosts[postId] = currPosts[postId];
         }
-      })
+      });
       currPosts = updatedPosts;
     }
-
-    // Filter Selected Tags
-    if (selectedTags !== null && selectedTags !== {}){
+    return currPosts;
+  }
+  
+  private tagsFilter(selectedTags: any, currPosts: any) {
+    if (selectedTags !== null && selectedTags !== {}) {
       const property = 'tagsCount';
       const updatedPosts = {};
       Object.keys(currPosts).forEach((postId: any) => {
         currPosts[postId][property] = 0;
         selectedTags.forEach((tag: any) => {
           if (currPosts[postId].tags.length > 0 && currPosts[postId].tags.includes(tag.id)) {
-            currPosts[postId][property]+= 1;
+            currPosts[postId][property] += 1;
           }
-        })
+        });
         if (currPosts[postId][property] > 0) {
           updatedPosts[postId] = currPosts[postId];
         }
-      })
+      });
       currPosts = updatedPosts;
     }
+    return currPosts;
+  }
+
+
+  public render() {
+    const { postQueries, postType, searchTerm, selectedCommunities, selectedTags, selectedPost } = this.state;
+    const categories: Array<object> = [];
+    this.props.categories.map(category => categories.push({ value: category.toLowerCase(), label: category }))
+    
+    let currPosts = this.props[postType.toLowerCase()];
+    currPosts = this.searchFilter(searchTerm, currPosts);
+    currPosts = this.tagsFilter(selectedTags, currPosts);
     const numResults = Object.keys(currPosts).length;
 
     return (
@@ -376,6 +382,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
       </div>
     );
   }
+
 }
 
 const customStyles = {

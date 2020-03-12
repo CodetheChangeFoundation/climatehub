@@ -91,30 +91,20 @@ class Assetmap extends React.Component<{}, MyState> {
   getAllPostsByType(postType: string): Promise<any> {
     return new Promise((resolve) => {
       console.log("Querying WP for : " + postType);
-      const currentPage = 1;
       const baseUrl = "http://climatehub.local/wp-json/wp/v2/" + postType + '?per_page=100';
-      const requestUrl = baseUrl + '&page=' + currentPage;
+      // Fetch first page
+      const requestUrl = baseUrl + '&page=' + 1;
       fetch(requestUrl)
       .then((res) => {
-        const numPages = Number(res.headers.get('X-WP-TotalPages'));
         const dataResponses = new Array<any>();
         res.json()
         .then((resJSON) => {
-          dataResponses.push(this.cacheAllPosts(resJSON, postType));
-          
-          for (let i = currentPage + 1; i<=numPages ; i++) {
+          dataResponses.push(this.cacheAllPosts(resJSON, postType)); 
+          // If there are more than 1 pages to fetch: 
+          const numPages = Number(res.headers.get('X-WP-TotalPages'));
+          for (let pageNum = 2; pageNum<=numPages ; pageNum++) {
             dataResponses.push(
-              new Promise((res4) => {
-                const newUrl = baseUrl + '&page=' + i;
-                fetch(newUrl)
-                .then((response) => {
-                  response.json()
-                  .then((res2) => {
-                    dataResponses.push(this.cacheAllPosts(res2, postType));
-                    res4();
-                  })
-                })
-              })
+              this.fetchNextPage(baseUrl, pageNum, dataResponses, postType)
             )
           }
           Promise.all(dataResponses).then(() => {
@@ -123,6 +113,20 @@ class Assetmap extends React.Component<{}, MyState> {
         })
       });  
     })
+  }
+
+  private fetchNextPage(baseUrl: string, pageNum: number, dataResponses: Array<any>, postType: string): any {
+    return new Promise((res4) => {
+      const newUrl = baseUrl + '&page=' + pageNum;
+      fetch(newUrl)
+        .then((response) => {
+          response.json()
+            .then((posts) => {
+              dataResponses.push(this.cacheAllPosts(posts, postType));
+              res4();
+            });
+        });
+    });
   }
 
   cacheAllPosts(posts: any, postType: string): Promise<any> {
