@@ -8,11 +8,9 @@ interface MyProps {
   communities: any
   groups: any
   getAllPostsByType: any
-  filterPostsByCommunity: any
   getPostsFromCache: any
   cache: any
   getPostbyId: any
-  filterPosts: any
   individuals: any
   projects: any
   tags: any
@@ -72,6 +70,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.getSelectedPost = this.getSelectedPost.bind(this);
     this.handleBack = this.handleBack.bind(this);
     this.appendToSelectedTags = this.appendToSelectedTags.bind(this);
+    this.communityFilter = this.communityFilter.bind(this);
   }
 
   setSelectedPost(selectedPost: number) {
@@ -91,7 +90,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.setState(
       { selectedCommunities },
       () => {
-        this.getPostsByCommunity()
+        this.communityFilter(communities, this.state.postType);
       }
     );
   }
@@ -119,7 +118,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
       selectedTags: null
     }, 
       () => {
-        this.getPostsByCommunity()
+        this.communityFilter(this.state.selectedCommunities,postType.label);
     });
   }
 
@@ -184,25 +183,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
         });
       });
     })
-  }
-
-  getPostsByCommunity(selectedPosts: any = this.state.selectedCommunities): Promise<any> {
-    return new Promise((resolve) => {
-      let selection: any;
-      if (selectedPosts !== null) {
-        selection = {};
-        selectedPosts.forEach((post: any) => {
-          selection[post.id] = post;
-        });
-      } else {
-        selection = null;
-      }
-      this.props.filterPostsByCommunity(this.state.postType.toLowerCase(), selection)
-      .then(() => {
-        console.log(this.props[this.state.postType.toLowerCase()]);
-        resolve();
-      })
-    });
   }
 
   getTagName(tagGroup: string, id: number): string {
@@ -271,6 +251,40 @@ class SearchForm extends React.Component<MyProps, MyState> {
     return currPosts;
   }
 
+  private communityFilter(selectedCommunities: any, postTypeLabel: string) {
+    const postType = postTypeLabel.toLowerCase();
+    let currPosts = this.props.cache[postType];
+    if (selectedCommunities !== null && Object.values(selectedCommunities).length > 0) {
+      const communityIds = selectedCommunities.map((community: {id: number}) => {
+        return community.id;
+      })
+      const filteredGroups: any = {};
+      const groupsCache = this.props.cache.groups;
+      Object.keys(groupsCache).forEach((groupId: any) => {
+        const post = groupsCache[groupId];
+        if (post.community && communityIds.indexOf(post.community[0]) >= 0) {
+          filteredGroups[groupId] = post;
+          console.log("Match");
+        }
+      })
+      if (postType === "groups") {
+        currPosts = filteredGroups;
+      } 
+      if (postType === "projects" || postType === "individuals") {
+        const filteredPosts: any = {};
+        Object.keys(currPosts).forEach((postId: any) => {
+          const post = currPosts[postId];
+          if (post.groups && post.groups.some((group: any) =>
+            Object.keys(filteredGroups).indexOf("" + group + "") >= 0)) {
+            filteredPosts[postId] = post;
+            console.log("Match");
+          }
+        })
+        currPosts = filteredPosts;
+      }
+    }
+    this.props.updatePostTypeState(postType, Object.values(currPosts));
+  }
 
   public render() {
     const { postQueries, postType, searchTerm, selectedCommunities, selectedTags, selectedPost } = this.state;
