@@ -13,9 +13,8 @@ interface MyState {
   groups: any,
   individuals: any,
   isLoaded: boolean
-  postType: any,
+  postType: string,
   projects: any,
-  selectedCommunities: Array<any>,
   tag_types: any,
   tags: any,
 };
@@ -50,7 +49,6 @@ class Assetmap extends React.Component<{}, MyState> {
       isLoaded: false,
       postType: 'groups',
       projects: [],
-      selectedCommunities: [],
       tag_types: [],
       tags: [],
     };
@@ -76,7 +74,7 @@ class Assetmap extends React.Component<{}, MyState> {
     });
   }
 
-  getPostsOnLoad(postType: string): Promise<any> {
+  getPostsOnLoad(postType: string): Promise<void> {
     return new Promise((resolve) => {
       this.getAllPostsByType(postType).then(() => {
         console.log(this.cache[postType]);
@@ -113,15 +111,15 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
-  private fetchNextPage(baseUrl: string, pageNum: number, dataResponses: Array<any>, postType: string): any {
-    return new Promise((res4) => {
+  private fetchNextPage(baseUrl: string, pageNum: number, dataResponses: Array<any>, postType: string): Promise<void> {
+    return new Promise((resolve) => {
       const newUrl = baseUrl + '&page=' + pageNum;
       fetch(newUrl)
         .then((response) => {
           response.json()
             .then((posts) => {
               dataResponses.push(this.cacheAllPosts(posts, postType));
-              res4();
+              resolve();
             });
         });
     });
@@ -152,7 +150,7 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
-  getPostbyId (postType: string, ID: number) {
+  getPostbyId (postType: string, ID: number): object|undefined {
     if (this.cache[postType]) {
       const post = this.cache[postType][ID];
       if (post) {
@@ -168,9 +166,10 @@ class Assetmap extends React.Component<{}, MyState> {
         this.getPostbyId(postType, ID)
       });
     }
+    return;
   }
 
-  getPostsFromCache(postType: string): Promise<any> {
+  getPostsFromCache(postType: string): Promise<void> {
     return new Promise((resolve) => {
       if (!this.cache[postType]) {
         this.getAllPostsByType(postType).then(() => resolve());
@@ -180,7 +179,7 @@ class Assetmap extends React.Component<{}, MyState> {
     });
   }
 
-  appendToPostTypeState (postType: string, posts: Array<any>) {
+  appendToPostTypeState (postType: string, posts: Array<any>): void {
     const updatedState = {};
     updatedState[postType] = this.state[postType];
     Object.values(posts).forEach((post: any) => {
@@ -189,8 +188,7 @@ class Assetmap extends React.Component<{}, MyState> {
     this.setState(updatedState);
   }
 
-  // Should return promise
-  updatePostTypeState (postType: string, posts: Array<any>) {
+  updatePostTypeState (postType: string, posts: Array<any>): void {
     const updatedState = {};
     updatedState[postType] = {};
     posts.forEach((post: any) => {
@@ -199,7 +197,7 @@ class Assetmap extends React.Component<{}, MyState> {
     this.setState(updatedState);
   }
 
-  cachePost(postType: string, postId: any, postData: any): Promise<any> {
+  cachePost(postType: string, postId: any, postData: any): Promise<void> {
     return new Promise((resolve) => {
       if (!this.cache[postType]) {
         this.cache[postType] = {};
@@ -225,19 +223,17 @@ class Assetmap extends React.Component<{}, MyState> {
       return (
         <div className="asset-map">
           <SearchForm 
-            tags={tags}
-            tag_types={tag_types}
+            cache={this.cache}
             categories={this.categories}
             cities={cities}
             communities={communities}
             groups={groups}
             individuals={this.state.individuals}
             projects={this.state.projects}
-            cache={this.cache}
-            getAllPostsByType={this.getAllPostsByType}
-            getPostsFromCache={this.getPostsFromCache}
+            tags={tags}
+            tag_types={tag_types}
+            getPostbyId={this.getPostbyId}
             updatePostTypeState={this.updatePostTypeState}
-            getPostbyId = {this.getPostbyId}
           />
         </div>
       );
