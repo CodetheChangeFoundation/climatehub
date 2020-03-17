@@ -3,7 +3,6 @@ interface TagsProps {
   getTagColor: (tagGroup: string, id: number) => string,
   getTagName: (tagGroup: string, id: number) => string,
   appendToSelectedTags: (tag: number) => void,
-  setSelectedPost: (post: number) => void,
   tags: Array<number>
   selectedTags: any
 }
