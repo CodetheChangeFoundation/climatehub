@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Select from 'react-select';
+import Map from './Map';
 import Table from './Table';
 
 interface MyProps {
@@ -277,103 +278,111 @@ class SearchForm extends React.Component<MyProps, MyState> {
     const numResults = Object.keys(currPosts).length;
 
     return (
-      <div id="SearchForm" className="container">
-        {Object.values(this.props.communities).length > 1 && (
+        <div id="SearchForm" className="container">
           <div className="row">
-            <div className="col-12">
-              <Select
-                styles={customStyles}
-                value={selectedCommunities}
-                onChange={this.handleCommunityChange}
-                options={this.communityOptions}
-                isMulti={true}
-                placeholder={"Filter by community"}
-                className={"border border-bottom-0 border-dark z-index-130 "}
-              />
-            </div>
-          </div>
-        )}
-        <div className="row mb-4">
-          <div className="col-12">
-            <div className="d-flex flex-column flex-sm-row border 0 border-dark">
-              <div className="order-1 col-12 col-sm-4 col-lg-2 px-0">
-                <Select
-                  styles={customStyles}
-                  value={{value: postType.toLowerCase(), label: postType}}
-                  onChange={this.handlePostTypeChange}
-                  options={categories}
-                  className={"h-100 m-0 p-0 z-index-120 d-flex flex-column justify-content-center "}
+              <div className='col-12 border-dark justify-content-center'>
+                <Map 
+                  postType={postType}
+                  selectedPost={selectedPost}
                 />
               </div>
-              <div className="order-3 order-sm-2 col-12 col-sm-4 col-lg-5 px-0">
-                <div className="border-left-0 border-right-0 border-sm-left border-sm-right border-dark h-100 m-0 p-0">
-                  <input
-                    className="border-0 bg-light form-control h-100 px-2 py-11px"
-                    onChange={this.handleSearch}
-                    placeholder="Search by name"
-                    type="text"
-                    value={searchTerm}
+            </div>
+          {Object.values(this.props.communities).length > 1 && (
+            <div className="row">
+              <div className="col-12">
+                <Select
+                  styles={customStyles}
+                  value={selectedCommunities}
+                  onChange={this.handleCommunityChange}
+                  options={this.communityOptions}
+                  isMulti={true}
+                  placeholder={"Filter by community"}
+                  className={"border border-bottom-0 border-dark z-index-130 "}
+                />
+              </div>
+            </div>
+          )}
+          <div className="row mb-4">
+            <div className="col-12">
+              <div className="d-flex flex-column flex-sm-row border 0 border-dark">
+                <div className="order-1 col-12 col-sm-4 col-lg-2 px-0">
+                  <Select
+                    styles={customStyles}
+                    value={{value: postType.toLowerCase(), label: postType}}
+                    onChange={this.handlePostTypeChange}
+                    options={categories}
+                    className={"h-100 m-0 p-0 z-index-120 d-flex flex-column justify-content-center "}
+                  />
+                </div>
+                <div className="order-3 order-sm-2 col-12 col-sm-4 col-lg-5 px-0">
+                  <div className="border-left-0 border-right-0 border-sm-left border-sm-right border-dark h-100 m-0 p-0">
+                    <input
+                      className="border-0 bg-light form-control h-100 px-2 py-11px"
+                      onChange={this.handleSearch}
+                      placeholder="Search by name"
+                      type="text"
+                      value={searchTerm}
+                    />
+                  </div>
+                </div>
+                <div className="order-2 order-sm-3 col-12 col-sm-4 col-lg-5 px-0">
+                  <Select
+                    styles={customStyles}
+                    value={selectedTags}
+                    onChange={this.handleTagFilterChange}
+                    options={this.tagOptions}
+                    isMulti={true}
+                    placeholder={"Filter by tag"}
+                    className={"border-top border-bottom border-top-sm-0 border-bottom-sm-0 border-dark h-100 m-0 p-0 z-index-110 "}
                   />
                 </div>
               </div>
-              <div className="order-2 order-sm-3 col-12 col-sm-4 col-lg-5 px-0">
-                <Select
-                  styles={customStyles}
-                  value={selectedTags}
-                  onChange={this.handleTagFilterChange}
-                  options={this.tagOptions}
-                  isMulti={true}
-                  placeholder={"Filter by tag"}
-                  className={"border-top border-bottom border-top-sm-0 border-bottom-sm-0 border-dark h-100 m-0 p-0 z-index-110 "}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-3 pr-0">
+              <div className="border-top border-left border-dark h-100">
+                {postQueries.length !== 0 && 
+                <div className="pl-2 ml-1 h-100 d-flex align-items-center">
+                  <a role="button" className="d-flex align-items-center back-button" onClick={this.handleBack}>
+                    <svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" transform="rotate(90)">
+                      <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z" />
+                    </svg>
+                    <p className="mb-0 mt-1 d-inline-block">Back</p>
+                  </a>
+                </div>}
+              </div>
+            </div>
+            <div className="col-9 pl-0">
+              <div className="py-2 border-top border-right border-dark">
+                <div className="text-right pr-2">
+                  <p className="mb-0 mt-1">
+                    {numResults + " " + (numResults === 1? postType.substring(0, postType.length - 1): postType) + 
+                      (postQueries.length !== 0? " in " + postQueries[postQueries.length-1][2] : "")}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <div className="border border-dark table-container">
+                <Table
+                  data={currPosts}
+                  postType={postType}
+                  handlePostQuery={this.handlePostQuery}
+                  getTagColor={this.getTagColor}
+                  getTagName={this.getTagName}
+                  selectedPost={selectedPost}
+                  selectedTags={selectedTags}
+                  setSelectedPost={this.setSelectedPost}
+                  getSelectedPost={this.getSelectedPost}
+                  appendToSelectedTags={this.appendToSelectedTags}
                 />
               </div>
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-3 pr-0">
-            <div className="border-top border-left border-dark h-100">
-              {postQueries.length !== 0 && 
-              <div className="pl-2 ml-1 h-100 d-flex align-items-center">
-                <a role="button" className="d-flex align-items-center back-button" onClick={this.handleBack}>
-                  <svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" transform="rotate(90)">
-                    <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z" />
-                  </svg>
-                  <p className="mb-0 mt-1 d-inline-block">Back</p>
-                </a>
-              </div>}
-            </div>
-          </div>
-          <div className="col-9 pl-0">
-            <div className="py-2 border-top border-right border-dark">
-              <div className="text-right pr-2">
-                <p className="mb-0 mt-1">
-                  {numResults + " " + (numResults === 1? postType.substring(0, postType.length - 1): postType) + 
-                    (postQueries.length !== 0? " in " + postQueries[postQueries.length-1][2] : "")}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-12">
-            <div className="border border-dark table-container">
-              <Table
-                data={currPosts}
-                postType={postType}
-                handlePostQuery={this.handlePostQuery}
-                getTagColor={this.getTagColor}
-                getTagName={this.getTagName}
-                selectedPost={selectedPost}
-                selectedTags={selectedTags}
-                setSelectedPost={this.setSelectedPost}
-                getSelectedPost={this.getSelectedPost}
-                appendToSelectedTags={this.appendToSelectedTags}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
     );
   }
 }
