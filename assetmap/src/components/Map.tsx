@@ -41,9 +41,9 @@ export default class Map extends React.Component {
       <Stage width={this.state.containerWidth} height={this.state.containerHeight}>
         <Layer>
           <Circle
-            radius={50}
-            x={this.state.boundary}
-            y={200}
+            radius={this.state.containerWidth/8}
+            x={this.state.containerWidth/2}
+            y={this.state.containerHeight/2}
             fill={this.state.color + '44'}
             stroke={this.state.color}
           />

@@ -294,17 +294,16 @@ class Assetmap extends React.Component<{}, MyState> {
     } else {
       return (
         <div className="asset-map">
-          <div className="row">
+          <div className="container row" style={{margin: 'auto'}}>
             <div className='col-12 border-dark justify-content-center'
                   id="mapParent"
                   style={{
                     border: '2px solid',
                     borderBottom: 'none',
                     margin: 'auto',
-                    maxHeight: '450px',
-                    maxWidth: '80%',
-                    minHeight: '400px',
-                    minWidth: '500px',
+                    maxHeight: '400px',
+                    minHeight: '350px',
+                    width: '100%',
                   }}
                 >
                   <Map/>
