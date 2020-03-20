@@ -4,6 +4,7 @@ import '../../assets/css/bootstrap/bootstrap-grid.min.css';
 import '../../assets/css/bootstrap/bootstrap-reboot.min.css';
 import '../../assets/css/bootstrap/bootstrap.css';
 import '../../assets/css/climatehub.css';
+import Map from './components/Map';
 import SearchForm from './components/SearchForm';
 
 interface MyState {
@@ -293,6 +294,22 @@ class Assetmap extends React.Component<{}, MyState> {
     } else {
       return (
         <div className="asset-map">
+          <div className="row">
+            <div className='col-12 border-dark justify-content-center'
+                  id="mapParent"
+                  style={{
+                    border: '2px solid',
+                    borderBottom: 'none',
+                    margin: 'auto',
+                    maxHeight: '450px',
+                    maxWidth: '80%',
+                    minHeight: '400px',
+                    minWidth: '500px',
+                  }}
+                >
+                  <Map/>
+              </div>
+            </div>
           <SearchForm 
             tags={tags}
             tag_types={tag_types}

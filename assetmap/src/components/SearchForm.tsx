@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Select from 'react-select';
-import Map from './Map';
 import Table from './Table';
 
 interface MyProps {
@@ -279,14 +278,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
 
     return (
         <div id="SearchForm" className="container">
-          <div className="row">
-              <div className='col-12 border-dark justify-content-center'>
-                <Map 
-                  postType={postType}
-                  selectedPost={selectedPost}
-                />
-              </div>
-            </div>
           {Object.values(this.props.communities).length > 1 && (
             <div className="row">
               <div className="col-12">
