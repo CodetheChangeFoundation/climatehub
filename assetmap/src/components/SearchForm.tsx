@@ -16,6 +16,8 @@ interface MyProps {
   updatePostTypeState: (postType: string, posts: Array<any>) => void,
   getPostType: () => string,
   setPostType: (postType: string) => Promise<void>,
+  getSelectedPost: () => number,
+  setSelectedPost: (selectedPost: number) => Promise<void>,
 };
 
 interface MyState {
@@ -23,7 +25,6 @@ interface MyState {
   postQueries: Array<any>,
   searchTerm: string,
   selectedCommunities: any,
-  selectedPost: number,
   selectedTags: any,
 };
 
@@ -40,7 +41,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
       postQueries: [],
       searchTerm: "",
       selectedCommunities: null,
-      selectedPost: 0,
       selectedTags: null
     };
     this.handleCommunityChange = this.handleCommunityChange.bind(this);
@@ -50,8 +50,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.handleTagFilterChange = this.handleTagFilterChange.bind(this);
     this.getTagName = this.getTagName.bind(this);
     this.getTagColor = this.getTagColor.bind(this);
-    this.setSelectedPost = this.setSelectedPost.bind(this);
-    this.getSelectedPost = this.getSelectedPost.bind(this);
     this.handleBack = this.handleBack.bind(this);
     this.appendToSelectedTags = this.appendToSelectedTags.bind(this);
     this.communityFilter = this.communityFilter.bind(this);
@@ -91,14 +89,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
     };
   }
 
-  setSelectedPost(selectedPost: number): void {
-    this.setState({selectedPost});
-  }
-  
-  getSelectedPost(): number {
-    return this.state.selectedPost;
-  }
-
   handleCommunityChange(communities: any): void {
     let selectedCommunities = communities;
     if (communities!== null && communities.length === 0) {
@@ -108,10 +98,12 @@ class SearchForm extends React.Component<MyProps, MyState> {
         postQueries: [],
         searchTerm: "",
         selectedCommunities,
-        selectedPost: 0,
         selectedTags: null 
       }, () => {
-        this.communityFilter(communities, this.props.getPostType());
+        this.props.setSelectedPost(0)
+        .then(() => {
+          this.communityFilter(communities, this.props.getPostType());
+        })
       }
     );
   }
@@ -134,10 +126,12 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.setState({
       postQueries: [],
       searchTerm: "",
-      selectedPost: 0,
       selectedTags: null
     }, () => {
-      this.props.setPostType(postType.label)
+      this.props.setSelectedPost(0)
+      .then(() => {
+        this.props.setPostType(postType.label)
+      })
       .then(() => {
         this.communityFilter(this.state.selectedCommunities,postType.label);
       });
@@ -172,7 +166,8 @@ class SearchForm extends React.Component<MyProps, MyState> {
   }
 
   handlePostQuery(postType: string, postsToRender: Array<number>): void {
-    const {filterStack, postQueries, selectedPost} = this.state;
+    const {filterStack, postQueries} = this.state;
+    const selectedPost = this.props.getSelectedPost();
     const currPostType = this.props.getPostType().toLowerCase();
     const currPost = this.props[currPostType][selectedPost];
     postQueries.push([currPostType, selectedPost, currPost.name]);
@@ -230,11 +225,12 @@ class SearchForm extends React.Component<MyProps, MyState> {
     const postsToRender = prevState.renderedPosts;
     this.setState ({
       searchTerm: prevState.searchTerm,
-      selectedPost: postQuery[1],
       selectedTags: prevState.selectedTags,
     }, () => {
-      this.props.setPostType(prevState.postType.charAt(0).toUpperCase() + prevState.postType.slice(1))
+      this.props.setSelectedPost(postQuery[1])
       .then(() => {
+      this.props.setPostType(prevState.postType.charAt(0).toUpperCase() + prevState.postType.slice(1))
+      }).then(() => {
         this.props.updatePostTypeState(prevState.postType, Object.values(postsToRender));
       })
     })
@@ -407,8 +403,8 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 getTagColor={this.getTagColor}
                 getTagName={this.getTagName}
                 selectedTags={selectedTags}
-                setSelectedPost={this.setSelectedPost}
-                getSelectedPost={this.getSelectedPost}
+                setSelectedPost={this.props.setSelectedPost}
+                getSelectedPost={this.props.getSelectedPost}
                 appendToSelectedTags={this.appendToSelectedTags}
               />
             </div>

@@ -15,6 +15,7 @@ interface MyState {
   isLoaded: boolean
   postType: string,
   projects: any,
+  selectedPost: number,
   tag_types: any,
   tags: any,
 };
@@ -49,6 +50,7 @@ class Assetmap extends React.Component<{}, MyState> {
       isLoaded: false,
       postType: this.categories[0],
       projects: [],
+      selectedPost: 0,
       tag_types: [],
       tags: [],
     };
@@ -59,6 +61,8 @@ class Assetmap extends React.Component<{}, MyState> {
     this.updatePostTypeState = this.updatePostTypeState.bind(this);
     this.getPostType = this.getPostType.bind(this);
     this.setPostType = this.setPostType.bind(this);
+    this.getSelectedPost = this.getSelectedPost.bind(this);
+    this.setSelectedPost = this.setSelectedPost.bind(this);
   }
 
   componentDidMount() {
@@ -226,6 +230,18 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
+  getSelectedPost(): number {
+    return this.state.selectedPost;
+  }
+
+  setSelectedPost(selectedPost: number): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({selectedPost}, () => {
+        resolve();
+      })
+    })
+  }
+
   public render() {
     const { cities, communities, error, groups, isLoaded, tags, tag_types} = this.state;
     if (error) {
@@ -249,6 +265,8 @@ class Assetmap extends React.Component<{}, MyState> {
             updatePostTypeState={this.updatePostTypeState}
             getPostType={this.getPostType}
             setPostType={this.setPostType}
+            getSelectedPost={this.getSelectedPost}
+            setSelectedPost={this.setSelectedPost}
           />
         </div>
       );
