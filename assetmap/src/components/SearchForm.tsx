@@ -12,14 +12,15 @@ interface MyProps {
   projects: any
   tags: any
   tag_types: any
-  getPostbyId: (postType: string, ID: number) => object|undefined
-  updatePostTypeState: (postType: string, posts: Array<any>) => void;
+  getPostbyId: (postType: string, ID: number) => object|undefined,
+  updatePostTypeState: (postType: string, posts: Array<any>) => void,
+  getPostType: () => string,
+  setPostType: (postType: string) => Promise<void>,
 };
 
 interface MyState {
   filterStack: Array<any>,
   postQueries: Array<any>,
-  postType: string,
   searchTerm: string,
   selectedCommunities: any,
   selectedPost: number,
@@ -37,7 +38,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.state = {
       filterStack: [],
       postQueries: [],
-      postType: props.categories[0],
       searchTerm: "",
       selectedCommunities: null,
       selectedPost: 0,
@@ -104,10 +104,14 @@ class SearchForm extends React.Component<MyProps, MyState> {
     if (communities!== null && communities.length === 0) {
       selectedCommunities = null;
     }
-    this.setState(
-      { selectedCommunities },
-      () => {
-        this.communityFilter(communities, this.state.postType);
+    this.setState({ 
+        postQueries: [],
+        searchTerm: "",
+        selectedCommunities,
+        selectedPost: 0,
+        selectedTags: null 
+      }, () => {
+        this.communityFilter(communities, this.props.getPostType());
       }
     );
   }
@@ -129,13 +133,14 @@ class SearchForm extends React.Component<MyProps, MyState> {
   handlePostTypeChange(postType: any): void {
     this.setState({
       postQueries: [],
-      postType: postType.label,
       searchTerm: "",
       selectedPost: 0,
       selectedTags: null
-    }, 
-      () => {
+    }, () => {
+      this.props.setPostType(postType.label)
+      .then(() => {
         this.communityFilter(this.state.selectedCommunities,postType.label);
+      });
     });
   }
 
@@ -168,7 +173,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
 
   handlePostQuery(postType: string, postsToRender: Array<number>): void {
     const {filterStack, postQueries, selectedPost} = this.state;
-    const currPostType = this.state.postType.toLowerCase();
+    const currPostType = this.props.getPostType().toLowerCase();
     const currPost = this.props[currPostType][selectedPost];
     postQueries.push([currPostType, selectedPost, currPost.name]);
     this.setState({
@@ -194,28 +199,27 @@ class SearchForm extends React.Component<MyProps, MyState> {
         })
         this.props.updatePostTypeState(postType.toLowerCase(), posts);
         this.setState({
-          postType,
           searchTerm: '',
           selectedTags: null,
+        }, () => {
+          this.props.setPostType(postType);
         });
       });
     })
   }
 
-  getTagName(tagGroup: string, id: number): string {
-    if (this.props[tagGroup][id]) {
-      return this.props[tagGroup][id].name;
+  getTagName(id: number): string {
+    if (this.props.tags[id]) {
+      return this.props.tags[id].name;
     }
     return '';
   }
 
-  getTagColor(tagGroup: string, id: number): string {
-    if (tagGroup === 'tags') {
-      if (this.props.tags[id]) {
-        const typeId = this.props.tags[id].type;
-        const color = this.props.tag_types[typeId].colour;
-        return '#' + color;
-      }
+  getTagColor(id: number): string {
+    if (this.props.tags[id]) {
+      const typeId = this.props.tags[id].type;
+      const color = this.props.tag_types[typeId].colour;
+      return '#' + color;
     }
     return '#123456';
   }
@@ -225,12 +229,14 @@ class SearchForm extends React.Component<MyProps, MyState> {
     const postQuery = this.state.postQueries.pop();
     const postsToRender = prevState.renderedPosts;
     this.setState ({
-      postType: prevState.postType.charAt(0).toUpperCase() + prevState.postType.slice(1),
       searchTerm: prevState.searchTerm,
       selectedPost: postQuery[1],
       selectedTags: prevState.selectedTags,
     }, () => {
-      this.props.updatePostTypeState(prevState.postType, Object.values(postsToRender));
+      this.props.setPostType(prevState.postType.charAt(0).toUpperCase() + prevState.postType.slice(1))
+      .then(() => {
+        this.props.updatePostTypeState(prevState.postType, Object.values(postsToRender));
+      })
     })
   }
 
@@ -302,7 +308,8 @@ class SearchForm extends React.Component<MyProps, MyState> {
   }
 
   public render() {
-    const { postQueries, postType, searchTerm, selectedCommunities, selectedTags } = this.state;
+    const { postQueries, searchTerm, selectedCommunities, selectedTags } = this.state;
+    const postType = this.props.getPostType();
     const categories: Array<object> = [];
     this.props.categories.map(category => categories.push({ value: category.toLowerCase(), label: category }))
     

@@ -1,7 +1,7 @@
 import * as React from 'react';
 interface TagsProps {
-  getTagColor: (tagGroup: string, id: number) => string,
-  getTagName: (tagGroup: string, id: number) => string,
+  getTagColor: (id: number) => string,
+  getTagName: (id: number) => string,
   appendToSelectedTags: (tag: number) => void,
   tags: Array<number>
   selectedTags: any
@@ -25,10 +25,10 @@ export class Tags extends React.Component<TagsProps> {
     return alreadySelected;
   }
 
-  renderTag(tagGroup:string, id: number): any {
+  renderTag(id: number): any {
     if (id) {
-      const tagName = this.props.getTagName(tagGroup, id);
-      const tagColor = this.props.getTagColor(tagGroup, id);
+      const tagName = this.props.getTagName(id);
+      const tagColor = this.props.getTagColor(id);
       const backgroundColor = this.getBackgroundColor(tagColor);
       const border = '2px solid ' + tagColor;
       const tagStyle = {
@@ -71,7 +71,7 @@ export class Tags extends React.Component<TagsProps> {
   public render() {
     return (
       <div>
-        {(this.props.tags.length > 0) && this.props.tags.map((id) => this.renderTag('tags', id))}
+        {(this.props.tags.length > 0) && this.props.tags.map((id) => this.renderTag(id))}
       </div>
     )
   }

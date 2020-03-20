@@ -47,7 +47,7 @@ class Assetmap extends React.Component<{}, MyState> {
       groups: [],
       individuals: [],
       isLoaded: false,
-      postType: 'groups',
+      postType: this.categories[0],
       projects: [],
       tag_types: [],
       tags: [],
@@ -57,6 +57,8 @@ class Assetmap extends React.Component<{}, MyState> {
     this.getPostsFromCache = this.getPostsFromCache.bind(this);
     this.getPostbyId = this.getPostbyId.bind(this);
     this.updatePostTypeState = this.updatePostTypeState.bind(this);
+    this.getPostType = this.getPostType.bind(this);
+    this.setPostType = this.setPostType.bind(this);
   }
 
   componentDidMount() {
@@ -213,6 +215,17 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
+  getPostType(): string {
+    return this.state.postType;
+  }
+
+  setPostType(postType: string): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({postType}, 
+        () => resolve());
+    })
+  }
+
   public render() {
     const { cities, communities, error, groups, isLoaded, tags, tag_types} = this.state;
     if (error) {
@@ -234,6 +247,8 @@ class Assetmap extends React.Component<{}, MyState> {
             tag_types={tag_types}
             getPostbyId={this.getPostbyId}
             updatePostTypeState={this.updatePostTypeState}
+            getPostType={this.getPostType}
+            setPostType={this.setPostType}
           />
         </div>
       );

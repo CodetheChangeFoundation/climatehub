@@ -20,8 +20,8 @@ interface MyProps {
       website: string,
     }
   },
-  getTagName: (tagGroup: string, id: number) => string,
-  getTagColor: (tagGroup: string, id: number) => string,
+  getTagName: (id: number) => string,
+  getTagColor: (id: number) => string,
   handlePostQuery: (postType: string, postIds: Array<number>) => void,
   setSelectedPost: (postId: number) => void,
   getSelectedPost: () => number,
