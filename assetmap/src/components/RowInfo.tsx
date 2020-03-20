@@ -2,8 +2,8 @@ import * as React from 'react';
 
 interface RowInfo {
   data: any,
+  postType: string,
   handlePostQuery: (postType: string, filterIds: Array<number>) => void,
-  postType: string
 }
 
 export const RowInfo = ({ data, handlePostQuery: handlePostQuery, postType }: RowInfo) => {
@@ -15,7 +15,12 @@ export const RowInfo = ({ data, handlePostQuery: handlePostQuery, postType }: Ro
     let output;
     if (text !== "") {
       if (isUrl) {
-        output = <>{renderTitle(title)}<a target="_blank" rel="noopener noreferrer" className="text-truncate d-block" href={(isEmail? "mailto:" + text : text)}>{text}</a></>
+        output = <>{renderTitle(title)}<a 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-truncate d-block" 
+          href={(isEmail? "mailto:" + text : text)}>{text}
+        </a></>
       } else {
         output = <>{renderTitle(title)}<p>{text}</p></>
       }
@@ -32,7 +37,7 @@ export const RowInfo = ({ data, handlePostQuery: handlePostQuery, postType }: Ro
     const position = renderText('Position', data.position);
     const email = renderText('Email', data.email, "", true, true);
     const phone = renderText('Phone', data.phone);
-    const website = renderText('Website', data.website, "", true);
+    const website = renderText('Website', data.website, "", true, false);
     return <><div className="col-4 col-lg-3">{position}{website}</div><div className="col-4 col-lg-3">{email}{phone}</div></>;
   }
 

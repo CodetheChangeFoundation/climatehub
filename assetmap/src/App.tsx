@@ -13,9 +13,9 @@ interface MyState {
   groups: any,
   individuals: any,
   isLoaded: boolean
-  postType: any,
+  postType: string,
   projects: any,
-  selectedCommunities: Array<any>,
+  selectedPost: number,
   tag_types: any,
   tags: any,
 };
@@ -48,19 +48,21 @@ class Assetmap extends React.Component<{}, MyState> {
       groups: [],
       individuals: [],
       isLoaded: false,
-      postType: 'groups',
+      postType: this.categories[0],
       projects: [],
-      selectedCommunities: [],
+      selectedPost: 0,
       tag_types: [],
       tags: [],
     };
     
     this.getAllPostsByType = this.getAllPostsByType.bind(this);
     this.getPostsFromCache = this.getPostsFromCache.bind(this);
-    this.filterPostsByCommunity = this.filterPostsByCommunity.bind(this);
     this.getPostbyId = this.getPostbyId.bind(this);
-    this.filterPosts = this.filterPosts.bind(this);
     this.updatePostTypeState = this.updatePostTypeState.bind(this);
+    this.getPostType = this.getPostType.bind(this);
+    this.setPostType = this.setPostType.bind(this);
+    this.getSelectedPost = this.getSelectedPost.bind(this);
+    this.setSelectedPost = this.setSelectedPost.bind(this);
   }
 
   componentDidMount() {
@@ -71,14 +73,14 @@ class Assetmap extends React.Component<{}, MyState> {
     })
     Promise.all(onLoad).then(() => {
       this.setLoadedState();
-      this.getAllPostsByType('individuals');
-      this.getAllPostsByType('projects');
+      this.getPostsOnLoad('individuals');
+      this.getPostsOnLoad('projects');
     }).then(() => {
       console.log(this.cache)
     });
   }
 
-  getPostsOnLoad(postType: string): Promise<any> {
+  getPostsOnLoad(postType: string): Promise<void> {
     return new Promise((resolve) => {
       this.getAllPostsByType(postType).then(() => {
         console.log(this.cache[postType]);
@@ -91,30 +93,20 @@ class Assetmap extends React.Component<{}, MyState> {
   getAllPostsByType(postType: string): Promise<any> {
     return new Promise((resolve) => {
       console.log("Querying WP for : " + postType);
-      const currentPage = 1;
       const baseUrl = "http://climatehub.local/wp-json/wp/v2/" + postType + '?per_page=100';
-      const requestUrl = baseUrl + '&page=' + currentPage;
+      // Fetch first page
+      const requestUrl = baseUrl + '&page=' + 1;
       fetch(requestUrl)
       .then((res) => {
-        const numPages = Number(res.headers.get('X-WP-TotalPages'));
         const dataResponses = new Array<any>();
         res.json()
         .then((resJSON) => {
-          dataResponses.push(this.cacheAllPosts(resJSON, postType));
-          
-          for (let i = currentPage + 1; i<=numPages ; i++) {
+          dataResponses.push(this.cacheAllPosts(resJSON, postType)); 
+          // If there are more than 1 pages to fetch: 
+          const numPages = Number(res.headers.get('X-WP-TotalPages'));
+          for (let pageNum = 2; pageNum<=numPages ; pageNum++) {
             dataResponses.push(
-              new Promise((res4) => {
-                const newUrl = baseUrl + '&page=' + i;
-                fetch(newUrl)
-                .then((response) => {
-                  response.json()
-                  .then((res2) => {
-                    dataResponses.push(this.cacheAllPosts(res2, postType));
-                    res4();
-                  })
-                })
-              })
+              this.fetchNextPage(baseUrl, pageNum, dataResponses, postType)
             )
           }
           Promise.all(dataResponses).then(() => {
@@ -123,6 +115,20 @@ class Assetmap extends React.Component<{}, MyState> {
         })
       });  
     })
+  }
+
+  private fetchNextPage(baseUrl: string, pageNum: number, dataResponses: Array<any>, postType: string): Promise<void> {
+    return new Promise((resolve) => {
+      const newUrl = baseUrl + '&page=' + pageNum;
+      fetch(newUrl)
+        .then((response) => {
+          response.json()
+            .then((posts) => {
+              dataResponses.push(this.cacheAllPosts(posts, postType));
+              resolve();
+            });
+        });
+    });
   }
 
   cacheAllPosts(posts: any, postType: string): Promise<any> {
@@ -150,78 +156,7 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
-  filterPostsByCommunity(postType: string, selectedCommunities: Array<number>): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.filterPosts('groups', selectedCommunities, 'communities', 'groups')
-      .then(() => {
-        let filterParameter = selectedCommunities;
-        if (selectedCommunities !== [] && selectedCommunities !== null) {
-          filterParameter = this.state.groups;
-        }
-        if (postType === 'groups') {
-          resolve();
-        } else if (postType === 'individuals') {
-          this.filterPosts(postType, filterParameter, 'groups', 'individuals')
-          .then(() => {
-            resolve();
-          })
-        } else if (postType === 'projects') {
-          this.filterPosts(postType, filterParameter, 'groups', 'projects')
-          .then(() => {
-            resolve();
-          })
-        } else {
-          reject();
-        }
-      })
-      .catch(() => {
-        console.log("Invalid post type");
-      })
-    })
-  }
-
-  filterPosts(filterPostType: string, selectedPosts: Array<any>, relatedPostType: string, relatedFieldName: string) {
-    return new Promise((resolve) => {
-      this.getPostsFromCache(filterPostType)
-      .then(() => {
-        let allPosts = this.cache[filterPostType];
-        if (relatedPostType === 'tags') {
-          allPosts = this.state[filterPostType];
-        }
-        const filteredPosts = new Set; 
-        const updatedPosts = new Array;
-        if (selectedPosts === [] || selectedPosts === null) {
-          Object.keys(allPosts).forEach((postId: any) => {
-            updatedPosts[postId] = allPosts[postId];
-          });
-          this.updatePostTypeState(filterPostType, updatedPosts);
-          resolve();
-        } else {
-          Object.keys(selectedPosts).forEach((post: any) => {
-            const postObject = this.getPostbyId(relatedPostType, post);
-            const relatedPostIds = postObject[relatedFieldName];
-            if (relatedPostIds) {
-              relatedPostIds.forEach((relatedPostId: number) => {
-                if(allPosts[relatedPostId] !== undefined) {
-                  filteredPosts.add(allPosts[relatedPostId]);
-                }
-              });
-            }
-          });
-          if (filteredPosts.size > 0) {
-            Array.from(filteredPosts).forEach((post: any) => {
-              updatedPosts[post.id] = post;
-            });
-          }
-          this.updatePostTypeState(filterPostType, updatedPosts);
-          resolve();
-        }
-      })
-    });
-  }
-
-  //
-  getPostbyId (postType: string, ID: number) {
+  getPostbyId (postType: string, ID: number): object|undefined {
     if (this.cache[postType]) {
       const post = this.cache[postType][ID];
       if (post) {
@@ -237,9 +172,10 @@ class Assetmap extends React.Component<{}, MyState> {
         this.getPostbyId(postType, ID)
       });
     }
+    return;
   }
 
-  getPostsFromCache(postType: string): Promise<any> {
+  getPostsFromCache(postType: string): Promise<void> {
     return new Promise((resolve) => {
       if (!this.cache[postType]) {
         this.getAllPostsByType(postType).then(() => resolve());
@@ -249,7 +185,7 @@ class Assetmap extends React.Component<{}, MyState> {
     });
   }
 
-  appendToPostTypeState (postType: string, posts: Array<any>) {
+  appendToPostTypeState (postType: string, posts: Array<any>): void {
     const updatedState = {};
     updatedState[postType] = this.state[postType];
     Object.values(posts).forEach((post: any) => {
@@ -258,8 +194,7 @@ class Assetmap extends React.Component<{}, MyState> {
     this.setState(updatedState);
   }
 
-  // Should return promise
-  updatePostTypeState (postType: string, posts: Array<any>) {
+  updatePostTypeState (postType: string, posts: Array<any>): void {
     const updatedState = {};
     updatedState[postType] = {};
     posts.forEach((post: any) => {
@@ -268,7 +203,7 @@ class Assetmap extends React.Component<{}, MyState> {
     this.setState(updatedState);
   }
 
-  cachePost(postType: string, postId: any, postData: any): Promise<any> {
+  cachePost(postType: string, postId: any, postData: any): Promise<void> {
     return new Promise((resolve) => {
       if (!this.cache[postType]) {
         this.cache[postType] = {};
@@ -284,6 +219,29 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
+  getPostType(): string {
+    return this.state.postType;
+  }
+
+  setPostType(postType: string): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({postType}, 
+        () => resolve());
+    })
+  }
+
+  getSelectedPost(): number {
+    return this.state.selectedPost;
+  }
+
+  setSelectedPost(selectedPost: number): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({selectedPost}, () => {
+        resolve();
+      })
+    })
+  }
+
   public render() {
     const { cities, communities, error, groups, isLoaded, tags, tag_types} = this.state;
     if (error) {
@@ -294,21 +252,21 @@ class Assetmap extends React.Component<{}, MyState> {
       return (
         <div className="asset-map">
           <SearchForm 
-            tags={tags}
-            tag_types={tag_types}
+            cache={this.cache}
             categories={this.categories}
             cities={cities}
             communities={communities}
             groups={groups}
             individuals={this.state.individuals}
             projects={this.state.projects}
-            cache={this.cache}
-            getAllPostsByType={this.getAllPostsByType}
-            filterPostsByCommunity={this.filterPostsByCommunity}
-            getPostsFromCache={this.getPostsFromCache}
+            tags={tags}
+            tag_types={tag_types}
+            getPostbyId={this.getPostbyId}
             updatePostTypeState={this.updatePostTypeState}
-            getPostbyId = {this.getPostbyId}
-            filterPosts = {this.filterPosts}
+            getPostType={this.getPostType}
+            setPostType={this.setPostType}
+            getSelectedPost={this.getSelectedPost}
+            setSelectedPost={this.setSelectedPost}
           />
         </div>
       );

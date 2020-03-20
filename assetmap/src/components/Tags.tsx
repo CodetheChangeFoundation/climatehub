@@ -1,9 +1,8 @@
 import * as React from 'react';
 interface TagsProps {
-  getTagColor: (tagGroup: string, id: number) => string,
-  getTagName: (tagGroup: string, id: number) => string,
+  getTagColor: (id: number) => string,
+  getTagName: (id: number) => string,
   appendToSelectedTags: (tag: number) => void,
-  setSelectedPost: (post: number) => void,
   tags: Array<number>
   selectedTags: any
 }
@@ -26,10 +25,10 @@ export class Tags extends React.Component<TagsProps> {
     return alreadySelected;
   }
 
-  renderTag(tagGroup:string, id: number) {
+  renderTag(id: number): any {
     if (id) {
-      const tagName = this.props.getTagName(tagGroup, id);
-      const tagColor = this.props.getTagColor(tagGroup, id);
+      const tagName = this.props.getTagName(id);
+      const tagColor = this.props.getTagColor(id);
       const backgroundColor = this.getBackgroundColor(tagColor);
       const border = '2px solid ' + tagColor;
       const tagStyle = {
@@ -57,26 +56,22 @@ export class Tags extends React.Component<TagsProps> {
     }
   }
 
-  handleTagClick(tagId: number) {
-    console.log(tagId + ' clicked:');
+  handleTagClick(tagId: number): void {
     this.props.appendToSelectedTags(tagId);
   }
 
-  getBackgroundColor(color: string) {
+  getBackgroundColor(color: string): string {
     if (color.length === 7) {
-      const r = parseInt(color.substring(1, 3), 16);
-      const g = parseInt(color.substring(3, 5), 16);
-      const b = parseInt(color.substring(5, 7), 16);
-      return 'rgba(' + r + ',' + g + ',' + b + ',' + '0.25)';
+      return color + '44';
     } else {
-      return 'rgba(0,0,0,0)';
+      return '#00000044';
     }
   }
 
   public render() {
     return (
       <div>
-        {(this.props.tags.length > 0) && this.props.tags.map((id) => this.renderTag('tags', id))}
+        {(this.props.tags.length > 0) && this.props.tags.map((id) => this.renderTag(id))}
       </div>
     )
   }
