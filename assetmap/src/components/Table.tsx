@@ -20,14 +20,13 @@ interface MyProps {
       website: string,
     }
   },
-  getTagName: (tagGroup: string, id: number) => string,
-  getTagColor: (tagGroup: string, id: number) => string,
+  getTagName: (id: number) => string,
+  getTagColor: (id: number) => string,
   handlePostQuery: (postType: string, postIds: Array<number>) => void,
-  setSelectedPost: (postId: number) => void,
+  setSelectedPost: (postId: number) => Promise<void>,
   getSelectedPost: () => number,
   appendToSelectedTags: (tag: any) => void,
   postType: string,
-  selectedPost: number,
   selectedTags: any,
 }
 class Table extends React.Component<MyProps> {
@@ -36,7 +35,7 @@ class Table extends React.Component<MyProps> {
   }
 
   // rowId = postId
-  handleRowClick(rowId: number) {
+  handleRowClick(rowId: number): void {
     const selectedPost = this.props.getSelectedPost();
       if (selectedPost === rowId) {
       this.props.setSelectedPost(0);
@@ -46,7 +45,7 @@ class Table extends React.Component<MyProps> {
   }
 
   renderItems() {
-    const { data, getTagName, getTagColor, handlePostQuery: handlePostQuery, postType, appendToSelectedTags, selectedTags, setSelectedPost } = this.props;
+    const { data, getTagName, getTagColor, handlePostQuery, postType, appendToSelectedTags, selectedTags } = this.props;
     const selectedPost = this.props.getSelectedPost();
     const itemRows: Array<any> = []
 
@@ -68,9 +67,8 @@ class Table extends React.Component<MyProps> {
                   getTagName={getTagName} 
                   getTagColor={getTagColor} 
                   tags={line.tags} 
-                  selectedTags={selectedTags} 
                   appendToSelectedTags={appendToSelectedTags}
-                  setSelectedPost={setSelectedPost}
+                  selectedTags={selectedTags} 
                   key={selectedTags}
                 />}
               </td>
