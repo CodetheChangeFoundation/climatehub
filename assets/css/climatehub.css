@@ -440,3 +440,24 @@ body {
   transform: rotateX(180deg);
   transition: all 250ms ease-in-out;
 }
+
+/* Asset Map */
+
+.mapNode {
+  border: 1px dashed var(--dark);
+  text-align: center;
+  line-height: 1;
+  display: inline-block;
+  width: 80px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.nodeCircle {
+  border: 1px solid var(--node-color);
+  height: 75px;
+  width: 75px;
+  padding: 5px;
+  border-radius: 50%;
+  display: inline-block;
+}

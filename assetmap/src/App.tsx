@@ -244,7 +244,7 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   public render() {
-    const { cities, communities, error, groups, isLoaded, tags, tag_types} = this.state;
+    const { cities, communities, error, groups, isLoaded, postType, selectedPost, tags, tag_types} = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -253,18 +253,22 @@ class Assetmap extends React.Component<{}, MyState> {
       return (
         <div className="asset-map">
           <div className="container row" style={{margin: 'auto'}}>
-            <div className='col-12 border-dark justify-content-center'
+            <div className='col-12 border-dark'
                   id="mapParent"
                   style={{
                     border: '2px solid',
                     borderBottom: 'none',
+                    height: '400px',
                     margin: 'auto',
-                    maxHeight: '400px',
-                    minHeight: '350px',
+                    padding: '0',
                     width: '100%',
                   }}
-                >
-                  <Map/>
+                  >
+                  <Map
+                    selectedPost={selectedPost}
+                    postType={postType}
+                    getPostById={this.getPostbyId}
+                  />
               </div>
             </div>
           <SearchForm 
