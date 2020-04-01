@@ -16,7 +16,9 @@ interface MyState {
   isLoaded: boolean
   postType: string,
   projects: any,
+  searchTerm: string,
   selectedPost: number,
+  selectedTags: any,
   tag_types: any,
   tags: any,
 };
@@ -51,7 +53,9 @@ class Assetmap extends React.Component<{}, MyState> {
       isLoaded: false,
       postType: this.categories[0],
       projects: [],
+      searchTerm: "",
       selectedPost: 0,
+      selectedTags: null,
       tag_types: [],
       tags: [],
     };
@@ -64,6 +68,10 @@ class Assetmap extends React.Component<{}, MyState> {
     this.setPostType = this.setPostType.bind(this);
     this.getSelectedPost = this.getSelectedPost.bind(this);
     this.setSelectedPost = this.setSelectedPost.bind(this);
+    this.getSearchTerm = this.getSearchTerm.bind(this);
+    this.setSearchTerm = this.setSearchTerm.bind(this);
+    this.getSelectedTags = this.getSelectedTags.bind(this);
+    this.setSelectedTags = this.setSelectedTags.bind(this);
   }
 
   componentDidMount() {
@@ -195,13 +203,15 @@ class Assetmap extends React.Component<{}, MyState> {
     this.setState(updatedState);
   }
 
-  updatePostTypeState (postType: string, posts: Array<any>): void {
-    const updatedState = {};
-    updatedState[postType] = {};
-    posts.forEach((post: any) => {
-      updatedState[postType][post.id] = post;
+  updatePostTypeState (postType: string, posts: Array<any>): Promise<void> {
+    return new Promise((resolve) => {
+      const updatedState = {};
+      updatedState[postType] = {};
+      posts.forEach((post: any) => {
+        updatedState[postType][post.id] = post;
+      })
+      this.setState(updatedState, () => resolve());
     })
-    this.setState(updatedState);
   }
 
   cachePost(postType: string, postId: any, postData: any): Promise<void> {
@@ -240,6 +250,28 @@ class Assetmap extends React.Component<{}, MyState> {
       this.setState({selectedPost}, () => {
         resolve();
       })
+    })
+  }
+
+  getSearchTerm(): string {
+    return this.state.searchTerm;
+  }
+
+  setSearchTerm(searchTerm: string): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({searchTerm}, 
+        () => resolve());
+    })
+  }
+
+  getSelectedTags(): any {
+    return this.state.selectedTags;
+  }
+
+  setSelectedTags(selectedTags: any): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({selectedTags}, 
+        () => resolve());
     })
   }
 
@@ -287,6 +319,10 @@ class Assetmap extends React.Component<{}, MyState> {
             setPostType={this.setPostType}
             getSelectedPost={this.getSelectedPost}
             setSelectedPost={this.setSelectedPost}
+            getSearchTerm={this.getSearchTerm}
+            setSearchTerm={this.setSearchTerm}
+            getSelectedTags={this.getSelectedTags}
+            setSelectedTags={this.setSelectedTags}
           />
         </div>
       );

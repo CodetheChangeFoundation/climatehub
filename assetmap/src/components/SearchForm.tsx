@@ -13,20 +13,22 @@ interface MyProps {
   tags: any
   tag_types: any
   getPostbyId: (postType: string, ID: number) => object|undefined,
-  updatePostTypeState: (postType: string, posts: Array<any>) => void,
+  updatePostTypeState: (postType: string, posts: Array<any>) => Promise<void>,
   getPostType: () => string,
   setPostType: (postType: string) => Promise<void>,
   getSelectedPost: () => number,
   setSelectedPost: (selectedPost: number) => Promise<void>,
+  getSearchTerm: () => string,
+  setSearchTerm: (searchTerm: string) => Promise<void>,
+  getSelectedTags: () => any,
+  setSelectedTags: (selectedTags: any) => Promise<void>,
 };
 
-// TODO Move filterStack, postQueries, searchTerm, and selectedTags to App
+// TODO Move filterStack, postQueries to App
 interface MyState {
   filterStack: Array<any>,
   postQueries: Array<any>,
-  searchTerm: string,
   selectedCommunities: any,
-  selectedTags: any,
 };
 
 class SearchForm extends React.Component<MyProps, MyState> {
@@ -40,9 +42,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.state = {
       filterStack: [],
       postQueries: [],
-      searchTerm: "",
       selectedCommunities: null,
-      selectedTags: null
     };
     this.handleCommunityChange = this.handleCommunityChange.bind(this);
     this.handlePostQuery = this.handlePostQuery.bind(this);
@@ -97,12 +97,14 @@ class SearchForm extends React.Component<MyProps, MyState> {
     }
     this.setState({ 
         postQueries: [],
-        searchTerm: "",
         selectedCommunities,
-        selectedTags: null 
       }, () => {
-        this.props.setSelectedPost(0)
+        this.props.setSelectedTags(null)
         .then(() => {
+          this.props.setSelectedPost(0)
+        }).then(() => {
+          this.props.setSearchTerm("")
+        }).then(() => {
           this.communityFilter(communities, this.props.getPostType());
         })
       }
@@ -110,7 +112,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
   }
 
   handleSearch(event: any): void {
-    this.setState({searchTerm: event.target.value});
+    this.props.setSearchTerm(event.target.value);
   }
 
   handleTagFilterChange(tags: any): void {
@@ -118,20 +120,22 @@ class SearchForm extends React.Component<MyProps, MyState> {
     if (tags!== null && tags.length === 0) {
       selectedTags = null;
     }
-    this.setState(
-      { selectedTags }
-    );
+    this.props.setSelectedTags(selectedTags);
   }
 
   handlePostTypeChange(postType: any): void {
     this.setState({
       postQueries: [],
-      searchTerm: "",
-      selectedTags: null
     }, () => {
-      this.props.setSelectedPost(0)
+      this.props.setSelectedTags(null) 
       .then(() => {
-        this.props.setPostType(postType.label)
+        this.props.setSelectedPost(0)
+        .then(() => {
+          this.props.setSearchTerm("")
+          .then(() => {
+            this.props.setPostType(postType.label)
+          })
+        })
       })
       .then(() => {
         this.communityFilter(this.state.selectedCommunities,postType.label);
@@ -142,7 +146,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
   appendToSelectedTags(tagId: number): void {
     if (this.props.tags[tagId]) {
       const newTag = this.props.tags[tagId];
-      const currSelectedTags = this.state.selectedTags;
+      const currSelectedTags = this.props.getSelectedTags();
       const selectedTag = {
         id: newTag.id,
         label: newTag.name,
@@ -169,6 +173,8 @@ class SearchForm extends React.Component<MyProps, MyState> {
   handlePostQuery(postType: string, postsToRender: Array<number>): void {
     const {filterStack, postQueries} = this.state;
     const selectedPost = this.props.getSelectedPost();
+    const searchTerm = this.props.getSearchTerm();
+    const selectedTags = this.props.getSelectedTags();
     const currPostType = this.props.getPostType().toLowerCase();
     const currPost = this.props[currPostType][selectedPost];
     postQueries.push([currPostType, selectedPost, currPost.name]);
@@ -179,8 +185,8 @@ class SearchForm extends React.Component<MyProps, MyState> {
         postQueries: this.state.postQueries,
         postType: currPostType,
         renderedPosts: this.props[currPostType],
-        searchTerm: this.state.searchTerm,
-        selectedTags: this.state.selectedTags,
+        searchTerm,
+        selectedTags,
       }
       filterStack.push(filterState);
       this.setState({
@@ -193,12 +199,14 @@ class SearchForm extends React.Component<MyProps, MyState> {
             posts.push(post);
           };
         })
-        this.props.updatePostTypeState(postType.toLowerCase(), posts);
-        this.setState({
-          searchTerm: '',
-          selectedTags: null,
+        this.props.updatePostTypeState(postType.toLowerCase(), posts)
+        .then(() => {
+          this.props.setSelectedTags(null);
         }, () => {
-          this.props.setPostType(postType);
+          this.props.setSearchTerm("")
+          .then(() => {
+            this.props.setPostType(postType);
+          })
         });
       });
     })
@@ -224,16 +232,15 @@ class SearchForm extends React.Component<MyProps, MyState> {
     const prevState = this.state.filterStack.pop();
     const postQuery = this.state.postQueries.pop();
     const postsToRender = prevState.renderedPosts;
-    this.setState ({
-      searchTerm: prevState.searchTerm,
-      selectedTags: prevState.selectedTags,
-    }, () => {
+    this.props.setSelectedTags(prevState.selectedTags)
+    .then(() => {
+      this.props.setSearchTerm(prevState.searchTerm)
+    }).then(() => {
       this.props.setSelectedPost(postQuery[1])
-      .then(() => {
+    }).then(() => {
       this.props.setPostType(prevState.postType.charAt(0).toUpperCase() + prevState.postType.slice(1))
-      }).then(() => {
-        this.props.updatePostTypeState(prevState.postType, Object.values(postsToRender));
-      })
+    }).then(() => {
+      this.props.updatePostTypeState(prevState.postType, Object.values(postsToRender));
     })
   }
 
@@ -305,7 +312,9 @@ class SearchForm extends React.Component<MyProps, MyState> {
   }
 
   public render() {
-    const { postQueries, searchTerm, selectedCommunities, selectedTags } = this.state;
+    const { postQueries, selectedCommunities } = this.state;
+    const selectedTags = this.props.getSelectedTags();
+    const searchTerm = this.props.getSearchTerm();
     const postType = this.props.getPostType();
     const categories: Array<object> = [];
     this.props.categories.map(category => categories.push({ value: category.toLowerCase(), label: category }))
