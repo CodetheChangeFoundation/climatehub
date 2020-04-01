@@ -11,9 +11,11 @@ interface MyState {
   cities: any,
   communities: any,
   error: any,
+  filterStack: Array<any>,
   groups: any,
   individuals: any,
   isLoaded: boolean
+  postQueries: Array<any>
   postType: string,
   projects: any,
   searchTerm: string,
@@ -48,9 +50,11 @@ class Assetmap extends React.Component<{}, MyState> {
       cities: [],
       communities: [],
       error: null,
+      filterStack: [],
       groups: [],
       individuals: [],
       isLoaded: false,
+      postQueries: [],
       postType: this.categories[0],
       projects: [],
       searchTerm: "",
@@ -72,6 +76,10 @@ class Assetmap extends React.Component<{}, MyState> {
     this.setSearchTerm = this.setSearchTerm.bind(this);
     this.getSelectedTags = this.getSelectedTags.bind(this);
     this.setSelectedTags = this.setSelectedTags.bind(this);
+    this.resetSearchState = this.resetSearchState.bind(this);
+    this.handlePostQuery = this.handlePostQuery.bind(this);
+    this.handleBack = this.handleBack.bind(this);
+    this.getPostQueries = this.getPostQueries.bind(this);
   }
 
   componentDidMount() {
@@ -224,6 +232,72 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
+  handlePostQuery(postType: string, postsToRender: Array<number>): void {
+    const {filterStack, postQueries, selectedPost, searchTerm, selectedTags} = this.state;
+    const currPostType = this.state.postType.toLowerCase();
+    const currPost = this.state[currPostType][selectedPost];
+    postQueries.push([currPostType, selectedPost, currPost.name]);
+    this.setState({
+      postQueries, 
+    }, () => {
+      const filterState = {
+        postQueries: this.state.postQueries,
+        postType: currPostType,
+        renderedPosts: this.state[currPostType],
+        searchTerm,
+        selectedTags,
+      }
+      filterStack.push(filterState);
+      this.setState({
+        filterStack,
+      }, () => {
+        const posts = Array<any>();
+        postsToRender.forEach((postId: number) => {
+          const post = this.getPostbyId(postType.toLowerCase(), postId);
+          if (post) {
+            posts.push(post);
+          };
+        })
+        this.updatePostTypeState(postType.toLowerCase(), posts)
+        .then(() => {
+          this.setState({
+            postType,
+            searchTerm: "",
+            selectedTags: null,
+          })
+        });
+      });
+    })
+  }
+
+  resetSearchState (): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({
+        postQueries: [],
+        searchTerm: "",
+        selectedPost: 0,
+        selectedTags: null,
+      }, () => resolve())
+    })
+  }
+
+  handleBack(): Promise<void> {
+    return new Promise((resolve) => {
+      const prevState = this.state.filterStack.pop();
+      const postQuery = this.state.postQueries.pop();
+      const postsToRender = prevState.renderedPosts;
+      this.setState({
+        postType: prevState.postType.charAt(0).toUpperCase() + prevState.postType.slice(1),
+        searchTerm: prevState.searchTerm,
+        selectedPost: postQuery[1],
+        selectedTags: prevState.selectedTags,
+      }, () => {
+        this.updatePostTypeState(prevState.postType, Object.values(postsToRender))
+        .then(() => resolve())
+      })
+    })
+  }
+
   setLoadedState () {
     this.setState({
       isLoaded: true,
@@ -275,6 +349,10 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
+  getPostQueries():any {
+    return this.state.postQueries;
+  }
+
   public render() {
     const { cities, communities, error, groups, isLoaded, postType, selectedPost, tags, tag_types} = this.state;
     if (error) {
@@ -323,6 +401,10 @@ class Assetmap extends React.Component<{}, MyState> {
             setSearchTerm={this.setSearchTerm}
             getSelectedTags={this.getSelectedTags}
             setSelectedTags={this.setSelectedTags}
+            resetSearchState={this.resetSearchState}
+            handlePostQuery={this.handlePostQuery}
+            handleBack={this.handleBack}
+            getPostQueries={this.getPostQueries}
           />
         </div>
       );

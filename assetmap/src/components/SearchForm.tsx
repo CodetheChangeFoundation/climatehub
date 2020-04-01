@@ -22,12 +22,14 @@ interface MyProps {
   setSearchTerm: (searchTerm: string) => Promise<void>,
   getSelectedTags: () => any,
   setSelectedTags: (selectedTags: any) => Promise<void>,
+  resetSearchState: () => Promise<void>,
+  handlePostQuery: (postType: string, postsToRender: Array<number>) => void,
+  handleBack: () => Promise<void>
+  getPostQueries: () => any,
 };
 
 // TODO Move filterStack, postQueries to App
 interface MyState {
-  filterStack: Array<any>,
-  postQueries: Array<any>,
   selectedCommunities: any,
 };
 
@@ -40,18 +42,16 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.populateSelects();
 
     this.state = {
-      filterStack: [],
-      postQueries: [],
+      // filterStack: [],
+      // postQueries: [],
       selectedCommunities: null,
     };
     this.handleCommunityChange = this.handleCommunityChange.bind(this);
-    this.handlePostQuery = this.handlePostQuery.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handlePostTypeChange = this.handlePostTypeChange.bind(this);
     this.handleTagFilterChange = this.handleTagFilterChange.bind(this);
     this.getTagName = this.getTagName.bind(this);
     this.getTagColor = this.getTagColor.bind(this);
-    this.handleBack = this.handleBack.bind(this);
     this.appendToSelectedTags = this.appendToSelectedTags.bind(this);
     this.communityFilter = this.communityFilter.bind(this);
   }
@@ -96,15 +96,10 @@ class SearchForm extends React.Component<MyProps, MyState> {
       selectedCommunities = null;
     }
     this.setState({ 
-        postQueries: [],
         selectedCommunities,
       }, () => {
-        this.props.setSelectedTags(null)
+        this.props.resetSearchState()
         .then(() => {
-          this.props.setSelectedPost(0)
-        }).then(() => {
-          this.props.setSearchTerm("")
-        }).then(() => {
           this.communityFilter(communities, this.props.getPostType());
         })
       }
@@ -124,22 +119,11 @@ class SearchForm extends React.Component<MyProps, MyState> {
   }
 
   handlePostTypeChange(postType: any): void {
-    this.setState({
-      postQueries: [],
-    }, () => {
-      this.props.setSelectedTags(null) 
-      .then(() => {
-        this.props.setSelectedPost(0)
-        .then(() => {
-          this.props.setSearchTerm("")
-          .then(() => {
-            this.props.setPostType(postType.label)
-          })
-        })
-      })
-      .then(() => {
-        this.communityFilter(this.state.selectedCommunities,postType.label);
-      });
+    this.props.resetSearchState() 
+    .then(() => {
+      this.props.setPostType(postType.label)
+    }).then(() => {
+      this.communityFilter(this.state.selectedCommunities,postType.label);
     });
   }
 
@@ -170,48 +154,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
     }
   }
 
-  handlePostQuery(postType: string, postsToRender: Array<number>): void {
-    const {filterStack, postQueries} = this.state;
-    const selectedPost = this.props.getSelectedPost();
-    const searchTerm = this.props.getSearchTerm();
-    const selectedTags = this.props.getSelectedTags();
-    const currPostType = this.props.getPostType().toLowerCase();
-    const currPost = this.props[currPostType][selectedPost];
-    postQueries.push([currPostType, selectedPost, currPost.name]);
-    this.setState({
-      postQueries, 
-    }, () => {
-      const filterState = {
-        postQueries: this.state.postQueries,
-        postType: currPostType,
-        renderedPosts: this.props[currPostType],
-        searchTerm,
-        selectedTags,
-      }
-      filterStack.push(filterState);
-      this.setState({
-        filterStack,
-      }, () => {
-        const posts = Array<any>();
-        postsToRender.forEach((postId: number) => {
-          const post = this.props.getPostbyId(postType.toLowerCase(), postId);
-          if (post) {
-            posts.push(post);
-          };
-        })
-        this.props.updatePostTypeState(postType.toLowerCase(), posts)
-        .then(() => {
-          this.props.setSelectedTags(null);
-        }, () => {
-          this.props.setSearchTerm("")
-          .then(() => {
-            this.props.setPostType(postType);
-          })
-        });
-      });
-    })
-  }
-
   getTagName(id: number): string {
     if (this.props.tags[id]) {
       return this.props.tags[id].name;
@@ -226,22 +168,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
       return '#' + color;
     }
     return '#123456';
-  }
-
-  handleBack() {
-    const prevState = this.state.filterStack.pop();
-    const postQuery = this.state.postQueries.pop();
-    const postsToRender = prevState.renderedPosts;
-    this.props.setSelectedTags(prevState.selectedTags)
-    .then(() => {
-      this.props.setSearchTerm(prevState.searchTerm)
-    }).then(() => {
-      this.props.setSelectedPost(postQuery[1])
-    }).then(() => {
-      this.props.setPostType(prevState.postType.charAt(0).toUpperCase() + prevState.postType.slice(1))
-    }).then(() => {
-      this.props.updatePostTypeState(prevState.postType, Object.values(postsToRender));
-    })
   }
 
   private searchFilter(searchTerm: string, currPosts: object): object {
@@ -312,7 +238,8 @@ class SearchForm extends React.Component<MyProps, MyState> {
   }
 
   public render() {
-    const { postQueries, selectedCommunities } = this.state;
+    const { selectedCommunities } = this.state;
+    const postQueries = this.props.getPostQueries();
     const selectedTags = this.props.getSelectedTags();
     const searchTerm = this.props.getSearchTerm();
     const postType = this.props.getPostType();
@@ -383,7 +310,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
               <div className="border-top border-left border-dark h-100">
                 {postQueries.length !== 0 && 
                 <div className="pl-2 ml-1 h-100 d-flex align-items-center">
-                  <a role="button" className="d-flex align-items-center back-button" onClick={this.handleBack}>
+                  <a role="button" className="d-flex align-items-center back-button" onClick={this.props.handleBack}>
                     <svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" transform="rotate(90)">
                       <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z" />
                     </svg>
@@ -409,7 +336,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
               <Table
                 data={currPosts}
                 postType={postType}
-                handlePostQuery={this.handlePostQuery}
+                handlePostQuery={this.props.handlePostQuery}
                 getTagColor={this.getTagColor}
                 getTagName={this.getTagName}
                 selectedTags={selectedTags}
