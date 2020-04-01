@@ -444,20 +444,27 @@ body {
 /* Asset Map */
 
 .mapNode {
-  border: 1px dashed var(--dark);
+  /* border: 1px dashed var(--dark); */
   text-align: center;
   line-height: 1;
   display: inline-block;
   width: 80px;
   display: inline-block;
   vertical-align: top;
+  margin: 0px 10px 0px;
+  font-size: 0.75em;
 }
 
 .nodeCircle {
-  border: 1px solid var(--node-color);
+  border: 3px solid var(--node-color);
   height: 75px;
   width: 75px;
   padding: 5px;
   border-radius: 50%;
   display: inline-block;
+}
+
+.nodeCircle:hover {
+  cursor: pointer;
+  background-color: var(--node-color) !important;
 }

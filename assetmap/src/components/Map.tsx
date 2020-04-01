@@ -43,7 +43,6 @@ export default class Map extends React.Component<MyProps, MyState> {
     };
   }
 
-
   componentDidMount() {
     this.setFrameDimensions();
     window.addEventListener("resize",() => {
@@ -99,7 +98,7 @@ export default class Map extends React.Component<MyProps, MyState> {
 
   createMapNodes(postType: string, postArray: [number]) {
     const nodeArray: Array<any> = [];
-    if (postArray && postArray[0] === 0) {
+    if (!postArray || postArray[0] === 0) {
       return nodeArray
     }
     postArray.forEach((postId) => {

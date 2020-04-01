@@ -20,6 +20,7 @@ interface MyProps {
   setSelectedPost: (selectedPost: number) => Promise<void>,
 };
 
+// TODO Move filterStack, postQueries, searchTerm, and selectedTags to App
 interface MyState {
   filterStack: Array<any>,
   postQueries: Array<any>,
