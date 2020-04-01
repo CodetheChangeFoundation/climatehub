@@ -1,10 +1,4 @@
 import * as React from 'react';
-import { 
-  // Layer, 
-  // Rect, 
-  // Stage, 
-  // Text 
-} from 'react-konva';
 import { MapNode } from './MapNode';
 
 interface MyProps {

@@ -2,7 +2,7 @@ import * as React from 'react';
 interface TagsProps {
   getTagColor: (id: number) => string,
   getTagName: (id: number) => string,
-  appendToSelectedTags: (tag: number) => void,
+  appendToSelectedTags: (tag: number) => Promise<void>,
   tags: Array<number>
   selectedTags: any
 }

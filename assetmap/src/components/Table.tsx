@@ -25,7 +25,7 @@ interface MyProps {
   handlePostQuery: (postType: string, postIds: Array<number>) => void,
   setSelectedPost: (postId: number) => Promise<void>,
   getSelectedPost: () => number,
-  appendToSelectedTags: (tag: any) => void,
+  appendToSelectedTags: (tag: any) => Promise<void>,
   postType: string,
   selectedTags: any,
 }

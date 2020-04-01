@@ -72,14 +72,13 @@ class Assetmap extends React.Component<{}, MyState> {
     this.setPostType = this.setPostType.bind(this);
     this.getSelectedPost = this.getSelectedPost.bind(this);
     this.setSelectedPost = this.setSelectedPost.bind(this);
-    this.getSearchTerm = this.getSearchTerm.bind(this);
     this.setSearchTerm = this.setSearchTerm.bind(this);
-    this.getSelectedTags = this.getSelectedTags.bind(this);
-    this.setSelectedTags = this.setSelectedTags.bind(this);
     this.resetSearchState = this.resetSearchState.bind(this);
     this.handlePostQuery = this.handlePostQuery.bind(this);
     this.handleBack = this.handleBack.bind(this);
-    this.getPostQueries = this.getPostQueries.bind(this);
+    this.appendToSelectedTags = this.appendToSelectedTags.bind(this);
+    this.handleTagFilterChange = this.handleTagFilterChange.bind(this);
+    this.getRenderState = this.getRenderState.bind(this);
   }
 
   componentDidMount() {
@@ -298,6 +297,48 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
+  appendToSelectedTags(tagId: number): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.state.tags[tagId]) {
+        const newTag = this.state.tags[tagId];
+        const currSelectedTags = this.state.selectedTags;
+        const selectedTag = {
+          id: newTag.id,
+          label: newTag.name,
+          value: newTag.name,
+        }
+        let newTags = [selectedTag];
+        if (currSelectedTags !== null && currSelectedTags !== []) {     
+          let unique = true;
+          currSelectedTags.forEach((tag: any) => {
+            if (tag.id === newTag.id) {
+              unique = false;
+            }
+          })
+          if (unique) {
+            newTags =  currSelectedTags.concat(selectedTag);
+            this.handleTagFilterChange(newTags)
+            .then(() => resolve());
+          }
+        } else {
+          this.handleTagFilterChange(newTags)
+          .then(() => resolve());
+        }
+      }
+    })
+  }
+    
+  handleTagFilterChange(tags: any): Promise<void> {
+    return new Promise((resolve) => {
+      let selectedTags = tags;
+      if (tags!== null && tags.length === 0) {
+        selectedTags = null;
+      }
+      this.setState({selectedTags}, 
+        () => resolve());
+    })
+  }
+
   setLoadedState () {
     this.setState({
       isLoaded: true,
@@ -327,10 +368,6 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
-  getSearchTerm(): string {
-    return this.state.searchTerm;
-  }
-
   setSearchTerm(searchTerm: string): Promise<void> {
     return new Promise((resolve) => {
       this.setState({searchTerm}, 
@@ -338,19 +375,14 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
-  getSelectedTags(): any {
-    return this.state.selectedTags;
-  }
-
-  setSelectedTags(selectedTags: any): Promise<void> {
-    return new Promise((resolve) => {
-      this.setState({selectedTags}, 
-        () => resolve());
-    })
-  }
-
-  getPostQueries():any {
-    return this.state.postQueries;
+  getRenderState(): any {
+    const { postQueries, postType , searchTerm , selectedTags } = this.state
+    return {
+      postQueries,
+      postType,
+      searchTerm,
+      selectedTags,
+    }
   }
 
   public render() {
@@ -391,20 +423,18 @@ class Assetmap extends React.Component<{}, MyState> {
             projects={this.state.projects}
             tags={tags}
             tag_types={tag_types}
-            getPostbyId={this.getPostbyId}
             updatePostTypeState={this.updatePostTypeState}
             getPostType={this.getPostType}
             setPostType={this.setPostType}
             getSelectedPost={this.getSelectedPost}
             setSelectedPost={this.setSelectedPost}
-            getSearchTerm={this.getSearchTerm}
             setSearchTerm={this.setSearchTerm}
-            getSelectedTags={this.getSelectedTags}
-            setSelectedTags={this.setSelectedTags}
             resetSearchState={this.resetSearchState}
             handlePostQuery={this.handlePostQuery}
             handleBack={this.handleBack}
-            getPostQueries={this.getPostQueries}
+            appendToSelectedTags={this.appendToSelectedTags}
+            handleTagFilterChange={this.handleTagFilterChange}
+            getRenderState={this.getRenderState}
           />
         </div>
       );

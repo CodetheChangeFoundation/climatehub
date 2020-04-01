@@ -12,23 +12,21 @@ interface MyProps {
   projects: any
   tags: any
   tag_types: any
-  getPostbyId: (postType: string, ID: number) => object|undefined,
-  updatePostTypeState: (postType: string, posts: Array<any>) => Promise<void>,
   getPostType: () => string,
   setPostType: (postType: string) => Promise<void>,
-  getSelectedPost: () => number,
-  setSelectedPost: (selectedPost: number) => Promise<void>,
-  getSearchTerm: () => string,
   setSearchTerm: (searchTerm: string) => Promise<void>,
-  getSelectedTags: () => any,
-  setSelectedTags: (selectedTags: any) => Promise<void>,
   resetSearchState: () => Promise<void>,
-  handlePostQuery: (postType: string, postsToRender: Array<number>) => void,
-  handleBack: () => Promise<void>
-  getPostQueries: () => any,
+  getRenderState: () => any,
+  updatePostTypeState: (postType: string, posts: Array<any>) => Promise<void>,
+  handleBack: () => Promise<void>,
+  handleTagFilterChange: (tags: any) => void,
+  // Props for Table Component : 
+  getSelectedPost: () => number, 
+  setSelectedPost: (selectedPost: number) => Promise<void>, 
+  appendToSelectedTags: (tagId: number) => Promise<void>, 
+  handlePostQuery: (postType: string, postsToRender: Array<number>) => void, 
 };
 
-// TODO Move filterStack, postQueries to App
 interface MyState {
   selectedCommunities: any,
 };
@@ -42,17 +40,13 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.populateSelects();
 
     this.state = {
-      // filterStack: [],
-      // postQueries: [],
       selectedCommunities: null,
     };
     this.handleCommunityChange = this.handleCommunityChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handlePostTypeChange = this.handlePostTypeChange.bind(this);
-    this.handleTagFilterChange = this.handleTagFilterChange.bind(this);
     this.getTagName = this.getTagName.bind(this);
     this.getTagColor = this.getTagColor.bind(this);
-    this.appendToSelectedTags = this.appendToSelectedTags.bind(this);
     this.communityFilter = this.communityFilter.bind(this);
   }
 
@@ -110,14 +104,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
     this.props.setSearchTerm(event.target.value);
   }
 
-  handleTagFilterChange(tags: any): void {
-    let selectedTags = tags;
-    if (tags!== null && tags.length === 0) {
-      selectedTags = null;
-    }
-    this.props.setSelectedTags(selectedTags);
-  }
-
   handlePostTypeChange(postType: any): void {
     this.props.resetSearchState() 
     .then(() => {
@@ -125,33 +111,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
     }).then(() => {
       this.communityFilter(this.state.selectedCommunities,postType.label);
     });
-  }
-
-  appendToSelectedTags(tagId: number): void {
-    if (this.props.tags[tagId]) {
-      const newTag = this.props.tags[tagId];
-      const currSelectedTags = this.props.getSelectedTags();
-      const selectedTag = {
-        id: newTag.id,
-        label: newTag.name,
-        value: newTag.name,
-      }
-      let newTags = [selectedTag];
-      if (currSelectedTags !== null && currSelectedTags !== []) {     
-        let unique = true;
-        currSelectedTags.forEach((tag: any) => {
-          if (tag.id === newTag.id) {
-            unique = false;
-          }
-        })
-        if (unique) {
-          newTags =  currSelectedTags.concat(selectedTag);
-          this.handleTagFilterChange(newTags);
-        }
-      } else {
-        this.handleTagFilterChange(newTags);
-      }
-    }
   }
 
   getTagName(id: number): string {
@@ -239,10 +198,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
 
   public render() {
     const { selectedCommunities } = this.state;
-    const postQueries = this.props.getPostQueries();
-    const selectedTags = this.props.getSelectedTags();
-    const searchTerm = this.props.getSearchTerm();
-    const postType = this.props.getPostType();
+    const { postQueries , postType , searchTerm , selectedTags } = this.props.getRenderState();
     const categories: Array<object> = [];
     this.props.categories.map(category => categories.push({ value: category.toLowerCase(), label: category }))
     
@@ -295,7 +251,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                   <Select
                     styles={customStyles}
                     value={selectedTags}
-                    onChange={this.handleTagFilterChange}
+                    onChange={this.props.handleTagFilterChange}
                     options={this.tagOptions}
                     isMulti={true}
                     placeholder={"Filter by tag"}
@@ -342,9 +298,9 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 selectedTags={selectedTags}
                 setSelectedPost={this.props.setSelectedPost}
                 getSelectedPost={this.props.getSelectedPost}
-                appendToSelectedTags={this.appendToSelectedTags}
+                appendToSelectedTags={this.props.appendToSelectedTags}
                 />
-                </div>
+              </div>
             </div>
           </div>
         </div>
