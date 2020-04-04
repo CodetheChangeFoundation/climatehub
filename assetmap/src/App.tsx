@@ -82,15 +82,13 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   componentDidMount() {
-    const postTypes = ['tags', 'tag_types', 'cities', 'communities', 'groups'];
-    const onLoad = new Array<Promise<any>>();
+    const postTypes = ['tags', 'tag_types', 'cities', 'communities', 'groups', 'individuals', 'projects'];
+    const onLoad = new Array<Promise<void>>();
     postTypes.forEach((type: string) => {
       onLoad.push(this.getPostsOnLoad(type));
     })
     Promise.all(onLoad).then(() => {
       this.setLoadedState();
-      this.getPostsOnLoad('individuals');
-      this.getPostsOnLoad('projects');
     }).then(() => {
       console.log(this.cache)
     });
@@ -101,7 +99,7 @@ class Assetmap extends React.Component<{}, MyState> {
       this.getAllPostsByType(postType).then(() => {
         console.log(this.cache[postType]);
         this.appendToPostTypeState(postType, this.cache[postType])
-        resolve();
+        .then(() => resolve());
       })
     })
   }
@@ -201,13 +199,15 @@ class Assetmap extends React.Component<{}, MyState> {
     });
   }
 
-  appendToPostTypeState (postType: string, posts: Array<any>): void {
-    const updatedState = {};
-    updatedState[postType] = this.state[postType];
-    Object.values(posts).forEach((post: any) => {
-      updatedState[postType][post.id] = post;
-    })
-    this.setState(updatedState);
+  appendToPostTypeState (postType: string, posts: Array<any>): Promise<void> {
+    return new Promise((resolve) => {
+      const updatedState = {};
+      updatedState[postType] = this.state[postType];
+      Object.values(posts).forEach((post: any) => {
+        updatedState[postType][post.id] = post;
+      })
+      this.setState(updatedState, () => resolve());
+    });
   }
 
   updatePostTypeState (postType: string, posts: Array<any>): Promise<void> {
