@@ -22,7 +22,7 @@ interface MyProps {
   },
   getTagName: (id: number) => string,
   getTagColor: (id: number) => string,
-  handlePostQuery: (postType: string, postIds: Array<number>) => void,
+  handlePostQuery: (postType: string, postIds: Array<number>) => Promise<void>,
   setSelectedPost: (postId: number) => Promise<void>,
   getSelectedPost: () => number,
   appendToSelectedTags: (tag: any) => Promise<void>,

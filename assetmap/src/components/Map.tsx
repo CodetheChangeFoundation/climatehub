@@ -5,6 +5,8 @@ interface MyProps {
   postType: string,
   selectedPost: number,
   getPostById: (postType: string, ID: number) => object|undefined,
+  handlePostQuery: (postType: string, postsToRender: Array<number>, currPostType: string) => Promise<void>, 
+  setSelectedPost: (selectedPost: number) => Promise<void>
 }
 
 interface MyState {
@@ -12,6 +14,8 @@ interface MyState {
   color: string,
   containerHeight: number,
   containerWidth: number, 
+  mapPostType: string,
+  post: any,
   postInfo: any,
   relatedPostsBottom: any,
   relatedPostsTop: any, 
@@ -31,10 +35,14 @@ export default class Map extends React.Component<MyProps, MyState> {
       color: '#444444',
       containerHeight: 0,
       containerWidth: 0,
+      mapPostType: "",
+      post: undefined,
       postInfo: undefined,
       relatedPostsBottom: undefined,
       relatedPostsTop: undefined,
     };
+
+    this.handleNodeClick = this.handleNodeClick.bind(this);
   }
 
   componentDidMount() {
@@ -51,8 +59,10 @@ export default class Map extends React.Component<MyProps, MyState> {
       if (selectedPost) {
         post = this.props.getPostById(postType.toLowerCase(), selectedPost);
       }  
-      this.setPostInfo(post);
-      this.setRelatedPosts(post);
+      this.setState({post, mapPostType: postType.toLowerCase()}, () => {
+        this.setPostInfo(post);
+        this.setRelatedPosts(post);
+      })
     }
   }
   
@@ -97,14 +107,42 @@ export default class Map extends React.Component<MyProps, MyState> {
     }
     postArray.forEach((postId) => {
       const post: any = this.props.getPostById(postType, postId);
-      let label: string = "Node: " + postId;
       if (post) {
-        label = post.name;
+        const node = new MapNode({
+          color: postTypeColors[postType], 
+          handleNodeClick: this.handleNodeClick,
+          post,
+          postId, 
+          postType, 
+        })
+        nodeArray.push(node.draw());
       }
-      const node = new MapNode(postType, postId, postTypeColors[postType], label)
-      nodeArray.push(node.draw());
     })
     return nodeArray;
+  }
+
+  handleNodeClick(nextPostType: string, postId: number): Promise<void> {
+    return new Promise((resolve) => {
+      this.nodePostQuery(nextPostType)
+      .then(() => {
+        this.props.setSelectedPost(postId)
+        .then(() => resolve())
+      })
+    })
+  }
+
+  private nodePostQuery(nextPostType: string): Promise<void> {
+    return new Promise((resolve) => {
+      let fieldName = nextPostType;
+      // Handle case where object property isn't === postType 
+      if ((this.state.mapPostType === "projects")
+        && (nextPostType === "individuals")) {
+        fieldName = "director";
+      }
+      const postsToRender = this.state.post[fieldName];
+      this.props.handlePostQuery(nextPostType, (postsToRender? postsToRender : []), this.state.mapPostType)
+      .then(() => resolve());
+    })
   }
 
   setFrameDimensions() {
@@ -121,15 +159,52 @@ export default class Map extends React.Component<MyProps, MyState> {
   }
 
   public render() {
-    const {postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
+    const {boundary, containerWidth, postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
     return (
+      <>
         <div style={{
           margin: "20px", 
         }}> 
-          {postInfo}
-          {relatedPostsBottom}
-          {relatedPostsTop}
+          <div style={{
+            display: "inline-block",
+            float: "left",
+            width: boundary,
+          }}>
+            {postInfo}
+          </div>
+          <div style={{
+            display: "inline-block",
+            float: "right",
+            width: containerWidth - boundary - 40,
+          }}>
+            {relatedPostsBottom}
+            {relatedPostsTop}
+          </div>
         </div>
+        <div id="legend" style={{
+          bottom: 0,
+          left: 0,
+          position: "absolute",
+          zIndex: 2,
+        }}>
+          {this.props.selectedPost > 0 && 
+            <div>
+              <div className="legendNode">
+                <span className="legendCircle" style={{backgroundColor: "#21965344", border: "3px solid #219653"}}/>
+                <p>Groups</p>
+              </div>
+              <div className="legendNode">
+                <span className="legendCircle" style={{backgroundColor: "#3591D344", border: "3px solid #3591D3"}}/>
+                <p>Individuals</p>
+              </div>
+              <div className="legendNode">
+                <span className="legendCircle" style={{backgroundColor: "#D3813544", border: "3px solid #D38135"}}/>
+                <p>Projects</p>
+              </div>
+            </div>
+          } 
+        </div>
+      </>
     )
   }
 }

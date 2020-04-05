@@ -64,8 +64,6 @@ class Assetmap extends React.Component<{}, MyState> {
       tags: [],
     };
     
-    this.getAllPostsByType = this.getAllPostsByType.bind(this);
-    this.getPostsFromCache = this.getPostsFromCache.bind(this);
     this.getPostbyId = this.getPostbyId.bind(this);
     this.updatePostTypeState = this.updatePostTypeState.bind(this);
     this.getPostType = this.getPostType.bind(this);
@@ -80,7 +78,9 @@ class Assetmap extends React.Component<{}, MyState> {
     this.handleTagFilterChange = this.handleTagFilterChange.bind(this);
     this.getRenderState = this.getRenderState.bind(this);
   }
-
+  // ----
+  // Load and cache data
+  // ----
   componentDidMount() {
     const postTypes = ['tags', 'tag_types', 'cities', 'communities', 'groups', 'individuals', 'projects'];
     const onLoad = new Array<Promise<void>>();
@@ -97,7 +97,6 @@ class Assetmap extends React.Component<{}, MyState> {
   getPostsOnLoad(postType: string): Promise<void> {
     return new Promise((resolve) => {
       this.getAllPostsByType(postType).then(() => {
-        console.log(this.cache[postType]);
         this.appendToPostTypeState(postType, this.cache[postType])
         .then(() => resolve());
       })
@@ -231,41 +230,50 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
-  handlePostQuery(postType: string, postsToRender: Array<number>): void {
-    const {filterStack, postQueries, selectedPost, searchTerm, selectedTags} = this.state;
-    const currPostType = this.state.postType.toLowerCase();
-    const currPost = this.state[currPostType][selectedPost];
-    postQueries.push([currPostType, selectedPost, currPost.name]);
+  setLoadedState () {
     this.setState({
-      postQueries, 
-    }, () => {
-      const filterState = {
-        postQueries: this.state.postQueries,
-        postType: currPostType,
-        renderedPosts: this.state[currPostType],
-        searchTerm,
-        selectedTags,
-      }
-      filterStack.push(filterState);
+      isLoaded: true,
+    })
+  }
+
+  // ----
+  // Handle form and map events
+  // ----
+  handlePostQuery(postType: string, postsToRender: Array<number>, currPostType = this.state.postType.toLowerCase()): Promise<void> {
+    return new Promise((resolve) => {const {filterStack, postQueries, selectedPost, searchTerm, selectedTags} = this.state;
+      const currPost = this.state[currPostType][selectedPost];
+      postQueries.push([currPostType, selectedPost, currPost.name]);
       this.setState({
-        filterStack,
+        postQueries, 
       }, () => {
-        const posts = Array<any>();
-        postsToRender.forEach((postId: number) => {
-          const post = this.getPostbyId(postType.toLowerCase(), postId);
-          if (post) {
-            posts.push(post);
-          };
-        })
-        this.updatePostTypeState(postType.toLowerCase(), posts)
-        .then(() => {
-          this.setState({
-            postType,
-            searchTerm: "",
-            selectedTags: null,
+        const filterState = {
+          postQueries: this.state.postQueries,
+          postType: currPostType,
+          renderedPosts: this.state[currPostType],
+          searchTerm,
+          selectedTags,
+        }
+        filterStack.push(filterState);
+        this.setState({
+          filterStack,
+        }, () => {
+          const posts = Array<any>();
+          postsToRender.forEach((postId: number) => {
+            const post = this.getPostbyId(postType.toLowerCase(), postId);
+            if (post) {
+              posts.push(post);
+            };
           })
+          this.updatePostTypeState(postType.toLowerCase(), posts)
+          .then(() => {
+            this.setState({
+              postType: postType.charAt(0).toUpperCase() + postType.slice(1),
+              searchTerm: "",
+              selectedTags: null,
+            }, () => resolve())
+          });
         });
-      });
+      })
     })
   }
 
@@ -339,12 +347,6 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
-  setLoadedState () {
-    this.setState({
-      isLoaded: true,
-    })
-  }
-
   getPostType(): string {
     return this.state.postType;
   }
@@ -408,8 +410,10 @@ class Assetmap extends React.Component<{}, MyState> {
                   >
                   <Map
                     selectedPost={selectedPost}
+                    setSelectedPost={this.setSelectedPost}
                     postType={postType}
                     getPostById={this.getPostbyId}
+                    handlePostQuery={this.handlePostQuery}
                   />
               </div>
             </div>

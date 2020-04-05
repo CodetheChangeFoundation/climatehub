@@ -3,10 +3,10 @@ import * as React from 'react';
 interface RowInfo {
   data: any,
   postType: string,
-  handlePostQuery: (postType: string, filterIds: Array<number>) => void,
+  handlePostQuery: (postType: string, filterIds: Array<number>) => Promise<void>,
 }
 
-export const RowInfo = ({ data, handlePostQuery: handlePostQuery, postType }: RowInfo) => {
+export const RowInfo = ({ data, handlePostQuery, postType}: RowInfo) => {
   function renderTitle(title: string) {
     return <p className="mb-0 text-muted">{title}</p>
   }
@@ -45,7 +45,12 @@ export const RowInfo = ({ data, handlePostQuery: handlePostQuery, postType }: Ro
     if ((ids !== undefined) 
         && (ids.length > 0)
         && !(ids.length===1 && ids[0]===0)) {
-        const clickCallback = () => handlePostQuery(buttonPostType, ids);
+        const clickCallback = (): Promise<void> =>  {
+          return new Promise((resolve) => {
+            handlePostQuery(buttonPostType, ids)
+            .then(() => resolve())
+          })
+        }
         return (
           <div className="col-4 col-md-3 col-xl-2">
             {renderTitle(title)}
