@@ -14,8 +14,9 @@ interface MyState {
   filterStack: Array<any>,
   groups: any,
   individuals: any,
-  isLoaded: boolean
-  postQueries: Array<any>
+  isLoaded: boolean,
+  maxNodes: number,
+  postQueries: Array<any>,
   postType: string,
   projects: any,
   searchTerm: string,
@@ -40,11 +41,13 @@ const fieldTypes = {
 class Assetmap extends React.Component<{}, MyState> {
   categories: Array<string>;
   cache: {};
+  searchFormRef: any;
   
   constructor(props: any) {
     super(props);
     this.categories = ["Groups", "Projects", "Individuals"];
     this.cache = {};
+    // this.searchFormRef = null;
     
     this.state = {
       cities: [],
@@ -54,6 +57,7 @@ class Assetmap extends React.Component<{}, MyState> {
       groups: [],
       individuals: [],
       isLoaded: false,
+      maxNodes: 0,
       postQueries: [],
       postType: this.categories[0],
       projects: [],
@@ -77,6 +81,8 @@ class Assetmap extends React.Component<{}, MyState> {
     this.appendToSelectedTags = this.appendToSelectedTags.bind(this);
     this.handleTagFilterChange = this.handleTagFilterChange.bind(this);
     this.getRenderState = this.getRenderState.bind(this);
+    this.setMaxNodes = this.setMaxNodes.bind(this);
+    this.scrollToSearchForm = this.scrollToSearchForm.bind(this);
   }
   // ----
   // Load and cache data
@@ -377,6 +383,13 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
+  setMaxNodes(maxNodes: number): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({maxNodes}, 
+        () => resolve());
+    })
+  }
+
   getRenderState(): any {
     const { postQueries, postType , searchTerm , selectedTags } = this.state
     return {
@@ -387,8 +400,16 @@ class Assetmap extends React.Component<{}, MyState> {
     }
   }
 
+  scrollToSearchForm(): void {
+    window.scrollTo({
+      behavior: "smooth",
+      left: 0, 
+      top: this.searchFormRef.offsetTop,
+    })
+  }
+
   public render() {
-    const { cities, communities, error, groups, isLoaded, postType, selectedPost, tags, tag_types} = this.state;
+    const { cities, communities, error, groups, isLoaded, maxNodes, postType, selectedPost, tags, tag_types} = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -397,7 +418,7 @@ class Assetmap extends React.Component<{}, MyState> {
       return (
         <div className="asset-map">
           <div className="container row" style={{margin: 'auto'}}>
-            <div className='col-12 border-dark'
+            <div className='border-dark'
                   id="mapParent"
                   style={{
                     border: '2px solid',
@@ -409,37 +430,43 @@ class Assetmap extends React.Component<{}, MyState> {
                   }}
                   >
                   <Map
+                    maxNodes={maxNodes}
                     selectedPost={selectedPost}
+                    setMaxNodes={this.setMaxNodes}
                     setSelectedPost={this.setSelectedPost}
                     postType={postType}
                     getPostById={this.getPostbyId}
                     handlePostQuery={this.handlePostQuery}
+                    handleBack={this.handleBack}
+                    scrollToSearchForm={this.scrollToSearchForm}
                   />
               </div>
             </div>
-          <SearchForm 
-            cache={this.cache}
-            categories={this.categories}
-            cities={cities}
-            communities={communities}
-            groups={groups}
-            individuals={this.state.individuals}
-            projects={this.state.projects}
-            tags={tags}
-            tag_types={tag_types}
-            updatePostTypeState={this.updatePostTypeState}
-            getPostType={this.getPostType}
-            setPostType={this.setPostType}
-            getSelectedPost={this.getSelectedPost}
-            setSelectedPost={this.setSelectedPost}
-            setSearchTerm={this.setSearchTerm}
-            resetSearchState={this.resetSearchState}
-            handlePostQuery={this.handlePostQuery}
-            handleBack={this.handleBack}
-            appendToSelectedTags={this.appendToSelectedTags}
-            handleTagFilterChange={this.handleTagFilterChange}
-            getRenderState={this.getRenderState}
-          />
+            <div ref={(ref) => this.searchFormRef = ref}>
+              <SearchForm 
+                cache={this.cache}
+                categories={this.categories}
+                cities={cities}
+                communities={communities}
+                groups={groups}
+                individuals={this.state.individuals}
+                projects={this.state.projects}
+                tags={tags}
+                tag_types={tag_types}
+                updatePostTypeState={this.updatePostTypeState}
+                getPostType={this.getPostType}
+                setPostType={this.setPostType}
+                getSelectedPost={this.getSelectedPost}
+                setSelectedPost={this.setSelectedPost}
+                setSearchTerm={this.setSearchTerm}
+                resetSearchState={this.resetSearchState}
+                handlePostQuery={this.handlePostQuery}
+                handleBack={this.handleBack}
+                appendToSelectedTags={this.appendToSelectedTags}
+                handleTagFilterChange={this.handleTagFilterChange}
+                getRenderState={this.getRenderState}
+              />
+            </div>
         </div>
       );
     }

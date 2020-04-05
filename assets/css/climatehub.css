@@ -356,7 +356,7 @@ body {
   box-shadow: 0px 1px 0px 0px #DFDFDF;
 }
 
-.asset-map .table-container .tag {
+.asset-map .table-container .tag .overflow-btn {
   white-space: nowrap;
 }
 
@@ -447,7 +447,6 @@ body {
   /* border: 1px dashed var(--dark); */
   text-align: center;
   line-height: 1;
-  display: inline-block;
   width: 80px;
   display: inline-block;
   vertical-align: top;
@@ -480,9 +479,27 @@ body {
 .legendNode {
   display: inline-block;
   padding-right: 20px;
+  font-size: 0.75em;
 }
 
 #legend {
-  margin-left: 20px;
   text-align: center;
+  bottom: 0;
+}
+
+.mapVisual {
+  border: 2px dashed lightslategray;
+}
+
+.overflow-btn {
+  display: inline-block;
+  color: var(--overflow-btn-color);
+  margin: 25px 10px;
+}
+
+.overflow-btn:hover {
+  background-color: var(--overflow-btn-color) !important;
+  color: #DFDFDF;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
