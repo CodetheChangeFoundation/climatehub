@@ -27,14 +27,19 @@ interface MyState {
 
 const postTypeColors = {
   // CH Colors
-  // groups: "#219653",
-  // individuals: "#3591D3",
-  // projects: "#D38135",
-  // Random Colors
-  groups: "#2EC2A8",
-  individuals: "#2DB3C7",
-  projects: "#2D88CD",
+  groups: "#219653",
+  individuals: "#3591D3",
+  projects: "#D38135",
+  // // Random Colors
+  // groups: "#2EC2A8",
+  // individuals: "#2DB3C7",
+  // projects: "#2D88CD",
 }
+
+const defaultMessage = <div style={{margin: "auto", textAlign: "center", padding: "160px 0"}}> 
+                          <p style={{lineHeight: 1, fontSize: "20px"}}>Please select a row from the table</p>
+                      </div>
+
 export default class Map extends React.Component<MyProps, MyState> {  
   constructor(props: MyProps) {
     super(props);
@@ -46,18 +51,26 @@ export default class Map extends React.Component<MyProps, MyState> {
       containerWidth: 0,
       mapPostType: "",
       post: undefined,
-      postInfo: undefined,
+      postInfo: defaultMessage,
       relatedPostsBottom: undefined,
       relatedPostsTop: undefined,
     };
 
     this.handleNodeClick = this.handleNodeClick.bind(this);
+    this.setFrameDimensions = this.setFrameDimensions.bind(this);
   }
 
   componentDidMount() {
     this.setFrameDimensions();
-    window.addEventListener("resize",() => {
-      this.setFrameDimensions();
+    window.addEventListener("resize", this.setFrameDimensions);
+    const {postType, selectedPost} = this.props;
+    let post: any;
+    if (selectedPost) {
+      post = this.props.getPostById(postType.toLowerCase(), selectedPost);
+    }  
+    this.setState({post, mapPostType: postType.toLowerCase()}, () => {
+      this.setPostInfo(post);
+      this.setRelatedPosts(post);
     })
   }
   
@@ -81,6 +94,10 @@ export default class Map extends React.Component<MyProps, MyState> {
     }
   }
   
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.setFrameDimensions)
+  }
+  // TODO: 
   setPostInfo(post: any): Promise<void> {
     return new Promise((resolve) => {
       let postInfo;
@@ -88,8 +105,10 @@ export default class Map extends React.Component<MyProps, MyState> {
         postInfo = 
         <div style={{margin: "auto", textAlign: "center"}}> 
           <h4>{post.name}</h4> 
-          <p style={{lineHeight: 1}}>{post.description}</p>
+          <p style={{lineHeight: 1, fontSize: "14px"}}>{post.description}</p>
         </div>
+      } else {
+        postInfo = defaultMessage;
       }
       this.setState({postInfo}, () => resolve())
     })
@@ -155,17 +174,21 @@ export default class Map extends React.Component<MyProps, MyState> {
     const formPostType = this.props.postType.toLowerCase();
     const handleOverflowClick = (): Promise<void> =>  {
       return new Promise((resolve) => {
+        console.log("Form: " + formPostType, "Map: " + mapPostType, "Clicked: " + clickedPostType);
         if (clickedPostType === formPostType) {
           resolve();
         } else if (formPostType === mapPostType) {
+          console.log("Didn't go back");
           this.nodePostQuery(clickedPostType)
           .then(() => { 
             this.props.scrollToSearchForm();
             resolve()
           });
         } else {
+          // TODO
           this.props.handleBack()
           .then(() => {
+            console.log("Went Back");
             this.nodePostQuery(clickedPostType)
             .then(() => { 
               this.props.scrollToSearchForm();
@@ -232,9 +255,10 @@ export default class Map extends React.Component<MyProps, MyState> {
       const mapVisual: HTMLElement | null = document.getElementById("mapVisual");
       const mapWidth: number | undefined = mapVisual?.clientWidth;
       let maxNodes: number = 0;
+      const mapNodeWidth: number = 100;
       if (mapWidth) {
         // Account for padding of 30px and mapNode width of 100px
-        maxNodes = Math.floor((mapWidth - 30)/100);
+        maxNodes = Math.floor((mapWidth - 30)/mapNodeWidth);
         // console.log(mapWidth - 30, maxNodes);
       }
 
@@ -269,32 +293,32 @@ export default class Map extends React.Component<MyProps, MyState> {
 
   public render() {
     const {containerHeight, postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
-    return (
-      <div className="row" style={{margin: "20px 0"}}> 
-        <div id="mapInfo" className="col-12 col-md-6 col-lg-5" style={{
-          display: "inline-block",
-          float: "left",
-          height: containerHeight - 40,
-        }}>
-          {postInfo}
-          {this.props.selectedPost > 0 && <div id="legend" style={{bottom: 0}}>
-            {this.renderLegend()}
-          </div>} 
-        </div>
-        <div id="mapVisual" className="col-12 col-md-6 col-lg-7" style={{
-          display: "inline-block",
-          float: "right",
-          height: containerHeight - 40,
-        }}>
-          <div className="nodeRow">
-            {relatedPostsBottom}
+        return (
+          <div className="row" style={{margin: "20px 0"}}> 
+          <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 justify-content-between flex-direction-column" style={{
+            display: "inline-block",
+            float: "left",
+            height: containerHeight - 40,
+          }}>
+            {postInfo}
+            {this.props.selectedPost > 0 && <div id="legend">
+              {this.renderLegend()}
+            </div>} 
           </div>
-          <br />
-          <div className="nodeRow">
-            {relatedPostsTop}
+          <div id="mapVisual" className="col-12 col-md-6 col-lg-7 col-xl-8" style={{
+            display: "inline-block",
+            float: "right",
+            height: containerHeight - 40,
+          }}>
+            <div className="nodeRow">
+              {relatedPostsBottom}
+            </div>
+            <br />
+            <div className="nodeRow">
+              {relatedPostsTop}
+            </div>
           </div>
         </div>
-      </div>
-    )
+      )
   }
 }

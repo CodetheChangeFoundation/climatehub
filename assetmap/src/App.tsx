@@ -1,4 +1,3 @@
-// import * as d3 from 'd3';
 import * as React from 'react';
 import '../../assets/css/bootstrap/bootstrap-grid.min.css';
 import '../../assets/css/bootstrap/bootstrap-reboot.min.css';
@@ -24,6 +23,7 @@ interface MyState {
   selectedTags: any,
   tag_types: any,
   tags: any,
+  windowSize: number,
 };
 
 const fieldTypes = {
@@ -66,6 +66,7 @@ class Assetmap extends React.Component<{}, MyState> {
       selectedTags: null,
       tag_types: [],
       tags: [],
+      windowSize: 0,
     };
     
     this.getPostbyId = this.getPostbyId.bind(this);
@@ -93,8 +94,12 @@ class Assetmap extends React.Component<{}, MyState> {
     postTypes.forEach((type: string) => {
       onLoad.push(this.getPostsOnLoad(type));
     })
+    onLoad.push(this.setWindowSize());
     Promise.all(onLoad).then(() => {
       this.setLoadedState();
+      window.addEventListener("resize",() => {
+        this.setWindowSize();
+      })
     }).then(() => {
       console.log(this.cache)
     });
@@ -106,6 +111,12 @@ class Assetmap extends React.Component<{}, MyState> {
         this.appendToPostTypeState(postType, this.cache[postType])
         .then(() => resolve());
       })
+    })
+  }
+
+  setWindowSize(): Promise<void>{
+    return new Promise((resolve) => {
+      this.setState({windowSize: window.innerWidth}, () => resolve());
     })
   }
 
@@ -409,7 +420,7 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   public render() {
-    const { cities, communities, error, groups, isLoaded, maxNodes, postType, selectedPost, tags, tag_types} = this.state;
+    const { cities, communities, error, groups, isLoaded, maxNodes, postType, selectedPost, tags, tag_types, windowSize} = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -417,31 +428,33 @@ class Assetmap extends React.Component<{}, MyState> {
     } else {
       return (
         <div className="asset-map">
-          <div className="container row" style={{margin: 'auto'}}>
-            <div className='border-dark'
-                  id="mapParent"
-                  style={{
-                    border: '2px solid',
-                    borderBottom: 'none',
-                    height: '400px',
-                    margin: 'auto',
-                    padding: '0',
-                    width: '100%',
-                  }}
-                  >
-                  <Map
-                    maxNodes={maxNodes}
-                    selectedPost={selectedPost}
-                    setMaxNodes={this.setMaxNodes}
-                    setSelectedPost={this.setSelectedPost}
-                    postType={postType}
-                    getPostById={this.getPostbyId}
-                    handlePostQuery={this.handlePostQuery}
-                    handleBack={this.handleBack}
-                    scrollToSearchForm={this.scrollToSearchForm}
-                  />
-              </div>
-            </div>
+          {(windowSize > 768) && 
+            <div className="container row" style={{margin: 'auto'}}>
+              <div className='border-dark'
+                    id="mapParent"
+                    style={{
+                      border: '2px solid',
+                      borderBottom: 'none',
+                      height: '350px',
+                      margin: 'auto',
+                      padding: '0',
+                      width: '100%',
+                    }}
+                    >
+                    <Map
+                      maxNodes={maxNodes}
+                      selectedPost={selectedPost}
+                      setMaxNodes={this.setMaxNodes}
+                      setSelectedPost={this.setSelectedPost}
+                      postType={postType}
+                      getPostById={this.getPostbyId}
+                      handlePostQuery={this.handlePostQuery}
+                      handleBack={this.handleBack}
+                      scrollToSearchForm={this.scrollToSearchForm}
+                    />
+                </div>
+              </div> 
+            }
             <div ref={(ref) => this.searchFormRef = ref}>
               <SearchForm 
                 cache={this.cache}

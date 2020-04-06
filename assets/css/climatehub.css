@@ -484,11 +484,10 @@ body {
 
 #legend {
   text-align: center;
-  bottom: 0;
 }
 
-.mapVisual {
-  border: 2px dashed lightslategray;
+#mapVisual {
+  border-left: 2px solid var(--dark);
 }
 
 .overflow-btn {
