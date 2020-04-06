@@ -257,7 +257,8 @@ class Assetmap extends React.Component<{}, MyState> {
   // Handle form and map events
   // ----
   handlePostQuery(postType: string, postsToRender: Array<number>, currPostType = this.state.postType.toLowerCase()): Promise<void> {
-    return new Promise((resolve) => {const {filterStack, postQueries, selectedPost, searchTerm, selectedTags} = this.state;
+    return new Promise((resolve) => {
+      const {filterStack, postQueries, selectedPost, searchTerm, selectedTags} = this.state;
       const currPost = this.state[currPostType][selectedPost];
       postQueries.push([currPostType, selectedPost, currPost.name]);
       this.setState({

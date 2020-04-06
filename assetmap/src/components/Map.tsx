@@ -74,9 +74,9 @@ export default class Map extends React.Component<MyProps, MyState> {
     })
   }
   
-  componentDidUpdate(nextProps:MyProps) {
+  componentDidUpdate(prevProps:MyProps) {
     const {maxNodes, postType, selectedPost} = this.props;
-    if (selectedPost !== nextProps.selectedPost) {
+    if (selectedPost !== prevProps.selectedPost) {
       let post: any;
       if (selectedPost) {
         post = this.props.getPostById(postType.toLowerCase(), selectedPost);
@@ -85,7 +85,7 @@ export default class Map extends React.Component<MyProps, MyState> {
         this.setPostInfo(post);
         this.setRelatedPosts(post);
       })
-    } else if (maxNodes !== nextProps.maxNodes) {
+    } else if (maxNodes !== prevProps.maxNodes) {
       let post: any;
       if (selectedPost) {
         post = this.props.getPostById(postType.toLowerCase(), selectedPost);
@@ -146,7 +146,6 @@ export default class Map extends React.Component<MyProps, MyState> {
     let count: number = postArray.length;
     if (count > maxNodes) {
       count = maxNodes - 1;
-      console.log(postType + " nodes overflow...");
       overflow = true;
     }
     for (let i = 0; i < count; i++) {
@@ -170,25 +169,22 @@ export default class Map extends React.Component<MyProps, MyState> {
   }
 
   handleOverflowButton(clickedPostType: string) {
-    const mapPostType = this.state.mapPostType.toLowerCase();
-    const formPostType = this.props.postType.toLowerCase();
     const handleOverflowClick = (): Promise<void> =>  {
+      const mapPostType = this.state.mapPostType.toLowerCase();
+      const formPostType = this.props.postType.toLowerCase();
+      // console.log("Form: " + formPostType, "Map: " + mapPostType, "Clicked: " + clickedPostType);
       return new Promise((resolve) => {
-        console.log("Form: " + formPostType, "Map: " + mapPostType, "Clicked: " + clickedPostType);
         if (clickedPostType === formPostType) {
           resolve();
         } else if (formPostType === mapPostType) {
-          console.log("Didn't go back");
           this.nodePostQuery(clickedPostType)
           .then(() => { 
             this.props.scrollToSearchForm();
             resolve()
           });
         } else {
-          // TODO
           this.props.handleBack()
           .then(() => {
-            console.log("Went Back");
             this.nodePostQuery(clickedPostType)
             .then(() => { 
               this.props.scrollToSearchForm();
@@ -199,15 +195,11 @@ export default class Map extends React.Component<MyProps, MyState> {
       })
     }
     const color: string = postTypeColors[clickedPostType];
-    const backgroundColor: string = color + "44";
     const border = '2px solid ' + color;
     const btnStyle = {
       '--overflow-btn-color': color,
       backgroundColor: 'none !important',
       border,
-    }
-    if (clickedPostType === formPostType) {
-      btnStyle.backgroundColor = backgroundColor;
     }
     return(
       <div className="overflow-btn font-italic d-inline-block p-1 " style={btnStyle} onClick={handleOverflowClick} key={clickedPostType + " overflow"}>
@@ -219,8 +211,7 @@ export default class Map extends React.Component<MyProps, MyState> {
   handleNodeClick(nextPostType: string, postId: number): Promise<void> {
     return new Promise((resolve) => {
       this.nodePostQuery(nextPostType)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         this.props.setSelectedPost(postId)
         .then(() => resolve())
       })
@@ -237,7 +228,9 @@ export default class Map extends React.Component<MyProps, MyState> {
       }
       const postsToRender: Array<number> = this.state.post[fieldName];
       this.props.handlePostQuery(nextPostType, (postsToRender? postsToRender : []), this.state.mapPostType)
-      .then(() => resolve("Pushed to Post Query: " + nextPostType));
+      .then(() => {
+        resolve();
+      });
     })
   }
 
