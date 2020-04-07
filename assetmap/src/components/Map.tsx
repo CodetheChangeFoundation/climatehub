@@ -97,21 +97,63 @@ export default class Map extends React.Component<MyProps, MyState> {
   componentWillUnmount() {
     window.removeEventListener("resize", this.setFrameDimensions)
   }
-  // TODO: 
+
   setPostInfo(post: any): Promise<void> {
     return new Promise((resolve) => {
-      let postInfo;
-      if (post) {
-        postInfo = 
-        <div style={{margin: "auto", textAlign: "center"}}> 
-          <h4>{post.name}</h4> 
-          <p style={{lineHeight: 1, fontSize: "14px"}}>{post.description}</p>
-        </div>
-      } else {
-        postInfo = defaultMessage;
-      }
+      const postInfo = (post? this.populatePostInfo(post):defaultMessage);
       this.setState({postInfo}, () => resolve())
     })
+  }
+
+  populatePostInfo(post: any): any {
+    let details;
+    console.log(post);
+    details = (
+      <>
+        {(post.position? this.renderText(post.position, false, false): "")}
+        {(post.email? this.renderText(post.email, true, true): "")}
+        {this.renderText(post.website, true, false)}
+        {(post.phone? this.renderText(post.phone, false, false): "")}
+        {(post.tags? this.renderTags(post.tags): "")}
+      </>
+    )
+    return <div style={{margin: "auto", textAlign: "center", lineHeight: 1}}> 
+            <h4>{post.name}</h4> 
+            <p style={{fontSize: "14px"}}>{post.description}</p>
+            {details}
+          </div>
+  }
+
+  renderText(text: string, isUrl: boolean = false, isEmail: boolean = false): any {
+    let output;
+    if (text !== "") {
+      if (isUrl) {
+        output = 
+        <a 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-truncate d-block" 
+          href={(isEmail? "mailto:" + text : text)}>{text}
+        </a>
+      } else {
+        output = <p className="mb-0" >{text}</p>
+      }
+    }
+    if (output !== undefined) {
+      output = <div>{output}</div>
+    }
+    return output
+  }
+
+  renderTags(tagIds: Array<number>) {
+    const tags: any = [];
+    tagIds.forEach((tag: number) => {
+      const post: any = this.props.getPostById("tags", tag)
+      if (post) {
+        tags.push(<div className="d-inline-block border border-dark ml-1 mr-1 p-2">{post.name}</div>)
+      }
+    })
+    return <p>{tags}</p>
   }
 
   setRelatedPosts(post: any) {
@@ -194,18 +236,22 @@ export default class Map extends React.Component<MyProps, MyState> {
         }
       })
     }
+    return this.renderOverflowBtn(clickedPostType, handleOverflowClick);
+  }
+
+  private renderOverflowBtn(clickedPostType: string, handleOverflowClick: () => Promise<void>) {
     const color: string = postTypeColors[clickedPostType];
     const border = '2px solid ' + color;
     const btnStyle = {
       '--overflow-btn-color': color,
       backgroundColor: 'none !important',
       border,
-    }
-    return(
+    };
+    return (
       <div className="overflow-btn font-italic d-inline-block p-1 " style={btnStyle} onClick={handleOverflowClick} key={clickedPostType + " overflow"}>
-        See More
+          See More
       </div>
-    )
+    );
   }
 
   handleNodeClick(nextPostType: string, postId: number): Promise<void> {
