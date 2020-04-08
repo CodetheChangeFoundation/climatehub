@@ -442,23 +442,60 @@ body {
 }
 
 /* Asset Map */
+#mapParent {
+  --parent-height: 350px;
+  height: var(--parent-height);
+  line-height: 1;
+}
+
+#mapInfo, #mapVisual {
+  height: calc(var(--parent-height) - 34px);
+}
 
 .mapNode {
-  /* border: 1px dashed var(--dark); */
-  text-align: center;
-  line-height: 1;
-  width: 80px;
-  display: inline-block;
-  vertical-align: top;
-  margin: 0px 10px 0px;
-  font-size: 0.75em;
+  width: 65px;
+}
+
+.transit-line {
+  width: 95px;
+  height: 10px;
+  left: -8px;
+  z-index: -1;
+  border-radius: 5px;
+}
+
+.transit-line-home-node-top {
+  top: 27.5px;
+  right: -5px;
+  height: 10px;
+  width: 150px;
+  transform: rotate(-70deg);
+  transform-origin: center right;
+  z-index: -1;
+}
+
+.transit-line-home-node-bottom {
+  bottom: 27.5px;
+  right: -5px;
+  height: 10px;
+  width: 150px;
+  transform: rotate(70deg);
+  transform-origin: center right;
+  z-index: -1;
 }
 
 .nodeCircle {
   border: 3px solid var(--node-color);
-  height: 75px;
-  width: 75px;
-  padding: 5px;
+  height: 65px;
+  width: 65px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.home-node {
+  border: 3px solid;
+  height: 65px;
+  width: 65px;
   border-radius: 50%;
   display: inline-block;
 }
@@ -466,39 +503,58 @@ body {
 .nodeCircle:hover {
   cursor: pointer;
   background-color: var(--node-color) !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.legend {
+  width: 80px;
+  right: 0;
 }
 
 .legendCircle {
-  height: 50px;
-  width: 50px;
-  padding: 20px;
+  height: 35px;
+  width: 35px;
   border-radius: 50%;
   display: inline-block;
 }
 
-.legendNode {
-  display: inline-block;
-  padding-right: 20px;
-  font-size: 0.75em;
-}
-
-#legend {
-  text-align: center;
-}
-
-#mapVisual {
-  border-left: 2px solid var(--dark);
-}
-
 .overflow-btn {
-  display: inline-block;
   color: var(--overflow-btn-color);
-  margin: 25px 10px;
+  margin: 14.5px 0px 14.5px 12px;
 }
 
 .overflow-btn:hover {
   background-color: var(--overflow-btn-color) !important;
-  color: #DFDFDF;
+  color: #F2F2F2;
   cursor: pointer;
   transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.block-with-text {
+  overflow: hidden;
+  position: relative; 
+  line-height: 1.1em;
+  max-height: 5.4em; 
+  text-align: center;  
+  margin-right: -0.5em;
+  padding-right: 0.5em;
+  word-break: break-word;
+  word-wrap: break-word;
+}
+
+.block-with-text:before {
+  content: '...';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.block-with-text:after {
+  content: '';
+  position: absolute;
+  right: 0;
+  width: 0.5em;
+  height: 1em;
+  margin-top: 0.2em;
+  background: #f2f2f2;
 }
