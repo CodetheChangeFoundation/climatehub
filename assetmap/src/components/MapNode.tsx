@@ -1,10 +1,12 @@
 import * as React from 'react';
 
 interface MyProps {
+  backgroundColor: string,
   color: string, 
   post: any,
   postId: number, 
   postType: string, 
+  textAboveNode: boolean,
   handleNodeClick: (postType: string, postId: number) => Promise<void>,
 }
 
@@ -34,13 +36,21 @@ export class MapNode extends React.Component<MyProps, MyState>{
   draw() {
     const nodeStyle = {
       '--node-color': this.props.color,    
-      backgroundColor: this.props.color + '44'
+      backgroundColor: this.props.backgroundColor
     }
-    return <div key={this.props.postId} className="mapNode">
-      <span className="nodeCircle" style={nodeStyle} onClick={this.handleClick}/>
-        {/* <circle fill={this.color + '44'} cx="10" cy="10" r="10" /> */}
-        {/* <p>{this.postId}</p> */}
-        <p>{this.state.label}</p>
-      </div>;
+
+    const lineStyle = {
+      backgroundColor: this.props.color,
+      bottom: this.props.textAboveNode ? "27.5px" : "",
+      top: !this.props.textAboveNode ? "27.5px" : "",
+    }
+    return (
+      <div key={this.props.postId} className="mapNode position-relative mx-2 text-center">
+        {this.state.label && this.props.textAboveNode && <p className="mb-0 small block-with-text">{this.state.label}</p>}
+        <span className="transit-line position-absolute" style={lineStyle}/>
+        <span className="nodeCircle" style={nodeStyle} onClick={this.handleClick}/>
+        {this.state.label && !this.props.textAboveNode && <p className="mb-0 small block-with-text">{this.state.label}</p>}
+      </div>
+    );
   }
 }

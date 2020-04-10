@@ -430,57 +430,49 @@ class Assetmap extends React.Component<{}, MyState> {
       return (
         <div className="asset-map">
           {(windowSize >= 768) && 
-            <div className="container row" style={{margin: 'auto'}}>
-              <div className='border-dark'
-                    id="mapParent"
-                    style={{
-                      border: '2px solid',
-                      borderBottom: 'none',
-                      height: '350px',
-                      margin: 'auto',
-                      padding: '0',
-                      width: '100%',
-                    }}
-                    >
-                    <Map
-                      maxNodes={maxNodes}
-                      selectedPost={selectedPost}
-                      setMaxNodes={this.setMaxNodes}
-                      setSelectedPost={this.setSelectedPost}
-                      postType={postType}
-                      getPostById={this.getPostbyId}
-                      handlePostQuery={this.handlePostQuery}
-                      handleBack={this.handleBack}
-                      scrollToSearchForm={this.scrollToSearchForm}
-                    />
+            <div id="mapParent" className="container">
+              <div className="row h-100">
+                <div className='col'>
+                  <Map
+                    maxNodes={maxNodes}
+                    selectedPost={selectedPost}
+                    setMaxNodes={this.setMaxNodes}
+                    setSelectedPost={this.setSelectedPost}
+                    postType={postType}
+                    getPostById={this.getPostbyId}
+                    handlePostQuery={this.handlePostQuery}
+                    handleBack={this.handleBack}
+                    scrollToSearchForm={this.scrollToSearchForm}
+                  />
                 </div>
-              </div> 
-            }
-            <div ref={(ref) => this.searchFormRef = ref}>
-              <SearchForm 
-                cache={this.cache}
-                categories={this.categories}
-                cities={cities}
-                communities={communities}
-                groups={groups}
-                individuals={this.state.individuals}
-                projects={this.state.projects}
-                tags={tags}
-                tag_types={tag_types}
-                updatePostTypeState={this.updatePostTypeState}
-                getPostType={this.getPostType}
-                setPostType={this.setPostType}
-                getSelectedPost={this.getSelectedPost}
-                setSelectedPost={this.setSelectedPost}
-                setSearchTerm={this.setSearchTerm}
-                resetSearchState={this.resetSearchState}
-                handlePostQuery={this.handlePostQuery}
-                handleBack={this.handleBack}
-                appendToSelectedTags={this.appendToSelectedTags}
-                handleTagFilterChange={this.handleTagFilterChange}
-                getRenderState={this.getRenderState}
-              />
-            </div>
+              </div>
+            </div> 
+          }
+          <div ref={(ref) => this.searchFormRef = ref}>
+            <SearchForm 
+              cache={this.cache}
+              categories={this.categories}
+              cities={cities}
+              communities={communities}
+              groups={groups}
+              individuals={this.state.individuals}
+              projects={this.state.projects}
+              tags={tags}
+              tag_types={tag_types}
+              updatePostTypeState={this.updatePostTypeState}
+              getPostType={this.getPostType}
+              setPostType={this.setPostType}
+              getSelectedPost={this.getSelectedPost}
+              setSelectedPost={this.setSelectedPost}
+              setSearchTerm={this.setSearchTerm}
+              resetSearchState={this.resetSearchState}
+              handlePostQuery={this.handlePostQuery}
+              handleBack={this.handleBack}
+              appendToSelectedTags={this.appendToSelectedTags}
+              handleTagFilterChange={this.handleTagFilterChange}
+              getRenderState={this.getRenderState}
+            />
+          </div>
         </div>
       );
     }

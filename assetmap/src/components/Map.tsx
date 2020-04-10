@@ -17,7 +17,8 @@ interface MyState {
   boundary: number,
   color: string,
   containerHeight: number,
-  containerWidth: number, 
+  containerWidth: number,
+  homePost: any,
   mapPostType: string,
   post: any,
   postInfo: any,
@@ -27,18 +28,22 @@ interface MyState {
 
 const postTypeColors = {
   // CH Colors
-  groups: "#219653",
-  individuals: "#3591D3",
-  projects: "#D38135",
+  groups: "#83D335",
+  individuals: "#41D3BD",
+  projects: "#F18F01",
   // // Random Colors
   // groups: "#2EC2A8",
   // individuals: "#2DB3C7",
   // projects: "#2D88CD",
 }
 
-const defaultMessage = <div className="m-auto text-center"> 
-    <p style={{fontSize: "20px"}}>Please select a row from the table</p>
-  </div>
+const postTypeBackgroundColors = {
+  groups: "#D6EAC2",
+  individuals: "#C5EAE4",
+  projects: "#F1D9B5"
+}
+
+const defaultMessage = <div className="d-flex h-100 align-items-center justify-content-center"><h5>Please select a row from the table</h5></div>
 
 export default class Map extends React.Component<MyProps, MyState> {  
   constructor(props: MyProps) {
@@ -49,6 +54,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       color: '#444444',
       containerHeight: 0,
       containerWidth: 0,
+      homePost: undefined,
       mapPostType: "",
       post: undefined,
       postInfo: defaultMessage,
@@ -182,31 +188,58 @@ export default class Map extends React.Component<MyProps, MyState> {
 
   setRelatedPosts(post: any) {
     const {postType} = this.props;
-    let relatedPostsTop;
-    let relatedPostsBottom;
+    let relatedPostsTop = [];
+    let relatedPostsBottom = [];
+    let homePost;
+    let topPostType = "";
+    let bottomPostType = "";
+    const nodeStyle = {    
+      backgroundColor: postTypeColors[postType.toLowerCase()],
+      borderColor: postTypeColors[postType.toLowerCase()],
+    }
     if (post) {
       switch (postType) {
         case "groups": {
-          relatedPostsTop = this.createMapNodes("individuals", post.individuals);
-          relatedPostsBottom = this.createMapNodes("projects", post.projects);
+          topPostType = "projects";
+          bottomPostType = "individuals";
+          relatedPostsTop = this.createMapNodes("projects", post.projects);
+          relatedPostsBottom = this.createMapNodes("individuals", post.individuals, true);
           break;
         } case "individuals": {
-          relatedPostsTop = this.createMapNodes("groups", post.groups);
-          relatedPostsBottom = this.createMapNodes("projects", post.projects);
+          topPostType = "projects";
+          bottomPostType = "groups";
+          relatedPostsTop = this.createMapNodes("projects", post.projects);
+          relatedPostsBottom = this.createMapNodes("groups", post.groups, true);
           break;
         } case "projects": {
-          relatedPostsTop = this.createMapNodes("individuals", post.director);
-          relatedPostsBottom = this.createMapNodes("groups", post.groups);
+          topPostType = "groups";
+          bottomPostType = "individuals";
+          relatedPostsTop = this.createMapNodes("groups", post.groups);
+          relatedPostsBottom = this.createMapNodes("individuals", post.director, true);
         }
       }
+
+      homePost = (
+        <div style={{height: "65px", width: "65px"}}>
+          {relatedPostsTop.length !== 0 &&
+            <span className="transit-line-home-node-top position-absolute" style={{backgroundColor: postTypeColors[topPostType]}}/>
+          }
+          <span className="home-node" style={nodeStyle}/>
+          {relatedPostsBottom.length !== 0 &&
+            <span className="transit-line-home-node-bottom position-absolute" style={{backgroundColor: postTypeColors[bottomPostType]}}/>
+          }
+        </div>
+      )
     }
+
     this.setState({
+      homePost,
       relatedPostsBottom,
       relatedPostsTop,
     })
   }
 
-  createMapNodes(postType: string, postArray: [number]) {
+  createMapNodes(postType: string, postArray: [number], textAboveNode: boolean = false) {
     const {maxNodes} = this.props;
     const nodeArray: Array<any> = [];
     if (!postArray || postArray[0] === 0) {
@@ -223,11 +256,13 @@ export default class Map extends React.Component<MyProps, MyState> {
       const post: object | undefined = this.props.getPostById(postType, postId);
       if (post) {
         const node = new MapNode({
-          color: postTypeColors[postType], 
+          backgroundColor: postTypeBackgroundColors[postType],
+          color: postTypeColors[postType],
           handleNodeClick: this.handleNodeClick,
           post,
           postId, 
-          postType, 
+          postType,
+          textAboveNode
         })
         nodeArray.push(node.draw());
       }
@@ -273,10 +308,10 @@ export default class Map extends React.Component<MyProps, MyState> {
       '--overflow-btn-color': color,
       backgroundColor: 'none !important',
       border,
-    };
-    return (
-      <div className="overflow-btn font-italic d-inline-block p-1 " style={btnStyle} onClick={handleOverflowClick} key={clickedPostType + " overflow"}>
-          See More
+    }
+    return(
+      <div className="overflow-btn font-italic d-inline-block p-2 text-nowrap" style={btnStyle} onClick={handleOverflowClick} key={clickedPostType + " overflow"}>
+        See More
       </div>
     );
   }
@@ -338,49 +373,55 @@ export default class Map extends React.Component<MyProps, MyState> {
     }) 
   }
 
-  // private renderLegend() {
-  //   const legend: Array<any> = [];
-  //   for (const [postType, color] of Object.entries(postTypeColors)) {
-  //     const backgroundColor: string = color + "44";
-  //     let label: string = postType;
-  //     if (postType === "individuals" && this.state.mapPostType === "projects") {
-  //       label = "director";
-  //     }
-  //     const border: string = "3px solid " + color;
-  //     legend.push(
-  //       <div key={postType} className="legendNode text-capitalize">
-  //         <span className="legendCircle" style={{backgroundColor, border}}/>
-  //         <p>{label}</p>
-  //       </div>
-  //     )
-  //   }
-  //   return legend;
-  // }
+  private renderLegend() {
+    const legend: Array<any> = [];
+    for (const [postType, color] of Object.entries(postTypeColors)) {
+      const backgroundColor: string = postType === this.state.mapPostType ? color : color + "44";
+      let label: string = postType.charAt(0).toUpperCase() + postType.slice(1);
+      if (postType === "individuals" && this.state.mapPostType === "projects") {
+        label = "Director";
+      }
+      const border: string = "3px solid " + color;
+      legend.push(
+        <div key={postType} className="d-flex flex-column align-items-center py-1">
+          <span className="legendCircle" style={{backgroundColor, border}}/>
+          <p className="mt-1 m-0 small text-grey">{label}</p>
+        </div>
+      )
+    }
+    return legend;
+  }
 
   public render() {
-    const {containerHeight, postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
-        return (
-          <div className="row" style={{margin: "20px 0"}}> 
-          <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 d-flex align-content-center flex-direction-column float-left">
+    const {homePost, postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
+    return (
+      <div className="container border border-dark border-bottom-0 h-100">
+        <div className="row h-100 py-3">
+          <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 border-right border-grey d-flex justify-content-between flex-column">
             {postInfo}
-            {/* {this.props.selectedPost > 0 && <div id="legend">
-              {this.renderLegend()}
-            </div>}  */}
           </div>
-          <div id="mapVisual" className="col-12 col-md-6 col-lg-7 col-xl-8" style={{
-            display: "inline-block",
-            float: "right",
-            height: containerHeight - 40,
-          }}>
-            <div className="nodeRow">
-              {relatedPostsBottom}
+          <div id="mapVisual" className="col-12 col-md-6 col-lg-7 col-xl-8 d-flex justify-content-between position-relative">
+            <div className="d-flex align-items-center position-relative">
+              {homePost}
             </div>
-            <br />
-            <div className="nodeRow">
-              {relatedPostsTop}
+            <div className="h-100 w-100 d-flex flex-column justify-content-between">
+              <div className="d-flex align-items-start">
+                {relatedPostsTop}
+              </div>
+              <div className="d-flex align-items-end">
+                {relatedPostsBottom}
+              </div>
+            </div>
+            <div className="legend d-flex flex-column justify-content-center position-absolute h-100">
+              {this.props.selectedPost > 0 && 
+                <div className="border-left border-grey px-2">
+                  {this.renderLegend()}
+                </div>
+              } 
             </div>
           </div>
         </div>
-      )
+      </div>
+    )
   }
 }
