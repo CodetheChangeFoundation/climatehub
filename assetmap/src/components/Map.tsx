@@ -36,9 +36,9 @@ const postTypeColors = {
   // projects: "#2D88CD",
 }
 
-const defaultMessage = <span className="d-block text-center align-middle"> 
+const defaultMessage = <div className="m-auto text-center"> 
     <p style={{fontSize: "20px"}}>Please select a row from the table</p>
-  </span>
+  </div>
 
 export default class Map extends React.Component<MyProps, MyState> {  
   constructor(props: MyProps) {
@@ -110,31 +110,36 @@ export default class Map extends React.Component<MyProps, MyState> {
     console.log(post);
     details = (
       <>
-        {(post.position? this.renderText(post.position, false, false): "")}
-        {(post.email? this.renderText(post.email, false, true): "")}
-        {(post.phone? this.renderText(post.phone, false, false): "")}
-        {(post.website? this.renderText(post.website, true, false): "")}
+        {(post.position? this.renderText(post.position, false, false, (post.position.length < 100)? "h5 mb-4": "h6 mb-4"): "")}
+        {(post.phone? this.renderText(post.phone, false, false, "mb-2"): "")}
+        {(post.email? this.renderText(post.email, false, true, ""): "")}
+        {(post.website? this.renderText(post.website, true, false, ""): "")}
         {(post.tags? this.renderTags(post.tags): "")}
       </>
     )
 
-    let name = <h5>{post.name}</h5>
-    let description = <p style={{fontSize: "14px"}}>{post.description}</p>
-
-    if (post.description.length > 470) {
-      description = <p style={{fontSize: "12px"}}>{post.description}</p>
-    } else if (post.name.length < 45) {
-      name = <h4>{post.name}</h4>
+    let name = (post.name)? <h4>{post.name}</h4> : "";
+    let description;
+    
+    if (post.description) {
+      description = <p style={{fontSize: "14px"}}>{post.description}</p>
+      if (post.description.length > 470) {
+        description = <p style={{fontSize: "12px"}}>{post.description}</p>
+        name = <h5>{post.name}</h5>
+      } else if (post.name.length > 45) {
+        name = <h5>{post.name}</h5>
+      }
     }
+    
 
-    return <div style={{margin: "auto", textAlign: "center", lineHeight: 1}}> 
+    return <div className="text-center m-auto" style={{lineHeight: 1}}> 
       {name}
       {description}
       {details}
     </div>
   }
 
-  renderText(text: string, isWebsite: boolean = false, isEmail: boolean = false): any {
+  renderText(text: string, isWebsite: boolean = false, isEmail: boolean = false, classes: string): any {
     let output;
     if (text !== "") {
       if (isWebsite || isEmail) {
@@ -142,16 +147,16 @@ export default class Map extends React.Component<MyProps, MyState> {
         <a 
           target="_blank" 
           rel="noopener noreferrer" 
-          className="text-truncate d-block mb-1" 
+          className="text-truncate d-block mb-2" 
           href={(isEmail? "mailto:" + text : text)}>
             {(isWebsite)? "Visit Website" : text}
         </a>
       } else {
-        output = <p className="mb-2" >{text}</p>
+        output = <p>{text}</p>
       }
     }
     if (output !== undefined) {
-      output = <div>{output}</div>
+      output = <div className={classes}>{output}</div>
     }
     return output
   }
@@ -354,11 +359,7 @@ export default class Map extends React.Component<MyProps, MyState> {
     const {containerHeight, postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
         return (
           <div className="row" style={{margin: "20px 0"}}> 
-          <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 justify-content-between flex-direction-column" style={{
-            display: "inline-block",
-            float: "left",
-            height: containerHeight - 40,
-          }}>
+          <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 d-flex align-content-center flex-direction-column float-left">
             {postInfo}
             {/* {this.props.selectedPost > 0 && <div id="legend">
               {this.renderLegend()}
