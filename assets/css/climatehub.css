@@ -452,6 +452,10 @@ body {
   height: calc(var(--parent-height) - 34px);
 }
 
+#mapInfo {
+  overflow: scroll;
+}
+
 .mapNode {
   width: 65px;
 }
@@ -518,6 +522,14 @@ body {
   display: inline-block;
 }
 
+.border-grey {
+  border-color: #666 !important;
+}
+
+.text-grey {
+  color: #666 !important;
+}
+
 .overflow-btn {
   color: var(--overflow-btn-color);
   margin: 14.5px 0px 14.5px 12px;
@@ -540,6 +552,7 @@ body {
   padding-right: 0.5em;
   word-break: break-word;
   word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .block-with-text:before {

@@ -28,9 +28,9 @@ interface MyState {
 
 const postTypeColors = {
   // CH Colors
-  groups: "#219653",
-  individuals: "#3591D3",
-  projects: "#D38135",
+  groups: "#83D335",
+  individuals: "#41D3BD",
+  projects: "#F18F01",
   // // Random Colors
   // groups: "#2EC2A8",
   // individuals: "#2DB3C7",
@@ -38,9 +38,9 @@ const postTypeColors = {
 }
 
 const postTypeBackgroundColors = {
-  groups: "rgb(186,218,200)",
-  individuals: "rgb(192,217,234)",
-  projects: "rgb(234,212,192)",
+  groups: "#D6EAC2",
+  individuals: "#C5EAE4",
+  projects: "#F1D9B5"
 }
 
 const defaultMessage = <div className="d-flex h-100 align-items-center justify-content-center"><h5>Please select a row from the table</h5></div>
@@ -72,9 +72,9 @@ export default class Map extends React.Component<MyProps, MyState> {
     const {postType, selectedPost} = this.props;
     let post: any;
     if (selectedPost) {
-      post = this.props.getPostById(postType.toLowerCase(), selectedPost);
+      post = this.props.getPostById(postType, selectedPost);
     }  
-    this.setState({post, mapPostType: postType.toLowerCase()}, () => {
+    this.setState({post, mapPostType: postType}, () => {
       this.setPostInfo(post);
       this.setRelatedPosts(post);
     })
@@ -85,16 +85,16 @@ export default class Map extends React.Component<MyProps, MyState> {
     if (selectedPost !== prevProps.selectedPost) {
       let post: any;
       if (selectedPost) {
-        post = this.props.getPostById(postType.toLowerCase(), selectedPost);
+        post = this.props.getPostById(postType, selectedPost);
       }  
-      this.setState({post, mapPostType: postType.toLowerCase()}, () => {
+      this.setState({post, mapPostType: postType}, () => {
         this.setPostInfo(post);
         this.setRelatedPosts(post);
       })
     } else if (maxNodes !== prevProps.maxNodes) {
       let post: any;
       if (selectedPost) {
-        post = this.props.getPostById(postType.toLowerCase(), selectedPost);
+        post = this.props.getPostById(postType, selectedPost);
       }  
       this.setRelatedPosts(post);
     }
@@ -103,21 +103,87 @@ export default class Map extends React.Component<MyProps, MyState> {
   componentWillUnmount() {
     window.removeEventListener("resize", this.setFrameDimensions)
   }
-  // TODO: 
+
   setPostInfo(post: any): Promise<void> {
     return new Promise((resolve) => {
-      let postInfo;
-      if (post) {
-        postInfo = 
-        <div style={{margin: "auto", textAlign: "center"}}> 
-          <h4>{post.name}</h4> 
-          <p style={{lineHeight: 1, fontSize: "14px"}}>{post.description}</p>
-        </div>
-      } else {
-        postInfo = defaultMessage;
-      }
+      const postInfo = (post? this.populatePostInfo(post):defaultMessage);
       this.setState({postInfo}, () => resolve())
     })
+  }
+
+  populatePostInfo(post: any): any {
+    let details;
+    console.log(post);
+    details = (
+      <>
+        {(post.position? this.renderText(post.position, false, false, (post.position.length < 100)? "h5 mb-4": "h6 mb-4"): "")}
+        {(post.phone? this.renderText(post.phone, false, false, "mb-2"): "")}
+        {(post.email? this.renderText(post.email, false, true, ""): "")}
+        {(post.website? this.renderText(post.website, true, false, ""): "")}
+        {(post.tags? this.renderTags(post.tags): "")}
+      </>
+    )
+
+    let name = (post.name)? <h4>{post.name}</h4> : "";
+    let description;
+    
+    if (post.description) {
+      description = <p style={{fontSize: "14px"}}>{post.description}</p>
+      if (post.description.length > 470) {
+        description = <p style={{fontSize: "12px"}}>{post.description}</p>
+        name = <h5>{post.name}</h5>
+      } else if (post.name.length > 45) {
+        name = <h5>{post.name}</h5>
+      }
+    }
+    
+
+    return <div className="text-center m-auto" style={{lineHeight: 1}}> 
+      {name}
+      {description}
+      {details}
+    </div>
+  }
+
+  renderText(text: string, isWebsite: boolean = false, isEmail: boolean = false, classes: string): any {
+    let output;
+    if (text !== "") {
+      if (isWebsite || isEmail) {
+        output = 
+        <a 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-truncate d-block mb-2" 
+          href={(isEmail? "mailto:" + text : text)}>
+            {(isWebsite)? "Visit Website" : text}
+        </a>
+      } else {
+        output = <p>{text}</p>
+      }
+    }
+    if (output !== undefined) {
+      output = <div className={classes}>{output}</div>
+    }
+    return output
+  }
+
+  renderTags(tagIds: Array<number>) {
+    // Max Height will be 80 px (2 rows of tags)
+    const tags: any = [];
+    if (tagIds.length > 0) {
+      tagIds.forEach((tag: number) => {
+        const post: any = this.props.getPostById("tags", tag)
+        if (post) {
+          const typePost: any = this.props.getPostById("tag_types", post.type)
+          const tagStyle = {
+            border: "2px solid #" + typePost.colour,
+            fontSize: "0.75rem"
+          }
+          tags.push(<div className="d-inline-block m-1 p-2" style={tagStyle} key={post.id}>{"#" + post.name}</div>)
+        }
+      })
+    }
+    return <div>{tags}</div>
   }
 
   setRelatedPosts(post: any) {
@@ -127,28 +193,30 @@ export default class Map extends React.Component<MyProps, MyState> {
     let homePost;
     let topPostType = "";
     let bottomPostType = "";
-
+    const nodeStyle = {    
+      backgroundColor: postTypeColors[postType.toLowerCase()],
+      borderColor: postTypeColors[postType.toLowerCase()],
+    }
     if (post) {
-      if (postType === "Groups") {
-        topPostType = "projects";
-        bottomPostType = "individuals";
-        relatedPostsTop = this.createMapNodes("projects", post.projects);
-        relatedPostsBottom = this.createMapNodes("individuals", post.individuals, true);
-      } else if (postType === "Individuals") {
-        topPostType = "projects";
-        bottomPostType = "groups";
-        relatedPostsTop = this.createMapNodes("projects", post.projects);
-        relatedPostsBottom = this.createMapNodes("groups", post.groups, true);
-      } else if (postType === "Projects") {
-        topPostType = "groups";
-        bottomPostType = "individuals";
-        relatedPostsTop = this.createMapNodes("groups", post.groups);
-        relatedPostsBottom = this.createMapNodes("individuals", post.director, true);
-      }
-      
-      const nodeStyle = {    
-        backgroundColor: postTypeColors[postType.toLowerCase()],
-        borderColor: postTypeColors[postType.toLowerCase()],
+      switch (postType) {
+        case "groups": {
+          topPostType = "projects";
+          bottomPostType = "individuals";
+          relatedPostsTop = this.createMapNodes("projects", post.projects);
+          relatedPostsBottom = this.createMapNodes("individuals", post.individuals, true);
+          break;
+        } case "individuals": {
+          topPostType = "projects";
+          bottomPostType = "groups";
+          relatedPostsTop = this.createMapNodes("projects", post.projects);
+          relatedPostsBottom = this.createMapNodes("groups", post.groups, true);
+          break;
+        } case "projects": {
+          topPostType = "groups";
+          bottomPostType = "individuals";
+          relatedPostsTop = this.createMapNodes("groups", post.groups);
+          relatedPostsBottom = this.createMapNodes("individuals", post.director, true);
+        }
       }
 
       homePost = (
@@ -207,10 +275,9 @@ export default class Map extends React.Component<MyProps, MyState> {
 
   handleOverflowButton(clickedPostType: string) {
     const handleOverflowClick = (): Promise<void> =>  {
-      const mapPostType = this.state.mapPostType.toLowerCase();
-      const formPostType = this.props.postType.toLowerCase();
-      // console.log("Form: " + formPostType, "Map: " + mapPostType, "Clicked: " + clickedPostType);
       return new Promise((resolve) => {
+        const mapPostType = this.state.mapPostType;
+        const formPostType = this.props.postType;
         if (clickedPostType === formPostType) {
           resolve();
         } else if (formPostType === mapPostType) {
@@ -231,6 +298,10 @@ export default class Map extends React.Component<MyProps, MyState> {
         }
       })
     }
+    return this.renderOverflowBtn(clickedPostType, handleOverflowClick);
+  }
+
+  private renderOverflowBtn(clickedPostType: string, handleOverflowClick: () => Promise<void>) {
     const color: string = postTypeColors[clickedPostType];
     const border = '2px solid ' + color;
     const btnStyle = {
@@ -242,7 +313,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       <div className="overflow-btn font-italic d-inline-block p-2 text-nowrap" style={btnStyle} onClick={handleOverflowClick} key={clickedPostType + " overflow"}>
         See More
       </div>
-    )
+    );
   }
 
   handleNodeClick(nextPostType: string, postId: number): Promise<void> {
@@ -314,7 +385,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       legend.push(
         <div key={postType} className="d-flex flex-column align-items-center py-1">
           <span className="legendCircle" style={{backgroundColor, border}}/>
-          <p className="mt-1 m-0 small">{label}</p>
+          <p className="mt-1 m-0 small text-grey">{label}</p>
         </div>
       )
     }
@@ -326,7 +397,7 @@ export default class Map extends React.Component<MyProps, MyState> {
     return (
       <div className="container border border-dark border-bottom-0 h-100">
         <div className="row h-100 py-3">
-          <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 border-right border-dark d-flex justify-content-between flex-column">
+          <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 border-right border-grey d-flex justify-content-between flex-column">
             {postInfo}
           </div>
           <div id="mapVisual" className="col-12 col-md-6 col-lg-7 col-xl-8 d-flex justify-content-between position-relative">
@@ -343,7 +414,7 @@ export default class Map extends React.Component<MyProps, MyState> {
             </div>
             <div className="legend d-flex flex-column justify-content-center position-absolute h-100">
               {this.props.selectedPost > 0 && 
-                <div className="border-left border-dark px-2">
+                <div className="border-left border-grey px-2">
                   {this.renderLegend()}
                 </div>
               } 

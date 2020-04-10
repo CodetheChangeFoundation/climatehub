@@ -45,7 +45,7 @@ class Assetmap extends React.Component<{}, MyState> {
   
   constructor(props: any) {
     super(props);
-    this.categories = ["Groups", "Projects", "Individuals"];
+    this.categories = ["groups", "projects", "individuals"];
     this.cache = {};
     // this.searchFormRef = null;
     
@@ -256,7 +256,7 @@ class Assetmap extends React.Component<{}, MyState> {
   // ----
   // Handle form and map events
   // ----
-  handlePostQuery(postType: string, postsToRender: Array<number>, currPostType = this.state.postType.toLowerCase()): Promise<void> {
+  handlePostQuery(postType: string, postsToRender: Array<number>, currPostType = this.state.postType): Promise<void> {
     return new Promise((resolve) => {
       const {filterStack, postQueries, selectedPost, searchTerm, selectedTags} = this.state;
       const currPost = this.state[currPostType][selectedPost];
@@ -277,15 +277,15 @@ class Assetmap extends React.Component<{}, MyState> {
         }, () => {
           const posts = Array<any>();
           postsToRender.forEach((postId: number) => {
-            const post = this.getPostbyId(postType.toLowerCase(), postId);
+            const post = this.getPostbyId(postType, postId);
             if (post) {
               posts.push(post);
             };
           })
-          this.updatePostTypeState(postType.toLowerCase(), posts)
+          this.updatePostTypeState(postType, posts)
           .then(() => {
             this.setState({
-              postType: postType.charAt(0).toUpperCase() + postType.slice(1),
+              postType,
               searchTerm: "",
               selectedTags: null,
             }, () => resolve())
@@ -312,7 +312,7 @@ class Assetmap extends React.Component<{}, MyState> {
       const postQuery = this.state.postQueries.pop();
       const postsToRender = prevState.renderedPosts;
       this.setState({
-        postType: prevState.postType.charAt(0).toUpperCase() + prevState.postType.slice(1),
+        postType: prevState.postType,
         searchTerm: prevState.searchTerm,
         selectedPost: postQuery[1],
         selectedTags: prevState.selectedTags,
@@ -429,7 +429,7 @@ class Assetmap extends React.Component<{}, MyState> {
     } else {
       return (
         <div className="asset-map">
-          {(windowSize > 768) && 
+          {(windowSize >= 768) && 
             <div id="mapParent" className="container">
               <div className="row h-100">
                 <div className='col'>
