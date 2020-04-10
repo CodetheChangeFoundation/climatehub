@@ -164,17 +164,19 @@ export default class Map extends React.Component<MyProps, MyState> {
   renderTags(tagIds: Array<number>) {
     // Max Height will be 80 px (2 rows of tags)
     const tags: any = [];
-    tagIds.forEach((tag: number) => {
-      const post: any = this.props.getPostById("tags", tag)
-      if (post) {
-        const typePost: any = this.props.getPostById("tag_types", post.type)
-        const tagStyle = {
-          border: "2px solid #" + typePost.colour,
-          fontSize: "0.75rem"
+    if (tagIds.length > 0) {
+      tagIds.forEach((tag: number) => {
+        const post: any = this.props.getPostById("tags", tag)
+        if (post) {
+          const typePost: any = this.props.getPostById("tag_types", post.type)
+          const tagStyle = {
+            border: "2px solid #" + typePost.colour,
+            fontSize: "0.75rem"
+          }
+          tags.push(<div className="d-inline-block m-1 p-2" style={tagStyle} key={post.id}>{"#" + post.name}</div>)
         }
-        tags.push(<div className="d-inline-block m-1 p-2" style={tagStyle} key={post.id}>{"#" + post.name}</div>)
-      }
-    })
+      })
+    }
     return <div>{tags}</div>
   }
 
