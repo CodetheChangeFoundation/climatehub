@@ -486,6 +486,11 @@ body {
   text-align: center;
 }
 
+#mapInfo {
+  max-height: 300px;
+  overflow: scroll;
+}
+
 #mapVisual {
   border-left: 2px solid var(--dark);
 }

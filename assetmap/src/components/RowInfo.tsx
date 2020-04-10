@@ -62,20 +62,31 @@ export const RowInfo = ({ data, handlePostQuery, postType}: RowInfo) => {
   }
 
   let rowInfo;
-  if (postType === 'Groups') {
-    rowInfo = <>{rowInfo}{renderText("Description", data.description, "col-12 col-xl-5")}</>
-    rowInfo = <>{rowInfo}{renderText('Website', data.website, 'col-12 col-sm-4 col-lg-3', true)}</>
-    rowInfo = <>{rowInfo}{renderButton('Projects', data.projects, 'Explore projects', 'projects')}</>
-    rowInfo = <>{rowInfo}{renderButton('Individuals', data.individuals, 'See individuals', 'individuals')}</>
-  } else if (postType === 'Projects') {
-    rowInfo = <>{rowInfo}{renderText("Description", data.description, "col-12 col-xl-5")}</>
-    rowInfo = <>{rowInfo}{renderText('Website', data.website, 'col-12 col-sm-4 col-lg-3', true)}</>
-    rowInfo = <>{rowInfo}{renderButton('Individuals', data.director, 'See project director', 'director')}</>
-    rowInfo = <>{rowInfo}{renderButton('Groups', data.groups, 'See groups involved', 'groups')}</>
-  } else if (postType === 'Individuals') {
-    rowInfo = <>{rowInfo}{renderPositionWebsiteEmailPhone()}</>
-    rowInfo = <>{rowInfo}{renderButton('Projects', data.projects, 'See their projects', 'projects')}</>
-    rowInfo = <>{rowInfo}{renderButton('Groups', data.groups, 'See their groups', 'groups')}</>
+  switch(postType) {
+    case 'groups': {
+      rowInfo = <>
+        {renderText("Description", data.description, "col-12 col-xl-5")}
+        {renderText('Website', data.website, 'col-12 col-sm-4 col-lg-3', true)}
+        {renderButton('Projects', data.projects, 'Explore projects', 'projects')}
+        {renderButton('Individuals', data.individuals, 'See individuals', 'individuals')}
+      </>
+      break;
+    } case 'projects': {
+      rowInfo = <>
+        {rowInfo}{renderText("Description", data.description, "col-12 col-xl-5")}
+        {rowInfo}{renderText('Website', data.website, 'col-12 col-sm-4 col-lg-3', true)}
+        {rowInfo}{renderButton('Individuals', data.director, 'See project director', 'director')}
+        {rowInfo}{renderButton('Groups', data.groups, 'See groups involved', 'groups')}
+      </>
+      break;
+    } case 'individuals': {
+      rowInfo = <>
+        {renderPositionWebsiteEmailPhone()}
+        {renderButton('Projects', data.projects, 'See their projects', 'projects')}
+        {renderButton('Groups', data.groups, 'See their groups', 'groups')}
+      </>
+      break;
+    }
   }
 
   return(

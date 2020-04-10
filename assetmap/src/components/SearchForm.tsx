@@ -163,8 +163,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
     return currPosts;
   }
 
-  private communityFilter(selectedCommunities: Array<object>, postTypeLabel: string): void {
-    const postType = postTypeLabel.toLowerCase();
+  private communityFilter(selectedCommunities: Array<object>, postType: string): void {
     let currPosts = this.props.cache[postType];
     if (selectedCommunities !== null && Object.values(selectedCommunities).length > 0) {
       const communityIds = selectedCommunities.map((community: {id: number}) => {
@@ -200,9 +199,9 @@ class SearchForm extends React.Component<MyProps, MyState> {
     const { selectedCommunities } = this.state;
     const { postQueries , postType , searchTerm , selectedTags } = this.props.getRenderState();
     const categories: Array<object> = [];
-    this.props.categories.map(category => categories.push({ value: category.toLowerCase(), label: category }))
+    this.props.categories.map(category => categories.push({ value: category, label: category }))
     
-    let currPosts = this.props[postType.toLowerCase()];
+    let currPosts = this.props[postType];
     currPosts = this.searchFilter(searchTerm, currPosts);
     currPosts = this.tagsFilter(selectedTags, currPosts);
     const numResults = Object.keys(currPosts).length;
@@ -230,10 +229,10 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 <div className="order-1 col-12 col-sm-4 col-lg-2 px-0">
                   <Select
                     styles={customStyles}
-                    value={{value: postType.toLowerCase(), label: postType}}
+                    value={{value: postType, label: postType}}
                     onChange={this.handlePostTypeChange}
                     options={categories}
-                    className={"h-100 m-0 p-0 z-index-120 d-flex flex-column justify-content-center "}
+                    className={"h-100 m-0 p-0 z-index-120 d-flex flex-column justify-content-center text-capitalize"}
                   />
                 </div>
                 <div className="order-3 order-sm-2 col-12 col-sm-4 col-lg-5 px-0">
