@@ -465,7 +465,7 @@ body {
   height: 10px;
   left: -8px;
   z-index: -1;
-  border-radius: 5px;
+  border-radius: 5px 0 0 5px;
 }
 
 .transit-line-home-node-top {

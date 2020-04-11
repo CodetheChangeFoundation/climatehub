@@ -315,7 +315,7 @@ export default class Map extends React.Component<MyProps, MyState> {
 
   private renderOverflowBtn(clickedPostType: string, handleOverflowClick: () => Promise<void>) {
     const color: string = postTypeColors[clickedPostType];
-    const border = '2px solid ' + color;
+    const border = '3px solid ' + color;
     const btnStyle = {
       '--overflow-btn-color': color,
       backgroundColor: 'none !important',
