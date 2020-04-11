@@ -182,7 +182,7 @@ export default class Map extends React.Component<MyProps, MyState> {
   renderTags(tagIds: Array<number>) {
     // Max Height will be 80 px (2 rows of tags)
     const tags: any = [];
-    if (tagIds.length > 0) {
+    if (tagIds.length > 0 && tagIds[0] !== null) {
       tagIds.forEach((tag: number) => {
         const post: any = this.props.getPostById("tags", tag)
         if (post) {
@@ -259,7 +259,7 @@ export default class Map extends React.Component<MyProps, MyState> {
     }
     let overflow = false;
     let count: number = postArray.length;
-    if (count > maxNodes) {
+    if (count >= maxNodes) {
       count = maxNodes - 1;
       overflow = true;
     }
