@@ -14,6 +14,7 @@ interface MyState {
   groups: any,
   individuals: any,
   isLoaded: boolean,
+  mapPostType: string,
   maxNodes: number,
   postQueries: Array<any>,
   postType: string,
@@ -57,6 +58,7 @@ class Assetmap extends React.Component<{}, MyState> {
       groups: [],
       individuals: [],
       isLoaded: false,
+      mapPostType: "",
       maxNodes: 0,
       postQueries: [],
       postType: this.categories[0],
@@ -84,6 +86,8 @@ class Assetmap extends React.Component<{}, MyState> {
     this.getRenderState = this.getRenderState.bind(this);
     this.setMaxNodes = this.setMaxNodes.bind(this);
     this.scrollToSearchForm = this.scrollToSearchForm.bind(this);
+    this.getMapPostType = this.getMapPostType.bind(this);
+    this.setMapPostType = this.setMapPostType.bind(this);
   }
   // ----
   // Load and cache data
@@ -402,6 +406,17 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
+  getMapPostType(): string {
+    return this.state.mapPostType;
+  }
+
+  setMapPostType(mapPostType: string): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({mapPostType}, 
+        () => resolve());
+    })
+  }
+
   getRenderState(): any {
     const { postQueries, postType , searchTerm , selectedTags } = this.state
     return {
@@ -443,6 +458,8 @@ class Assetmap extends React.Component<{}, MyState> {
                     handlePostQuery={this.handlePostQuery}
                     handleBack={this.handleBack}
                     scrollToSearchForm={this.scrollToSearchForm}
+                    getMapPostType={this.getMapPostType}
+                    setMapPostType={this.setMapPostType}
                   />
                 </div>
               </div>

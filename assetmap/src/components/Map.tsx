@@ -11,6 +11,8 @@ interface MyProps {
   setMaxNodes: (maxNodes: number) => Promise<void>
   handleBack: () => Promise<void>,
   scrollToSearchForm: () => void,
+  getMapPostType: () => string,
+  setMapPostType: (mapPostType: string) => Promise<void>
 }
 
 interface MyState {
@@ -19,7 +21,6 @@ interface MyState {
   containerHeight: number,
   containerWidth: number,
   homePost: any,
-  mapPostType: string,
   post: any,
   postInfo: any,
   relatedPostsBottom: any,
@@ -58,7 +59,6 @@ export default class Map extends React.Component<MyProps, MyState> {
       containerHeight: 0,
       containerWidth: 0,
       homePost: undefined,
-      mapPostType: "",
       post: undefined,
       postInfo: defaultMessage,
       relatedPostsBottom: undefined,
@@ -73,11 +73,17 @@ export default class Map extends React.Component<MyProps, MyState> {
     this.setFrameDimensions();
     window.addEventListener("resize", this.setFrameDimensions);
     const {postType, selectedPost} = this.props;
+    let mapPostType = this.props.getMapPostType();
+    if (mapPostType === "") {
+      mapPostType = postType;
+      this.props.setMapPostType(postType);
+    }
     let post: any;
+    console.log(selectedPost);
     if (selectedPost) {
-      post = this.props.getPostById(postType, selectedPost);
+      post = this.props.getPostById(mapPostType, selectedPost);
     }  
-    this.setState({post, mapPostType: postType}, () => {
+    this.setState({post}, () => {
       this.setPostInfo(post);
       this.setRelatedPosts(post);
     })
@@ -90,14 +96,17 @@ export default class Map extends React.Component<MyProps, MyState> {
       if (selectedPost) {
         post = this.props.getPostById(postType, selectedPost);
       }  
-      this.setState({post, mapPostType: postType}, () => {
-        this.setPostInfo(post);
-        this.setRelatedPosts(post);
+      this.setState({post}, () => {
+        this.props.setMapPostType(postType)
+        .then(() => {
+          this.setPostInfo(post);
+          this.setRelatedPosts(post);
+        })
       })
     } else if (maxNodes !== prevProps.maxNodes) {
       let post: any;
       if (selectedPost) {
-        post = this.props.getPostById(postType, selectedPost);
+        post = this.props.getPostById(this.props.getMapPostType(), selectedPost);
       }  
       this.setRelatedPosts(post);
     }
@@ -190,18 +199,18 @@ export default class Map extends React.Component<MyProps, MyState> {
   }
 
   setRelatedPosts(post: any) {
-    const {postType} = this.props;
+    const mapPostType = this.props.getMapPostType();
     let relatedPostsTop = [];
     let relatedPostsBottom = [];
     let homePost;
     let topPostType = "";
     let bottomPostType = "";
     const nodeStyle = {    
-      backgroundColor: postTypeColors[postType.toLowerCase()],
-      borderColor: postTypeColors[postType.toLowerCase()],
+      backgroundColor: postTypeColors[mapPostType.toLowerCase()],
+      borderColor: postTypeColors[mapPostType.toLowerCase()],
     }
     if (post) {
-      switch (postType) {
+      switch (mapPostType) {
         case "groups": {
           topPostType = "projects";
           bottomPostType = "individuals";
@@ -279,7 +288,7 @@ export default class Map extends React.Component<MyProps, MyState> {
   handleOverflowButton(clickedPostType: string) {
     const handleOverflowClick = (): Promise<void> =>  {
       return new Promise((resolve) => {
-        const mapPostType = this.state.mapPostType;
+        const mapPostType = this.props.getMapPostType();
         const formPostType = this.props.postType;
         if (clickedPostType === formPostType) {
           resolve();
@@ -332,13 +341,14 @@ export default class Map extends React.Component<MyProps, MyState> {
   private nodePostQuery(nextPostType: string): Promise<any> {
     return new Promise((resolve) => {
       let fieldName: string = nextPostType;
+      const mapPostType = this.props.getMapPostType();
       // Handle case where object property is not equal to postType 
-      if ((this.state.mapPostType === "projects")
+      if ((mapPostType === "projects")
         && (nextPostType === "individuals")) {
         fieldName = "director";
       }
       const postsToRender: Array<number> = this.state.post[fieldName];
-      this.props.handlePostQuery(nextPostType, (postsToRender? postsToRender : []), this.state.mapPostType)
+      this.props.handlePostQuery(nextPostType, (postsToRender? postsToRender : []), mapPostType)
       .then(() => {
         resolve();
       });
@@ -378,11 +388,12 @@ export default class Map extends React.Component<MyProps, MyState> {
 
   private renderLegend() {
     const legend: Array<any> = [];
+    const mapPostType = this.props.getMapPostType()
     for (const [postType, color] of Object.entries(postTypeColors)) {
       // const backgroundColor: string = postType === this.state.mapPostType ? color : color + "44";
-      const backgroundColor: string = postType === this.state.mapPostType ? color : "#F2F2F2";
+      const backgroundColor: string = postType === mapPostType ? color : "#F2F2F2";
       let label: string = postType;
-      if (postType === "individuals" && this.state.mapPostType === "projects") {
+      if (postType === "individuals" && mapPostType === "projects") {
         label = "director";
       }
       const border: string = "3px solid " + color;

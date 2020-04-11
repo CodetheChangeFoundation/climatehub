@@ -513,6 +513,7 @@ body {
 .legend {
   width: 80px;
   right: 0;
+  z-index: -1;
 }
 
 .legendCircle {
