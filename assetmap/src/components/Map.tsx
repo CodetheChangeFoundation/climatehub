@@ -38,9 +38,12 @@ const postTypeColors = {
 }
 
 const postTypeBackgroundColors = {
-  groups: "#D6EAC2",
-  individuals: "#C5EAE4",
-  projects: "#F1D9B5"
+  // groups: "#D6EAC2",
+  // individuals: "#C5EAE4",
+  // projects: "#F1D9B5"
+  groups: "#F2F2F2",
+  individuals: "#F2F2F2",
+  projects: "#F2F2F2",
 }
 
 const defaultMessage = <div className="d-flex h-100 align-items-center justify-content-center"><h5>Please select a row from the table</h5></div>
@@ -376,10 +379,11 @@ export default class Map extends React.Component<MyProps, MyState> {
   private renderLegend() {
     const legend: Array<any> = [];
     for (const [postType, color] of Object.entries(postTypeColors)) {
-      const backgroundColor: string = postType === this.state.mapPostType ? color : color + "44";
-      let label: string = postType.charAt(0).toUpperCase() + postType.slice(1);
+      // const backgroundColor: string = postType === this.state.mapPostType ? color : color + "44";
+      const backgroundColor: string = postType === this.state.mapPostType ? color : "#F2F2F2";
+      let label: string = postType;
       if (postType === "individuals" && this.state.mapPostType === "projects") {
-        label = "Director";
+        label = "director";
       }
       const border: string = "3px solid " + color;
       legend.push(
@@ -414,7 +418,7 @@ export default class Map extends React.Component<MyProps, MyState> {
             </div>
             <div className="legend d-flex flex-column justify-content-center position-absolute h-100">
               {this.props.selectedPost > 0 && 
-                <div className="border-left border-grey px-2">
+                <div className="border-left border-grey px-2 text-capitalize">
                   {this.renderLegend()}
                 </div>
               } 

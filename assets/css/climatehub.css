@@ -550,8 +550,7 @@ body {
   text-align: center;  
   margin-right: -0.5em;
   padding-right: 0.5em;
-  word-break: break-word;
-  word-wrap: break-word;
+
   overflow-wrap: break-word;
 }
 
