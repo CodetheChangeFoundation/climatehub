@@ -5,6 +5,7 @@ import '../../assets/css/bootstrap/bootstrap.css';
 import '../../assets/css/climatehub.css';
 import Map from './components/Map';
 import SearchForm from './components/SearchForm';
+import spinner from './images/loading_spinner.gif';
 
 interface MyState {
   cities: any,
@@ -440,7 +441,17 @@ class Assetmap extends React.Component<{}, MyState> {
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-      return <div>Loading...</div>;
+      return (
+        <div className="asset-map">
+          <div id="mapParent" className="container">
+            <div className="row h-100">
+              <div className='col d-flex align-items-center justify-content-center'>
+                <img src={spinner} alt="Loading..." />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
     } else {
       return (
         <div className="asset-map">
