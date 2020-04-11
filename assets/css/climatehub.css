@@ -457,7 +457,7 @@ body {
 }
 
 .mapNode {
-  width: 65px;
+  width: 67px;
 }
 
 .transit-line {
@@ -465,7 +465,6 @@ body {
   height: 10px;
   left: -8px;
   z-index: -1;
-  border-radius: 5px 0 0 5px;
 }
 
 .transit-line-home-node-top {
@@ -533,7 +532,7 @@ body {
 
 .overflow-btn {
   color: var(--overflow-btn-color);
-  margin: 14.5px 0px 14.5px 12px;
+  margin: 13.5px 0px 13.5px 12px;
 }
 
 .overflow-btn:hover {
@@ -548,10 +547,10 @@ body {
   position: relative; 
   line-height: 1.1em;
   max-height: 5.4em; 
-  text-align: center;  
-  margin-right: -0.5em;
+  text-align: center;
+  /* margin-right: -0.5em; */
   padding-right: 0.5em;
-
+  margin: 0 calc(-6px - 0.5em) 0 -7px;  
   overflow-wrap: break-word;
 }
 

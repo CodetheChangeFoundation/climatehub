@@ -3,6 +3,7 @@ import * as React from 'react';
 interface MyProps {
   backgroundColor: string,
   color: string, 
+  overflowBtn: boolean,
   post: any,
   postId: number, 
   postType: string, 
@@ -41,11 +42,12 @@ export class MapNode extends React.Component<MyProps, MyState>{
 
     const lineStyle = {
       backgroundColor: this.props.color,
+      borderRadius: this.props.overflowBtn ? "5px 0 0 5px" : "5px",
       bottom: this.props.textAboveNode ? "27.5px" : "",
       top: !this.props.textAboveNode ? "27.5px" : "",
     }
     return (
-      <div key={this.props.postId} className="mapNode position-relative mx-2 text-center">
+      <div key={this.props.postId} className="mapNode position-relative mx-2 text-center d-flex flex-column">
         {this.state.label && this.props.textAboveNode && <p className="mb-0 small block-with-text">{this.state.label}</p>}
         <span className="transit-line position-absolute" style={lineStyle}/>
         <span className="nodeCircle" style={nodeStyle} onClick={this.handleClick}/>

@@ -271,6 +271,7 @@ export default class Map extends React.Component<MyProps, MyState> {
           backgroundColor: postTypeBackgroundColors[postType],
           color: postTypeColors[postType],
           handleNodeClick: this.handleNodeClick,
+          overflowBtn: overflow,
           post,
           postId, 
           postType,
@@ -369,10 +370,12 @@ export default class Map extends React.Component<MyProps, MyState> {
       const mapVisual: HTMLElement | null = document.getElementById("mapVisual");
       const mapWidth: number | undefined = mapVisual?.clientWidth;
       let maxNodes: number = 0;
-      const mapNodeWidth: number = 100;
+      const mapNodeWidth: number = 83;
+      const homeNodeWidth: number = 65;
+      const mapVisualPadding: number = 16;
       if (mapWidth) {
         // Account for padding of 30px and mapNode width of 100px
-        maxNodes = Math.floor((mapWidth - 30)/mapNodeWidth);
+        maxNodes = Math.floor((mapWidth - mapVisualPadding - homeNodeWidth)/mapNodeWidth);
         // console.log(mapWidth - 30, maxNodes);
       }
 
@@ -415,7 +418,7 @@ export default class Map extends React.Component<MyProps, MyState> {
           <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 border-right border-grey d-flex justify-content-between flex-column">
             {postInfo}
           </div>
-          <div id="mapVisual" className="col-12 col-md-6 col-lg-7 col-xl-8 d-flex justify-content-between position-relative">
+          <div id="mapVisual" className="col-12 col-md-6 col-lg-7 col-xl-8 px-2 d-flex justify-content-between position-relative">
             <div className="d-flex align-items-center position-relative">
               {homePost}
             </div>
