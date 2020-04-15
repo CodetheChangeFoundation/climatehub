@@ -79,7 +79,6 @@ export default class Map extends React.Component<MyProps, MyState> {
       this.props.setMapPostType(postType);
     }
     let post: any;
-    console.log(selectedPost);
     if (selectedPost) {
       post = this.props.getPostById(mapPostType, selectedPost);
     }  
@@ -125,7 +124,6 @@ export default class Map extends React.Component<MyProps, MyState> {
 
   populatePostInfo(post: any): any {
     let details;
-    console.log(post);
     details = (
       <>
         {(post.position? this.renderText(post.position, false, false, (post.position.length < 100)? "h5 mb-4": "h6 mb-4"): "")}
@@ -374,9 +372,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       const homeNodeWidth: number = 65;
       const mapVisualPadding: number = 16;
       if (mapWidth) {
-        // Account for padding of 30px and mapNode width of 100px
         maxNodes = Math.floor((mapWidth - mapVisualPadding - homeNodeWidth)/mapNodeWidth);
-        // console.log(mapWidth - 30, maxNodes);
       }
 
       this.setState({

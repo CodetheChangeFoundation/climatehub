@@ -170,21 +170,23 @@ class Assetmap extends React.Component<{}, MyState> {
     return new Promise((resolve) => {
       const pageUpdatedPosts = Array<any>();
       const promiseArray = new Array<Promise<any>>();
-      posts.forEach((post: any) => {
-        promiseArray.push(
-          new Promise((res) => {
-            const postObject = {
-              id: post.id
-            };
-            fieldTypes[postType].forEach((field: string) => {
-              postObject[field] = post[field];
-            });
-            pageUpdatedPosts[postObject.id] = (postObject);
-            this.cachePost(postType, post.id, postObject)
-            .then(() => res());
-          })
-        )
-      })
+      if (posts) {
+        posts.forEach((post: any) => {
+          promiseArray.push(
+            new Promise((res) => {
+              const postObject = {
+                id: post.id
+              };
+              fieldTypes[postType].forEach((field: string) => {
+                postObject[field] = post[field];
+              });
+              pageUpdatedPosts[postObject.id] = (postObject);
+              this.cachePost(postType, post.id, postObject)
+              .then(() => res());
+            })
+          )
+        })
+      }
       Promise.all(promiseArray).then(() => {
         resolve();
       })

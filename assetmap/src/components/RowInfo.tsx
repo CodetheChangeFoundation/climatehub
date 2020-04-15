@@ -47,7 +47,7 @@ export const RowInfo = ({ data, handlePostQuery, postType}: RowInfo) => {
         && !(ids.length===1 && ids[0]===0)) {
         const clickCallback = (): Promise<void> =>  {
           return new Promise((resolve) => {
-            handlePostQuery(buttonPostType, ids)
+            handlePostQuery(buttonPostType.toLowerCase(), ids)
             .then(() => resolve())
           })
         }
@@ -67,23 +67,23 @@ export const RowInfo = ({ data, handlePostQuery, postType}: RowInfo) => {
       rowInfo = <>
         {renderText("Description", data.description, "col-12 col-xl-5")}
         {renderText('Website', data.website, 'col-12 col-sm-4 col-lg-3', true)}
-        {renderButton('Projects', data.projects, 'Explore projects', 'projects')}
-        {renderButton('Individuals', data.individuals, 'See individuals', 'individuals')}
+        {renderButton('projects', data.projects, 'Explore projects', 'projects')}
+        {renderButton('individuals', data.individuals, 'See individuals', 'individuals')}
       </>
       break;
     } case 'projects': {
       rowInfo = <>
         {rowInfo}{renderText("Description", data.description, "col-12 col-xl-5")}
         {rowInfo}{renderText('Website', data.website, 'col-12 col-sm-4 col-lg-3', true)}
-        {rowInfo}{renderButton('Individuals', data.director, 'See project director', 'director')}
-        {rowInfo}{renderButton('Groups', data.groups, 'See groups involved', 'groups')}
+        {rowInfo}{renderButton('individuals', data.director, 'See project director', 'director')}
+        {rowInfo}{renderButton('groups', data.groups, 'See groups involved', 'groups')}
       </>
       break;
     } case 'individuals': {
       rowInfo = <>
         {renderPositionWebsiteEmailPhone()}
-        {renderButton('Projects', data.projects, 'See their projects', 'projects')}
-        {renderButton('Groups', data.groups, 'See their groups', 'groups')}
+        {renderButton('projects', data.projects, 'See their projects', 'projects')}
+        {renderButton('groups', data.groups, 'See their groups', 'groups')}
       </>
       break;
     }
