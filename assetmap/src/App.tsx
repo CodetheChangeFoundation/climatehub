@@ -448,7 +448,7 @@ class Assetmap extends React.Component<{}, MyState> {
       );
     } else {
       return (
-        <div className="asset-map">
+        <div className="asset-map pt-3">
           {(windowSize >= 768) && 
             <div id="mapParent" className="container">
               <div className="row h-100">
