@@ -570,3 +570,18 @@ body {
   margin-top: 0.2em;
   background: #f2f2f2;
 }
+
+/* Help Modal */
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 400ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open{
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close{
+  opacity: 0;
+}
