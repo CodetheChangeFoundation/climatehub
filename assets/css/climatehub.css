@@ -366,6 +366,13 @@ body {
   transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
+.map-tag:hover {
+  background-color: var(--map-tag-color);
+  color: var(--light);
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  cursor: pointer;
+}
+
 .asset-map .table-container tbody tr.row-expandable:hover>td {
   background-color: var(--light);
 }

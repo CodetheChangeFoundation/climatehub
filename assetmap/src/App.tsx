@@ -440,7 +440,7 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   public render() {
-    const { cities, communities, error, groups, isLoaded, maxNodes, postType, selectedPost, tags, tag_types, windowSize} = this.state;
+    const { cities, communities, error, groups, isLoaded, maxNodes, postType, selectedPost, selectedTags, tags, tag_types, windowSize} = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -458,6 +458,7 @@ class Assetmap extends React.Component<{}, MyState> {
                   <Map
                     maxNodes={maxNodes}
                     selectedPost={selectedPost}
+                    selectedTags={selectedTags}
                     setMaxNodes={this.setMaxNodes}
                     setSelectedPost={this.setSelectedPost}
                     postType={postType}
@@ -467,6 +468,7 @@ class Assetmap extends React.Component<{}, MyState> {
                     scrollToSearchForm={this.scrollToSearchForm}
                     getMapPostType={this.getMapPostType}
                     setMapPostType={this.setMapPostType}
+                    appendToSelectedTags={this.appendToSelectedTags}
                   />
                 </div>
               </div>
