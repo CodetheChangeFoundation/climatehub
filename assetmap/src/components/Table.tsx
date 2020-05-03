@@ -70,6 +70,8 @@ class Table extends React.Component<MyProps> {
                   appendToSelectedTags={appendToSelectedTags}
                   selectedTags={selectedTags} 
                   key={selectedTags}
+                  textScaleFactor="1rem"
+                  tagClasses="tag d-inline-block p-1 my-1 mr-3"
                 />}
               </td>
               <td className="align-middle">

@@ -459,6 +459,8 @@ class Assetmap extends React.Component<{}, MyState> {
                     maxNodes={maxNodes}
                     selectedPost={selectedPost}
                     selectedTags={selectedTags}
+                    tags={tags}
+                    tag_types={tag_types}
                     setMaxNodes={this.setMaxNodes}
                     setSelectedPost={this.setSelectedPost}
                     postType={postType}
