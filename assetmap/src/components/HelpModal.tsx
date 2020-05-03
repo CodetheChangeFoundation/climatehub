@@ -21,13 +21,15 @@ export default class HelpModal extends React.Component<{},ModalState> {
 
     customStyles = {
         content: {
-            height: "50vh",
+            border: "3px solid var(--primary)",
+            height: "60vh",
             margin: "auto",
-            marginTop: "200px",
+            marginTop: "120px",
             width: "80vw",
         },
         overlay: {
-            zIndex: 1000,
+            background: "rgba(0,0,0,0.3)",
+            zIndex: 200,
         }
     
     }
@@ -38,6 +40,10 @@ export default class HelpModal extends React.Component<{},ModalState> {
 
     closeModal (): any {
         this.setState({isOpen: false})
+    }
+
+    getModalData (): any {
+        console.log();
     }
     
     public render() {
@@ -52,9 +58,13 @@ export default class HelpModal extends React.Component<{},ModalState> {
                     onRequestClose={this.closeModal}
                 >
                     <h1>Welcome to the ClimateHub Asset Map!</h1> 
-                    <p>Testing this modal</p>
+                    <p>The Asset Map is a tool to help you see information about climate related initiatives and groups at UBC</p>
+                    <ul>
+                        <li><b>Groups: </b>It defines any group of people smaller than a ‘Community’ which collectively structured to work towards a certain climate related mission or goal through the coordination of individual projects, events and people.</li>
+                        <li><b>Projects: </b>Also difficult to define, this includes specific projects, plans, facilities etc. which contribute to the success of groups in achieving their overall mission. This category is organized with the lowest level of abstraction in mind (excluding individuals). This would also include physical assets.</li>
+                        <li><b>Individuals: </b>We are most interested in key contacts, project directors, principal researchers, lead community organizers etc.</li>
+                    </ul>
                     <button style= {{margin: "auto"}} type="button" className="btn btn-outline-primary font-italic" onClick={this.closeModal}>Continue</button>
-
                 </ReactModal>
                 <button onClick={modalOpen? this.closeModal : this.openModal}className="btn btn-outline-primary action-button">
                     ?
