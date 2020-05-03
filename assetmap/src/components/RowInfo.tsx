@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 
 interface RowInfo {
   data: any,
@@ -7,6 +8,12 @@ interface RowInfo {
 }
 
 export const RowInfo = ({ data, handlePostQuery, postType}: RowInfo) => {
+  const [showMore, setShowMore] = useState(false);
+
+  function handleShowMoreClick() {
+    setShowMore(!showMore)
+  }
+
   function renderTitle(title: string) {
     return <p className="mb-0 text-muted">{title}</p>
   }
@@ -22,7 +29,18 @@ export const RowInfo = ({ data, handlePostQuery, postType}: RowInfo) => {
           href={(isEmail? "mailto:" + text : text)}>{text}
         </a></>
       } else {
-        output = <>{renderTitle(title)}<p>{text}</p></>
+        if (title === 'Description') {
+          output =
+            <>
+              {renderTitle(title)}
+              <p className={`mb-0 description ${showMore ? 'showDescription' : 'hideDescription'}`}>
+                {text}
+              </p>
+              <div className="mb-3 show-more">{showMore ? '' : '... '}<a href="#" onClick={handleShowMoreClick}>{showMore ? 'Show less' : 'Show more'}</a></div>
+            </>
+        } else {
+          output = <>{renderTitle(title)}<p>{text}</p></>
+        }
       }
     }
 

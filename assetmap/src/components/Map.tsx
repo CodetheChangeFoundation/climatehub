@@ -409,7 +409,7 @@ export default class Map extends React.Component<MyProps, MyState> {
   public render() {
     const {homePost, postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
     return (
-      <div className="container border border-dark border-bottom-0 h-100">
+      <div className="container border border-dark h-100">
         <div className="row h-100 py-3">
           <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 border-right border-grey d-flex justify-content-between flex-column">
             {postInfo}
