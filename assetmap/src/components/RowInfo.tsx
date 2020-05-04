@@ -10,7 +10,8 @@ interface RowInfo {
 export const RowInfo = ({ data, handlePostQuery, postType}: RowInfo) => {
   const [showMore, setShowMore] = useState(false);
 
-  function handleShowMoreClick() {
+  function handleShowMoreClick(event: React.MouseEvent<HTMLAnchorElement,MouseEvent>) {
+    event.preventDefault();
     setShowMore(!showMore)
   }
 
