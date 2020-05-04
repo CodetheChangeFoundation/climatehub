@@ -30,6 +30,7 @@ export default class HelpModal extends React.Component<{},ModalState> {
             border: "3px solid var(--primary)",
             height: "60vh",
             margin: "auto",
+            marginTop: "145px",
             width: "80vw",
         },
         overlay: {
