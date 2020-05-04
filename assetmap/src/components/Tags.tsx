@@ -5,6 +5,8 @@ interface TagsProps {
   appendToSelectedTags: (tag: number) => Promise<void>,
   tags: Array<number>
   selectedTags: any
+  textScaleFactor: string
+  tagClasses: string
 }
 
 export class Tags extends React.Component<TagsProps> {
@@ -35,6 +37,7 @@ export class Tags extends React.Component<TagsProps> {
         '--tag-color': tagColor,
         backgroundColor: 'none !important',
         border,
+        fontSize: this.props.textScaleFactor,
       }
       if (this.isTagSelected(id)) {
         const property = 'backgroundColor';
@@ -45,9 +48,8 @@ export class Tags extends React.Component<TagsProps> {
         event.preventDefault();
         this.handleTagClick(id);
       }
-      const classes = "tag d-inline-block p-1 my-1 mr-3";
       return (
-        <div key={id} className={classes} style={tagStyle} onClick={handleClick}>
+        <div key={id} className={this.props.tagClasses} style={tagStyle} onClick={handleClick}>
             #{tagName}
         </div>
       )

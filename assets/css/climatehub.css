@@ -369,6 +369,7 @@ body {
 .tag:hover {
   background-color: var(--tag-color) !important;
   color: #DFDFDF;
+  cursor: pointer;
   transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
@@ -586,4 +587,29 @@ body {
 .showDescription {
   height: auto;
   transition: all 500ms ease-in-out;
+}
+/* Help Modal */
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 400ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open{
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close{
+  opacity: 0;
+}
+
+.action-button {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  z-index: 200;
+  background-color: var(--light);
 }
