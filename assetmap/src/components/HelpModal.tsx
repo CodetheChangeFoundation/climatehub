@@ -30,7 +30,6 @@ export default class HelpModal extends React.Component<{},ModalState> {
             border: "3px solid var(--primary)",
             height: "60vh",
             margin: "auto",
-            marginTop: "120px",
             width: "80vw",
         },
         overlay: {
@@ -84,23 +83,25 @@ export default class HelpModal extends React.Component<{},ModalState> {
         const {isOpen, isDisabled, modalData}= this.state;
         return (
             <>
-                {!isDisabled && 
-                    <ReactModal
-                        isOpen={isOpen}
-                        style={this.customStyles}
-                        closeTimeoutMS={400}
-                        shouldCloseOnOverlayClick={true}
-                        shouldCloseOnEsc={true}
-                        onRequestClose={this.closeModal}
-                        >
-                        <div id="modalContent"> 
-                            {modalData}
-                        </div>
-                        <button style= {{margin: "auto"}} type="button" className="btn btn-outline-primary font-italic" onClick={this.closeModal}>Continue</button>
+                {!isDisabled &&
+                    <>
+                        <ReactModal
+                            isOpen={isOpen}
+                            style={this.customStyles}
+                            closeTimeoutMS={400}
+                            shouldCloseOnOverlayClick={true}
+                            shouldCloseOnEsc={true}
+                            onRequestClose={this.closeModal}
+                            >
+                            <div id="modalContent"> 
+                                {modalData}
+                            </div>
+                            <button style= {{margin: "auto"}} type="button" className="btn btn-outline-primary font-italic" onClick={this.closeModal}>Continue</button>
+                        </ReactModal>
                         <button onClick={isOpen? this.closeModal : this.openModal}className="btn btn-outline-primary action-button">
-                                    ?
+                            ?
                         </button>
-                    </ReactModal>
+                    </>
                 }
             </>
         )
