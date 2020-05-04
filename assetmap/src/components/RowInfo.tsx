@@ -36,7 +36,7 @@ export const RowInfo = ({ data, handlePostQuery, postType}: RowInfo) => {
               <p className={`mb-0 description ${showMore ? 'showDescription' : 'hideDescription'}`}>
                 {text}
               </p>
-              <div className="mb-3 show-more">{showMore ? '' : '... '}<a href="#" onClick={handleShowMoreClick}>{showMore ? 'Show less' : 'Show more'}</a></div>
+              <div className="mb-3 show-more"><a href="#" onClick={handleShowMoreClick}>{showMore ? 'Show less' : 'Show more'}</a></div>
             </>
         } else {
           output = <>{renderTitle(title)}<p>{text}</p></>
