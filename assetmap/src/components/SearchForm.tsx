@@ -223,9 +223,9 @@ class SearchForm extends React.Component<MyProps, MyState> {
               </div>
             </div>
           )}
-          <div className="row mb-4">
+          <div className="row mt-4">
             <div className="col-12">
-              <div className="d-flex flex-column flex-sm-row border 0 border-dark">
+              <div className="d-flex flex-column flex-sm-row border 0 border-dark border-bottom-0">
                 <div className="order-1 col-12 col-sm-4 col-lg-2 px-0">
                   <Select
                     styles={customStyles}
@@ -264,8 +264,8 @@ class SearchForm extends React.Component<MyProps, MyState> {
             <div className="col-3 pr-0">
               <div className="border-top border-left border-dark h-100">
                 {postQueries.length !== 0 && 
-                <div className="pl-2 ml-1 h-100 d-flex align-items-center">
-                  <a role="button" className="d-flex align-items-center back-button" onClick={this.props.handleBack}>
+                <div className="h-100 d-flex align-items-center">
+                  <a role="button" className="btn btn-outline-primary d-flex align-items-center back-button h-100 py-0 pl-2 pr-3" onClick={this.props.handleBack}>
                     <svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" style={{transform: "rotate(90deg)"}}>
                       <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z" />
                     </svg>
