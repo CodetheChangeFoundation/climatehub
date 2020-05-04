@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { MapNode } from './MapNode';
+import { Tags } from './Tags';
 
 interface MyProps {
   maxNodes: number,
   postType: string,
   selectedPost: number,
+  selectedTags: Array<number>,
+  tags: any,
+  tag_types: any,
   getPostById: (postType: string, ID: number) => object|undefined,
   handlePostQuery: (postType: string, postsToRender: Array<number>, currPostType: string) => Promise<void>, 
   setSelectedPost: (selectedPost: number) => Promise<void>
@@ -12,7 +16,8 @@ interface MyProps {
   handleBack: () => Promise<void>,
   scrollToSearchForm: () => void,
   getMapPostType: () => string,
-  setMapPostType: (mapPostType: string) => Promise<void>
+  setMapPostType: (mapPostType: string) => Promise<void>,
+  appendToSelectedTags: (tagId: number) => Promise<void>,
 }
 
 interface MyState {
@@ -67,6 +72,8 @@ export default class Map extends React.Component<MyProps, MyState> {
 
     this.handleNodeClick = this.handleNodeClick.bind(this);
     this.setFrameDimensions = this.setFrameDimensions.bind(this);
+    this.getTagColor = this.getTagColor.bind(this);
+    this.getTagName = this.getTagName.bind(this);
   }
 
   componentDidMount() {
@@ -89,7 +96,7 @@ export default class Map extends React.Component<MyProps, MyState> {
   }
   
   componentDidUpdate(prevProps:MyProps) {
-    const {maxNodes, postType, selectedPost} = this.props;
+    const {maxNodes, postType, selectedPost, selectedTags} = this.props;
     if (selectedPost !== prevProps.selectedPost) {
       let post: any;
       if (selectedPost) {
@@ -108,6 +115,9 @@ export default class Map extends React.Component<MyProps, MyState> {
         post = this.props.getPostById(this.props.getMapPostType(), selectedPost);
       }  
       this.setRelatedPosts(post);
+    } else if (selectedTags !== prevProps.selectedTags) {
+      console.log("Changed selectedTags");
+      this.setPostInfo(this.state.post);
     }
   }
   
@@ -146,7 +156,6 @@ export default class Map extends React.Component<MyProps, MyState> {
         name = <h5>{post.name}</h5>
       }
     }
-    
 
     return <div className="text-center m-auto" style={{lineHeight: 1}}> 
       {name}
@@ -178,22 +187,33 @@ export default class Map extends React.Component<MyProps, MyState> {
   }
 
   renderTags(tagIds: Array<number>) {
-    // Max Height will be 80 px (2 rows of tags)
-    const tags: any = [];
-    if (tagIds.length > 0 && tagIds[0] !== null) {
-      tagIds.forEach((tag: number) => {
-        const post: any = this.props.getPostById("tags", tag)
-        if (post) {
-          const typePost: any = this.props.getPostById("tag_types", post.type)
-          const tagStyle = {
-            border: "2px solid #" + typePost.colour,
-            fontSize: "0.75rem"
-          }
-          tags.push(<div className="d-inline-block m-1 p-2" style={tagStyle} key={post.id}>{"#" + post.name}</div>)
-        }
-      })
+    const selectedTags: any = this.props.selectedTags;
+    return (<Tags
+      getTagColor={this.getTagColor}
+      getTagName={this.getTagName}
+      tags={tagIds}
+      selectedTags={selectedTags}
+      appendToSelectedTags={this.props.appendToSelectedTags}
+      textScaleFactor="0.75rem"
+      tagClasses="tag d-inline-block m-1 p-2"
+      key={selectedTags}
+    />)
+  }
+
+  getTagName(id: number): string {
+    if (this.props.tags[id]) {
+      return this.props.tags[id].name;
     }
-    return <div>{tags}</div>
+    return '';
+  }
+
+  getTagColor(id: number): string {
+    if (this.props.tags[id]) {
+      const typeId = this.props.tags[id].type;
+      const color = this.props.tag_types[typeId].colour;
+      return '#' + color;
+    }
+    return '#123456';
   }
 
   setRelatedPosts(post: any) {

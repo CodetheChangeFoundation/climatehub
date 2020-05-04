@@ -3,6 +3,7 @@ import '../../assets/css/bootstrap/bootstrap-grid.min.css';
 import '../../assets/css/bootstrap/bootstrap-reboot.min.css';
 import '../../assets/css/bootstrap/bootstrap.css';
 import '../../assets/css/climatehub.css';
+import HelpModal from './components/HelpModal';
 import { loadingScreen } from './components/loadingScreen';
 import Map from './components/Map';
 import SearchForm from './components/SearchForm';
@@ -439,7 +440,7 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   public render() {
-    const { cities, communities, error, groups, isLoaded, maxNodes, postType, selectedPost, tags, tag_types, windowSize} = this.state;
+    const { cities, communities, error, groups, isLoaded, maxNodes, postType, selectedPost, selectedTags, tags, tag_types, windowSize} = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -448,7 +449,8 @@ class Assetmap extends React.Component<{}, MyState> {
       );
     } else {
       return (
-        <div className="asset-map pt-3">
+        <div id="asset-map" className="asset-map pt-3">
+          <HelpModal />
           {(windowSize >= 768) && 
             <div id="mapParent" className="container">
               <div className="row h-100">
@@ -456,6 +458,9 @@ class Assetmap extends React.Component<{}, MyState> {
                   <Map
                     maxNodes={maxNodes}
                     selectedPost={selectedPost}
+                    selectedTags={selectedTags}
+                    tags={tags}
+                    tag_types={tag_types}
                     setMaxNodes={this.setMaxNodes}
                     setSelectedPost={this.setSelectedPost}
                     postType={postType}
@@ -465,6 +470,7 @@ class Assetmap extends React.Component<{}, MyState> {
                     scrollToSearchForm={this.scrollToSearchForm}
                     getMapPostType={this.getMapPostType}
                     setMapPostType={this.setMapPostType}
+                    appendToSelectedTags={this.appendToSelectedTags}
                   />
                 </div>
               </div>
