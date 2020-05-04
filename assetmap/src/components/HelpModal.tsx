@@ -1,8 +1,12 @@
 import * as React from 'react';
+import ReactHtmlParser from 'react-html-parser';
 import * as ReactModal from 'react-modal';
 
+
 interface ModalState {
-    isOpen: boolean
+    isDisabled: boolean,
+    isOpen: boolean,
+    modalData: any,
 }
 
 ReactModal.setAppElement("body");
@@ -12,7 +16,9 @@ export default class HelpModal extends React.Component<{},ModalState> {
         super(props);
         
         this.state = {
+            isDisabled: false,
             isOpen: true,
+            modalData: <> </>,
         }
 
         this.closeModal = this.closeModal.bind(this)
@@ -34,6 +40,12 @@ export default class HelpModal extends React.Component<{},ModalState> {
     
     }
 
+    componentDidMount(): Promise<void> {
+        return new Promise((resolve) => {
+            this.loadModalData()
+            .then(() => resolve())
+        })
+    }
     openModal () {
         this.setState({isOpen: true})
     }
@@ -42,33 +54,54 @@ export default class HelpModal extends React.Component<{},ModalState> {
         this.setState({isOpen: false})
     }
 
-    getModalData (): any {
-        console.log();
+    loadModalData (): Promise<void> {
+        return new Promise((resolve) => {
+            const url: string = "http://climatehub.local/wp-json/wp/v2/pages/?slug=asset-map" 
+            fetch(url)
+            .then((res: any) => {
+                res.json()
+                .then((data: any) => {
+                    let modalData = data[0].content.rendered;
+                    if (!modalData || modalData === "") {
+                        throw new Error ("No modal data");
+                    } else if (modalData) {
+                        modalData = <> {ReactHtmlParser(modalData)} </>
+                        this.setState({modalData}, () => resolve());
+                    }
+                }).catch((err: Error) => {
+                    this.setState({isDisabled: true}, 
+                        () => {
+                            console.log(err);
+                            resolve();
+                        }
+                    );
+                })
+            })
+        })
     }
     
     public render() {
-        const modalOpen= this.state.isOpen
-        return (<>
-                <ReactModal 
-                    isOpen={modalOpen}
-                    style={this.customStyles}
-                    closeTimeoutMS={400}
-                    shouldCloseOnOverlayClick={true}
-                    shouldCloseOnEsc={true}
-                    onRequestClose={this.closeModal}
-                >
-                    <h1>Welcome to the ClimateHub Asset Map!</h1> 
-                    <p>The Asset Map is a tool to help you see information about climate related initiatives and groups at UBC</p>
-                    <ul>
-                        <li><b>Groups: </b>It defines any group of people smaller than a ‘Community’ which collectively structured to work towards a certain climate related mission or goal through the coordination of individual projects, events and people.</li>
-                        <li><b>Projects: </b>Also difficult to define, this includes specific projects, plans, facilities etc. which contribute to the success of groups in achieving their overall mission. This category is organized with the lowest level of abstraction in mind (excluding individuals). This would also include physical assets.</li>
-                        <li><b>Individuals: </b>We are most interested in key contacts, project directors, principal researchers, lead community organizers etc.</li>
-                    </ul>
-                    <button style= {{margin: "auto"}} type="button" className="btn btn-outline-primary font-italic" onClick={this.closeModal}>Continue</button>
-                </ReactModal>
-                <button onClick={modalOpen? this.closeModal : this.openModal}className="btn btn-outline-primary action-button">
-                    ?
-                </button>
+        const {isOpen, isDisabled, modalData}= this.state;
+        return (
+            <>
+                {!isDisabled && 
+                    <ReactModal
+                        isOpen={isOpen}
+                        style={this.customStyles}
+                        closeTimeoutMS={400}
+                        shouldCloseOnOverlayClick={true}
+                        shouldCloseOnEsc={true}
+                        onRequestClose={this.closeModal}
+                        >
+                        <div id="modalContent"> 
+                            {modalData}
+                        </div>
+                        <button style= {{margin: "auto"}} type="button" className="btn btn-outline-primary font-italic" onClick={this.closeModal}>Continue</button>
+                        <button onClick={isOpen? this.closeModal : this.openModal}className="btn btn-outline-primary action-button">
+                                    ?
+                        </button>
+                    </ReactModal>
+                }
             </>
         )
     }
