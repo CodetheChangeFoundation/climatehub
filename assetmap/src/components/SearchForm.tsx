@@ -242,7 +242,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                   />
                 </div>
                 <div className="order-3 order-sm-2 col-12 col-sm-4 col-lg-5 bg-white px-0">
-                  <div className="border-left-0 border-right-0 border-bottom border-dark bg-white h-100 mx-3 my-0 p-0">
+                  <div className="border-left-0 border-right-0 border-bottom border-dark bg-white h-100 mx-0 mx-sm-3 my-0 p-0">
                     <input
                       className="border-0 form-control h-100 px-2 py-11px"
                       onChange={this.handleSearch}

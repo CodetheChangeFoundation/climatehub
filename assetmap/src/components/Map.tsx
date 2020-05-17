@@ -41,14 +41,6 @@ const postTypeColors = {
   projects: "#F18F01",
 }
 
-const postTypeBackgroundColors = {
-  groups: "#FFFFFF",
-  individuals: "#FFFFFF",
-  projects: "#FFFFFF",
-}
-
-const defaultMessage = <div className="d-flex h-100 align-items-center text-muted justify-content-center"><h5>Please select a row from the table</h5></div>
-
 export default class Map extends React.Component<MyProps, MyState> {  
   constructor(props: MyProps) {
     super(props);
@@ -61,7 +53,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       homePost: undefined,
       modalOpen: false,
       post: undefined,
-      postInfo: defaultMessage,
+      postInfo: undefined,
       relatedPostsBottom: undefined,
       relatedPostsTop: undefined,
     };
@@ -125,7 +117,7 @@ export default class Map extends React.Component<MyProps, MyState> {
 
   setPostInfo(post: any): Promise<void> {
     return new Promise((resolve) => {
-      const postInfo = (post? this.populatePostInfo(post):defaultMessage);
+      const postInfo = (post? this.populatePostInfo(post):undefined);
       this.setState({postInfo}, () => resolve())
     })
   }
@@ -284,7 +276,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       const post: object | undefined = this.props.getPostById(postType, postId);
       if (post) {
         const node = new MapNode({
-          backgroundColor: postTypeBackgroundColors[postType],
+          backgroundColor: '#FFFFFF',
           color: postTypeColors[postType],
           handleNodeClick: this.handleNodeClick,
           overflowBtn: overflow,
@@ -446,6 +438,9 @@ export default class Map extends React.Component<MyProps, MyState> {
           closeModal={this.closeModal}
         />
         <div className="row h-100 py-3">
+          {!postInfo && <div id="defaultMessage" className="text-muted"
+            ><h5>Please select a row from the table</h5>
+          </div> }
           <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 d-flex justify-content-between flex-column">
             {postInfo}
           </div>

@@ -66,7 +66,7 @@ export class Tags extends React.Component<TagsProps> {
     if (color.length === 7) {
       return color + '44';
     } else {
-      return '#00000044';
+      return '#FFFFFF44';
     }
   }
 

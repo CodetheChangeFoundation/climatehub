@@ -374,7 +374,7 @@ body {
 }
 
 .asset-map .table-container tbody tr.row-expandable:hover>td {
-  background-color: var(--light);
+  background-color: #FFFFFF;
 }
 
 .z-index-99 {
@@ -463,6 +463,13 @@ body {
 #mapInfo {
   overflow-y: scroll;
   overflow-x: hidden;
+}
+
+#defaultMessage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .mapNode {
