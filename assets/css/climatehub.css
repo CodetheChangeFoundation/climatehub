@@ -342,7 +342,7 @@ body {
 /* Asset Map */
 
 .asset-map .table-container {
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
