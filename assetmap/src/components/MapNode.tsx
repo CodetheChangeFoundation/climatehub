@@ -48,10 +48,10 @@ export class MapNode extends React.Component<MyProps, MyState>{
     }
     return (
       <div key={this.props.postId} className="mapNode position-relative mx-2 text-center d-flex flex-column">
-        {this.state.label && this.props.textAboveNode && <p className="mb-0 small block-with-text">{this.state.label}</p>}
+        {this.state.label && this.props.textAboveNode && <p className="mb-0 block-with-text">{this.state.label}</p>}
         <span className="transit-line position-absolute" style={lineStyle}/>
         <span className="nodeCircle" style={nodeStyle} onClick={this.handleClick}/>
-        {this.state.label && !this.props.textAboveNode && <p className="mb-0 small block-with-text">{this.state.label}</p>}
+        {this.state.label && !this.props.textAboveNode && <p className="mb-0 block-with-text">{this.state.label}</p>}
       </div>
     );
   }

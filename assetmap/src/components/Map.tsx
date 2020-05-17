@@ -36,20 +36,12 @@ interface MyState {
 }
 
 const postTypeColors = {
-  // CH Colors
   groups: "#83D335",
   individuals: "#41D3BD",
   projects: "#F18F01",
-  // // Random Colors
-  // groups: "#2EC2A8",
-  // individuals: "#2DB3C7",
-  // projects: "#2D88CD",
 }
 
 const postTypeBackgroundColors = {
-  // groups: "#D6EAC2",
-  // individuals: "#C5EAE4",
-  // projects: "#F1D9B5"
   groups: "#FFFFFF",
   individuals: "#FFFFFF",
   projects: "#FFFFFF",
@@ -67,7 +59,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       containerHeight: 0,
       containerWidth: 0,
       homePost: undefined,
-      modalOpen: true,
+      modalOpen: false,
       post: undefined,
       postInfo: defaultMessage,
       relatedPostsBottom: undefined,
@@ -256,7 +248,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       }
 
       homePost = (
-        <div style={{height: "65px", width: "65px"}}>
+        <div style={{height: "45px", width: "45px"}}>
           {relatedPostsTop.length !== 0 &&
             <span className="transit-line-home-node-top position-absolute" style={{backgroundColor: postTypeColors[topPostType]}}/>
           }
@@ -343,11 +335,10 @@ export default class Map extends React.Component<MyProps, MyState> {
     const border = '3px solid ' + color;
     const btnStyle = {
       '--overflow-btn-color': color,
-      backgroundColor: 'none !important',
       border,
     }
     return(
-      <div className="overflow-btn font-italic d-inline-block p-2 text-nowrap" style={btnStyle} onClick={handleOverflowClick} key={clickedPostType + " overflow"}>
+      <div className="overflow-btn bg-white font-italic d-inline-block p-2 mx-0 text-nowrap" style={btnStyle} onClick={handleOverflowClick} key={clickedPostType + " overflow"}>
         See More
       </div>
     );
@@ -394,11 +385,12 @@ export default class Map extends React.Component<MyProps, MyState> {
       const mapVisual: HTMLElement | null = document.getElementById("mapVisual");
       const mapWidth: number | undefined = mapVisual?.clientWidth;
       let maxNodes: number = 0;
-      const mapNodeWidth: number = 83;
-      const homeNodeWidth: number = 65;
-      const mapVisualPadding: number = 16;
+      const mapNodeWidth: number = 82;
+      const homeNodeWidth: number = 45;
+      const mapVisualPadding: number = 8;
+      const actionButtonPadding: number = 40;
       if (mapWidth) {
-        maxNodes = Math.floor((mapWidth - mapVisualPadding - homeNodeWidth)/mapNodeWidth);
+        maxNodes = Math.floor((mapWidth - mapVisualPadding - homeNodeWidth - actionButtonPadding)/mapNodeWidth);
       }
 
       this.setState({
@@ -457,7 +449,7 @@ export default class Map extends React.Component<MyProps, MyState> {
           <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 d-flex justify-content-between flex-column">
             {postInfo}
           </div>
-          <div id="mapVisual" className="col-12 col-md-6 col-lg-7 col-xl-8 px-2 d-flex justify-content-between position-relative">
+          <div id="mapVisual" className="col-12 col-md-6 col-lg-7 col-xl-8 pl-0 pr-1 d-flex justify-content-between position-relative">
             <div className="d-flex align-items-center position-relative">
               {homePost}
             </div>
