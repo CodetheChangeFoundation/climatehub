@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Select from 'react-select';
+import Select, {components} from 'react-select';
 import Table from './Table';
 
 interface MyProps {
@@ -254,6 +254,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 </div>
                 <div className="bg-grey order-2 order-sm-3 col-12 col-sm-4 col-lg-5 px-0">
                   <Select
+                    components={{DropdownIndicator}}
                     styles={this.tagSelectStyles}
                     value={selectedTags}
                     onChange={this.props.handleTagFilterChange}
@@ -296,7 +297,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
           </div>
         <div className="row">
           <div className="col-12">
-            <div className="border border-dark table-container">
+            <div className="table-container bg-white">
               <Table
                 data={currPosts}
                 postType={postType}
@@ -359,5 +360,18 @@ class SearchForm extends React.Component<MyProps, MyState> {
   }
 }
 
+const DropdownIndicator = (props: any) => {
+  return (
+    components.DropdownIndicator && (
+      <components.DropdownIndicator {...props}>
+        <div className="dropdown-caret d-inline-block h-100 w-100">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true" focusable="false">
+            <path d="M9 12L0.339745 0.75L17.6603 0.75L9 12Z" fill="#888888"/>
+          </svg>            
+        </div>
+      </components.DropdownIndicator>
+    )
+  );
+};
 
 export default SearchForm;

@@ -524,10 +524,9 @@ body {
 }
 
 .legend {
-  width: 80px;
+  /* width: 80px; */
   right: 0;
   z-index: 0;
-  position: relative;
 }
 
 .legendCircle {
@@ -622,4 +621,20 @@ body {
   border-radius: 100%;
   z-index: 200;
   background-color: var(--light);
+}
+
+.dropdown-caret {
+  opacity: 40%;
+}
+
+.dropdown-caret:hover{
+  -webkit-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+  opacity: 100%;
+}
+
+.dropdown-caret:focus{
+  -webkit-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+  opacity: 100%;
 }

@@ -1,6 +1,8 @@
 import * as React from 'react';
+import HelpModal from './HelpModal';
 import { MapNode } from './MapNode';
 import { Tags } from './Tags';
+
 
 interface MyProps {
   maxNodes: number,
@@ -26,6 +28,7 @@ interface MyState {
   containerHeight: number,
   containerWidth: number,
   homePost: any,
+  modalOpen: boolean,
   post: any,
   postInfo: any,
   relatedPostsBottom: any,
@@ -52,7 +55,7 @@ const postTypeBackgroundColors = {
   projects: "#FFFFFF",
 }
 
-const defaultMessage = <div className="d-flex h-100 align-items-center justify-content-center"><h5>Please select a row from the table</h5></div>
+const defaultMessage = <div className="d-flex h-100 align-items-center text-muted justify-content-center"><h5>Please select a row from the table</h5></div>
 
 export default class Map extends React.Component<MyProps, MyState> {  
   constructor(props: MyProps) {
@@ -64,6 +67,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       containerHeight: 0,
       containerWidth: 0,
       homePost: undefined,
+      modalOpen: true,
       post: undefined,
       postInfo: defaultMessage,
       relatedPostsBottom: undefined,
@@ -74,6 +78,8 @@ export default class Map extends React.Component<MyProps, MyState> {
     this.setFrameDimensions = this.setFrameDimensions.bind(this);
     this.getTagColor = this.getTagColor.bind(this);
     this.getTagName = this.getTagName.bind(this);
+    this.closeModal = this.closeModal.bind(this)
+    this.openModal = this.openModal.bind(this)
   }
 
   componentDidMount() {
@@ -417,21 +423,38 @@ export default class Map extends React.Component<MyProps, MyState> {
       }
       const border: string = "3px solid " + color;
       legend.push(
-        <div key={postType} className="d-flex flex-column align-items-center py-1">
+        <div key={postType} className="d-flex flex-row align-items-center justify-content-end py-1">
+          <p className="d-inline-block pr-2 m-0 small text-grey">{label}</p>
           <span className="legendCircle" style={{backgroundColor, border}}/>
-          <p className="mt-1 m-0 small text-grey">{label}</p>
         </div>
       )
     }
     return legend;
   }
 
+  openModal(): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({modalOpen: true}, () => resolve())
+    })
+  }
+
+  closeModal(): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({modalOpen: false}, () => resolve())
+    })
+  }
+
   public render() {
-    const {homePost, postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
+    const {homePost, modalOpen, postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
     return (
       <div id="map-container" className="container bg-white h-100">
+                  <HelpModal 
+                    modalOpen={modalOpen}
+                    openModal={this.openModal}
+                    closeModal={this.closeModal}
+                  />
         <div className="row h-100 py-3">
-          <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 border-right border-grey d-flex justify-content-between flex-column">
+          <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 d-flex justify-content-between flex-column">
             {postInfo}
           </div>
           <div id="mapVisual" className="col-12 col-md-6 col-lg-7 col-xl-8 px-2 d-flex justify-content-between position-relative">
@@ -448,7 +471,7 @@ export default class Map extends React.Component<MyProps, MyState> {
             </div>
             <div className="legend d-flex flex-column justify-content-center position-absolute h-100">
               {this.props.selectedPost > 0 && 
-                <div className="border-left border-grey px-2 text-capitalize">
+                <div className="px-2 text-capitalize">
                   {this.renderLegend()}
                 </div>
               } 

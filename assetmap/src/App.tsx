@@ -3,7 +3,6 @@ import '../../assets/css/bootstrap/bootstrap-grid.min.css';
 import '../../assets/css/bootstrap/bootstrap-reboot.min.css';
 import '../../assets/css/bootstrap/bootstrap.css';
 import '../../assets/css/climatehub.css';
-import HelpModal from './components/HelpModal';
 import { loadingScreen } from './components/loadingScreen';
 import Map from './components/Map';
 import SearchForm from './components/SearchForm';
@@ -450,7 +449,6 @@ class Assetmap extends React.Component<{}, MyState> {
     } else {
       return (
         <div id="asset-map" className="asset-map pt-3">
-          <HelpModal />
           {(windowSize >= 768) && 
             <div id="mapParent" className="container">
               <div className="row h-100">

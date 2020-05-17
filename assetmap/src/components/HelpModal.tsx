@@ -2,27 +2,26 @@ import * as React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import * as ReactModal from 'react-modal';
 
-
+interface ModalProps {
+    modalOpen: boolean,
+    openModal: () => Promise<void>,
+    closeModal: () => Promise<void>
+}
 interface ModalState {
     isDisabled: boolean,
-    isOpen: boolean,
     modalData: any,
 }
 
 ReactModal.setAppElement("body");
 
-export default class HelpModal extends React.Component<{},ModalState> {
+export default class HelpModal extends React.Component<ModalProps,ModalState> {
     constructor(props: any) {
         super(props);
         
         this.state = {
             isDisabled: false,
-            isOpen: true,
             modalData: <> </>,
         }
-
-        this.closeModal = this.closeModal.bind(this)
-        this.openModal = this.openModal.bind(this)
     }
 
     customStyles = {
@@ -45,13 +44,6 @@ export default class HelpModal extends React.Component<{},ModalState> {
             this.loadModalData()
             .then(() => resolve())
         })
-    }
-    openModal () {
-        this.setState({isOpen: true})
-    }
-
-    closeModal (): any {
-        this.setState({isOpen: false})
     }
 
     loadModalData (): Promise<void> {
@@ -81,25 +73,26 @@ export default class HelpModal extends React.Component<{},ModalState> {
     }
     
     public render() {
-        const {isOpen, isDisabled, modalData}= this.state;
+        const {isDisabled, modalData} = this.state;
+        const {modalOpen} = this.props;
         return (
             <>
                 {!isDisabled &&
                     <>
                         <ReactModal
-                            isOpen={isOpen}
+                            isOpen={modalOpen}
                             style={this.customStyles}
                             closeTimeoutMS={400}
                             shouldCloseOnOverlayClick={true}
                             shouldCloseOnEsc={true}
-                            onRequestClose={this.closeModal}
+                            onRequestClose={this.props.closeModal}
                             >
                             <div id="modalContent"> 
                                 {modalData}
                             </div>
-                            <button style= {{margin: "auto"}} type="button" className="btn btn-outline-primary font-italic" onClick={this.closeModal}>Continue</button>
+                            <button style= {{margin: "auto"}} type="button" className="btn btn-outline-primary font-italic" onClick={this.props.closeModal}>Continue</button>
                         </ReactModal>
-                        <button onClick={isOpen? this.closeModal : this.openModal}className="btn btn-outline-primary action-button">
+                        <button onClick={modalOpen? this.props.closeModal : this.props.openModal}className="btn btn-outline-primary action-button">
                             ?
                         </button>
                     </>
