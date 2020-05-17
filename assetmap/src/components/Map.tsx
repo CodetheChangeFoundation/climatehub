@@ -47,9 +47,9 @@ const postTypeBackgroundColors = {
   // groups: "#D6EAC2",
   // individuals: "#C5EAE4",
   // projects: "#F1D9B5"
-  groups: "#F2F2F2",
-  individuals: "#F2F2F2",
-  projects: "#F2F2F2",
+  groups: "#FFFFFF",
+  individuals: "#FFFFFF",
+  projects: "#FFFFFF",
 }
 
 const defaultMessage = <div className="d-flex h-100 align-items-center justify-content-center"><h5>Please select a row from the table</h5></div>
@@ -410,7 +410,7 @@ export default class Map extends React.Component<MyProps, MyState> {
     const mapPostType = this.props.getMapPostType()
     for (const [postType, color] of Object.entries(postTypeColors)) {
       // const backgroundColor: string = postType === this.state.mapPostType ? color : color + "44";
-      const backgroundColor: string = postType === mapPostType ? color : "#F2F2F2";
+      const backgroundColor: string = postType === mapPostType ? color : "#FFFFFF";
       let label: string = postType;
       if (postType === "individuals" && mapPostType === "projects") {
         label = "director";
@@ -429,7 +429,7 @@ export default class Map extends React.Component<MyProps, MyState> {
   public render() {
     const {homePost, postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
     return (
-      <div className="container border border-dark h-100">
+      <div id="map-container" className="container bg-white h-100">
         <div className="row h-100 py-3">
           <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 border-right border-grey d-flex justify-content-between flex-column">
             {postInfo}
