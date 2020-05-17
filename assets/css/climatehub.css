@@ -620,7 +620,7 @@ body {
   opacity: 0;
 }
 
-.action-button {
+.map-action-button {
   position: absolute;
   bottom: -8px;
   right: 8px;
@@ -628,6 +628,18 @@ body {
   height: 35px;
   border-radius: 100%;
   z-index: 200;
-  background-color: 'white';
+  background-color: white;
+  padding: 0 !important;
+}
+
+.fixed-action-button {
+  position: fixed;
+  bottom: 30px;
+  right:30px;
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+  z-index: 200;
+  background-color: white;
   padding: 0 !important;
 }

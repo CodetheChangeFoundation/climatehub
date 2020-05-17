@@ -3,6 +3,7 @@ import '../../assets/css/bootstrap/bootstrap-grid.min.css';
 import '../../assets/css/bootstrap/bootstrap-reboot.min.css';
 import '../../assets/css/bootstrap/bootstrap.css';
 import '../../assets/css/climatehub.css';
+import HelpModal from './components/HelpModal';
 import { loadingScreen } from './components/loadingScreen';
 import Map from './components/Map';
 import SearchForm from './components/SearchForm';
@@ -17,6 +18,7 @@ interface MyState {
   isLoaded: boolean,
   mapPostType: string,
   maxNodes: number,
+  modalOpen: boolean,
   postQueries: Array<any>,
   postType: string,
   projects: any,
@@ -61,6 +63,7 @@ class Assetmap extends React.Component<{}, MyState> {
       isLoaded: false,
       mapPostType: "",
       maxNodes: 0,
+      modalOpen: true,
       postQueries: [],
       postType: this.categories[0],
       projects: [],
@@ -89,6 +92,8 @@ class Assetmap extends React.Component<{}, MyState> {
     this.scrollToSearchForm = this.scrollToSearchForm.bind(this);
     this.getMapPostType = this.getMapPostType.bind(this);
     this.setMapPostType = this.setMapPostType.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
   }
   // ----
   // Load and cache data
@@ -438,8 +443,20 @@ class Assetmap extends React.Component<{}, MyState> {
     })
   }
 
+  openModal(): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({modalOpen: true}, () => resolve())
+    })
+  }
+
+  closeModal(): Promise<void> {
+    return new Promise((resolve) => {
+      this.setState({modalOpen: false}, () => resolve())
+    })
+  }
+
   public render() {
-    const { cities, communities, error, groups, isLoaded, maxNodes, postType, selectedPost, selectedTags, tags, tag_types, windowSize} = this.state;
+    const { cities, communities, error, groups, isLoaded, maxNodes, modalOpen, postType, selectedPost, selectedTags, tags, tag_types, windowSize} = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -449,11 +466,19 @@ class Assetmap extends React.Component<{}, MyState> {
     } else {
       return (
         <div id="asset-map" className="asset-map pt-3">
+          <HelpModal 
+            modalOpen={modalOpen}
+            openModal={this.openModal}
+            closeModal={this.closeModal}
+          />
           {(windowSize >= 768) && 
             <div id="mapParent" className="container">
               <div className="row h-100">
                 <div className='col'>
                   <Map
+                    modalOpen={modalOpen}
+                    openModal={this.openModal}
+                    closeModal={this.closeModal}
                     maxNodes={maxNodes}
                     selectedPost={selectedPost}
                     selectedTags={selectedTags}
@@ -499,6 +524,11 @@ class Assetmap extends React.Component<{}, MyState> {
               getRenderState={this.getRenderState}
             />
           </div>
+          {(windowSize < 768) && 
+            <button onClick={modalOpen? this.closeModal : this.openModal} className="btn btn-outline-primary fixed-action-button">
+              ?
+            </button>
+          }
         </div>
       );
     }
