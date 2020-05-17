@@ -342,6 +342,7 @@ body {
 /* Asset Map */
 
 .asset-map .table-container {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
   overflow-y: auto;
   overflow-x: hidden;
 }
