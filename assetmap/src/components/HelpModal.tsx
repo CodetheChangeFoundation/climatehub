@@ -5,7 +5,7 @@ import * as ReactModal from 'react-modal';
 interface ModalProps {
     modalOpen: boolean,
     openModal: () => Promise<void>,
-    closeModal: () => Promise<void>
+    closeModal: () => Promise<void>,
 }
 interface ModalState {
     isDisabled: boolean,
@@ -92,9 +92,6 @@ export default class HelpModal extends React.Component<ModalProps,ModalState> {
                             </div>
                             <button style= {{margin: "auto"}} type="button" className="btn btn-outline-primary font-italic" onClick={this.props.closeModal}>Continue</button>
                         </ReactModal>
-                        <button onClick={modalOpen? this.props.closeModal : this.props.openModal}className="btn btn-outline-primary action-button">
-                            ?
-                        </button>
                     </>
                 }
             </>

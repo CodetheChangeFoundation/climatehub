@@ -448,11 +448,11 @@ export default class Map extends React.Component<MyProps, MyState> {
     const {homePost, modalOpen, postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
     return (
       <div id="map-container" className="container bg-white h-100">
-                  <HelpModal 
-                    modalOpen={modalOpen}
-                    openModal={this.openModal}
-                    closeModal={this.closeModal}
-                  />
+        <HelpModal 
+          modalOpen={modalOpen}
+          openModal={this.openModal}
+          closeModal={this.closeModal}
+        />
         <div className="row h-100 py-3">
           <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 d-flex justify-content-between flex-column">
             {postInfo}
@@ -476,6 +476,9 @@ export default class Map extends React.Component<MyProps, MyState> {
                 </div>
               } 
             </div>
+            <button onClick={modalOpen? this.closeModal : this.openModal} className="btn btn-outline-primary action-button">
+              ?
+            </button>
           </div>
         </div>
       </div>

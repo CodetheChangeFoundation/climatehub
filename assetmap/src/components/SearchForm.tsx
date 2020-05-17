@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Select, {components} from 'react-select';
+import Select from 'react-select';
 import Table from './Table';
 
 interface MyProps {
@@ -226,7 +226,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                   options={this.communityOptions}
                   isMulti={true}
                   placeholder={"Filter by community"}
-                  className={"bg-grey border-bottom-0 z-index-130 "}
+                  className={"bg-grey border-bottom z-index-130 "}
                 />
               </div>
           )}
@@ -241,8 +241,8 @@ class SearchForm extends React.Component<MyProps, MyState> {
                     className={"h-100 m-0 p-0 z-index-120 d-flex flex-column justify-content-center text-capitalize"}
                   />
                 </div>
-                <div className="order-3 order-sm-2 col-12 col-sm-4 col-lg-5 px-0">
-                  <div className="border-left-0 border-right-0 bg-white h-100 m-0 p-0">
+                <div className="order-3 order-sm-2 col-12 col-sm-4 col-lg-5 bg-white px-0">
+                  <div className="border-left-0 border-right-0 border-bottom border-dark bg-white h-100 mx-3 my-0 p-0">
                     <input
                       className="border-0 form-control h-100 px-2 py-11px"
                       onChange={this.handleSearch}
@@ -254,7 +254,6 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 </div>
                 <div className="bg-grey order-2 order-sm-3 col-12 col-sm-4 col-lg-5 px-0">
                   <Select
-                    components={{DropdownIndicator}}
                     styles={this.tagSelectStyles}
                     value={selectedTags}
                     onChange={this.props.handleTagFilterChange}
@@ -352,26 +351,11 @@ class SearchForm extends React.Component<MyProps, MyState> {
       border: '2px solid' + this.getTagColor(data.id),
       borderRadius: 0,
     }),
-    option: (provided: any, {data, isFocused}: any) => ({
+    option: (provided: any) => ({
       ...provided,
-      color: data.colour,
       cursor: 'pointer',
     }),
   }
 }
-
-const DropdownIndicator = (props: any) => {
-  return (
-    components.DropdownIndicator && (
-      <components.DropdownIndicator {...props}>
-        <div className="dropdown-caret d-inline-block h-100 w-100">
-          <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true" focusable="false">
-            <path d="M9 12L0.339745 0.75L17.6603 0.75L9 12Z" fill="#888888"/>
-          </svg>            
-        </div>
-      </components.DropdownIndicator>
-    )
-  );
-};
 
 export default SearchForm;
