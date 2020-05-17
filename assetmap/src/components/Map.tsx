@@ -51,7 +51,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       containerHeight: 0,
       containerWidth: 0,
       homePost: undefined,
-      modalOpen: false,
+      modalOpen: true,
       post: undefined,
       postInfo: undefined,
       relatedPostsBottom: undefined,

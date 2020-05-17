@@ -216,7 +216,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
 
     return (
         <div id="SearchForm" className="container">
-          <div className="row mt-4">
+          <div className="row mt-3">
           {Object.values(this.props.communities).length > 1 && (
               <div className="col-12">
                 <Select
