@@ -3,12 +3,13 @@ import ReactHtmlParser from 'react-html-parser';
 import * as ReactModal from 'react-modal';
 
 interface ModalProps {
+    modalDisabled: boolean,
     modalOpen: boolean,
+    enableModal: () => Promise<void>,
     openModal: () => Promise<void>,
     closeModal: () => Promise<void>,
 }
 interface ModalState {
-    isDisabled: boolean,
     modalData: any,
 }
 
@@ -19,7 +20,6 @@ export default class HelpModal extends React.Component<ModalProps,ModalState> {
         super(props);
         
         this.state = {
-            isDisabled: false,
             modalData: <> </>,
         }
     }
@@ -55,30 +55,31 @@ export default class HelpModal extends React.Component<ModalProps,ModalState> {
                 res.json()
                 .then((data: any) => {
                     let modalData = data[0].content.rendered;
-                    if (!modalData || modalData === "") {
-                        throw new Error ("No modal data");
-                    } else if (modalData) {
+                    if (modalData) {
                         modalData = <> {ReactHtmlParser(modalData)} </>
-                        this.setState({modalData}, () => resolve());
+                        this.setState({modalData}, () => {
+                            this.props.enableModal()
+                            .then(() => 
+                                resolve()
+                            )
+                        });
+                    } else if (!modalData || modalData === "") {
+                        throw new Error ("No modal data");
                     }
                 }).catch((err: Error) => {
-                    this.setState({isDisabled: true}, 
-                        () => {
-                            console.log(err);
-                            resolve();
-                        }
-                    );
+                    console.log(err);
+                    resolve();
                 })
             })
         })
     }
     
     public render() {
-        const {isDisabled, modalData} = this.state;
-        const {modalOpen} = this.props;
+        const {modalData} = this.state;
+        const {modalDisabled, modalOpen} = this.props;
         return (
             <>
-                {!isDisabled &&
+                {!modalDisabled &&
                     <>
                         <ReactModal
                             isOpen={modalOpen}

@@ -5,6 +5,7 @@ import { Tags } from './Tags';
 
 interface MyProps {
   maxNodes: number,
+  modalDisabled: boolean,
   modalOpen: boolean,
   postType: string,
   selectedPost: number,
@@ -416,7 +417,7 @@ export default class Map extends React.Component<MyProps, MyState> {
 
   public render() {
     const {homePost, postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
-    const {modalOpen, openModal, closeModal} = this.props;
+    const {modalDisabled, modalOpen, openModal, closeModal} = this.props;
     return (
       <div id="map-container" className="container bg-white h-100">
         <div className="row h-100 py-3">
@@ -445,9 +446,11 @@ export default class Map extends React.Component<MyProps, MyState> {
                 </div>
               } 
             </div>
-            <button onClick={modalOpen? closeModal : openModal} className="btn btn-outline-primary map-action-button">
-              ?
-            </button>
+            {!modalDisabled && 
+              <button onClick={modalOpen? closeModal : openModal} className="btn btn-outline-primary map-action-button">
+                ?
+              </button>
+            }
           </div>
         </div>
       </div>
