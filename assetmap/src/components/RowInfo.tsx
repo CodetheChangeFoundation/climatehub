@@ -53,11 +53,11 @@ export const RowInfo = ({ data, handlePostQuery, postType}: RowInfo) => {
   }
   
   function renderPositionWebsiteEmailPhone() {
-    const position = renderText('Position', data.position);
+    const position = renderText('Position', data.position,);
     const email = renderText('Email', data.email, "", true, true);
     const phone = renderText('Phone', data.phone);
     const website = renderText('Website', data.website, "", true, false);
-    return <><div className="col-4 col-lg-3">{position}{website}</div><div className="col-4 col-lg-3">{email}{phone}</div></>;
+    return <><div className="col-12 col-sm-4 col-lg-3">{position}{website}</div><div className="col-12 col-sm-4 col-lg-3">{email}{phone}</div></>;
   }
 
   function renderButton(buttonPostType: string, ids: Array<number>, title: string, text: string) {

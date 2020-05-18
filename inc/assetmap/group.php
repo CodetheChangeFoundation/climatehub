@@ -30,6 +30,7 @@ function asset_map_group_cpt (){
    'capability_type' => 'post',
    'hierarchical' => false,
    'show_in_rest' => true,
+   'show_in_menu' => false,
    'rest_base' => 'groups',
    'rest_controller_class' => 'WP_REST_Posts_Controller',
    'supports' => array(

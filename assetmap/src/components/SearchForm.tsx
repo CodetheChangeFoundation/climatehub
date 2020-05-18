@@ -64,7 +64,11 @@ class SearchForm extends React.Component<MyProps, MyState> {
         id: number;
         name: string;
         city: number;
-      }) => this.communityOptions[community.city[0]].options.push({ id: community.id, value: community.id, label: community.name }));
+      }) => {
+        if (community.city)  {
+          this.communityOptions[community.city[0]].options.push({ id: community.id, value: community.id, label: community.name })
+        }
+      });
     };
     // Tags
     this.tagOptions = [];
@@ -72,15 +76,19 @@ class SearchForm extends React.Component<MyProps, MyState> {
       Object.values(this.props.tag_types).map((tagType: {
         id: number;
         name: string;
-        color: string;
-      }) => this.tagOptions[tagType.id] = ({ label: tagType.name, options: [] }));
+        colour: string;
+      }) => this.tagOptions[tagType.id] = ({ label: tagType.name, colour: tagType.colour, options: [] }));
     };
     if (this.props.tags !== []) {
       Object.values(this.props.tags).map((tag: {
         id: number;
         name: string;
         type: string;
-      }) => this.tagOptions[tag.type[0]].options.push({ id: tag.id, label: tag.name, value: tag.name }));
+      }) => {
+        if (tag.type) {
+          this.tagOptions[tag.type[0]].options.push({ id: tag.id, label: tag.name, value: tag.name, colour: this.getTagColor(tag.id)})
+        }
+      });
     };
   }
 
@@ -208,37 +216,35 @@ class SearchForm extends React.Component<MyProps, MyState> {
 
     return (
         <div id="SearchForm" className="container">
+          <div className="row mt-3">
           {Object.values(this.props.communities).length > 1 && (
-            <div className="row">
               <div className="col-12">
                 <Select
-                  styles={customStyles}
+                  styles={this.selectStyles}
                   value={selectedCommunities}
                   onChange={this.handleCommunityChange}
                   options={this.communityOptions}
                   isMulti={true}
                   placeholder={"Filter by community"}
-                  className={"border border-bottom-0 border-dark z-index-130 "}
+                  className={"bg-grey border-bottom z-index-130 "}
                 />
               </div>
-            </div>
           )}
-          <div className="row mt-4">
             <div className="col-12">
-              <div className="d-flex flex-column flex-sm-row border 0 border-dark border-bottom-0">
-                <div className="order-1 col-12 col-sm-4 col-lg-2 px-0">
+              <div className="d-flex flex-column flex-sm-row  0  border-bottom-0">
+                <div className="bg-grey order-1 col-12 col-sm-4 col-lg-2 px-0">
                   <Select
-                    styles={customStyles}
+                    styles={this.selectStyles}
                     value={{value: postType, label: postType}}
                     onChange={this.handlePostTypeChange}
                     options={categories}
                     className={"h-100 m-0 p-0 z-index-120 d-flex flex-column justify-content-center text-capitalize"}
                   />
                 </div>
-                <div className="order-3 order-sm-2 col-12 col-sm-4 col-lg-5 px-0">
-                  <div className="border-left-0 border-right-0 border-sm-left border-sm-right border-dark h-100 m-0 p-0">
+                <div className="order-3 order-sm-2 col-12 col-sm-4 col-lg-5 bg-white px-0">
+                  <div className="border-left-0 border-right-0 border-bottom border-dark bg-white h-100 mx-0 mx-sm-3 my-0 p-0">
                     <input
-                      className="border-0 bg-light form-control h-100 px-2 py-11px"
+                      className="border-0 form-control h-100 px-2 py-11px"
                       onChange={this.handleSearch}
                       placeholder="Search by name"
                       type="text"
@@ -246,23 +252,23 @@ class SearchForm extends React.Component<MyProps, MyState> {
                     />
                   </div>
                 </div>
-                <div className="order-2 order-sm-3 col-12 col-sm-4 col-lg-5 px-0">
+                <div className="bg-grey order-2 order-sm-3 col-12 col-sm-4 col-lg-5 px-0">
                   <Select
-                    styles={customStyles}
+                    styles={this.tagSelectStyles}
                     value={selectedTags}
                     onChange={this.props.handleTagFilterChange}
                     options={this.tagOptions}
                     isMulti={true}
                     placeholder={"Filter by tag"}
-                    className={"border-top border-bottom border-top-sm-0 border-bottom-sm-0 border-dark h-100 m-0 p-0 z-index-110 "}
+                    className={"h-100 m-0 p-0 z-index-110 "}
                   />
                 </div>
               </div>
             </div>
           </div>
           <div className="row">
-            <div className="col-3 pr-0">
-              <div className="border-top border-left border-dark h-100">
+            <div className="col-3 col-md-2 pr-0">
+              <div className="bg-white h-100">
                 {postQueries.length !== 0 && 
                 <div className="h-100 d-flex align-items-center">
                   <a role="button" className="btn btn-outline-primary d-flex align-items-center back-button h-100 py-0 pl-2 pr-3" onClick={this.props.handleBack}>
@@ -274,20 +280,23 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 </div>}
               </div>
             </div>
-            <div className="col-9 pl-0">
-              <div className="py-2 border-top border-right border-dark">
-                <div className="text-right pr-2">
+            <div className="col-6 col-md-8 px-0">
+              <div className="py-2 bg-white">
+                <div className="text-center">
                   <p className="mb-0 mt-1">
-                    {numResults + " " + (numResults === 1? postType.substring(0, postType.length - 1): postType) + 
+                    {numResults + " " + (numResults === 1? postType.substring(0, 1).toUpperCase() + postType.substring(1, postType.length - 1): postType.substring(0, 1).toUpperCase() + postType.substring(1)) + 
                       (postQueries.length !== 0? " in " + postQueries[postQueries.length-1][2] : "")}
                   </p>
                 </div>
               </div>
             </div>
+            <div className="col-3 col-md-2 pl-0">
+              <div className="bg-white h-100 pr-2" />
+            </div>
           </div>
         <div className="row">
           <div className="col-12">
-            <div className="border border-dark table-container">
+            <div className="table-container bg-white">
               <Table
                 data={currPosts}
                 postType={postType}
@@ -306,29 +315,46 @@ class SearchForm extends React.Component<MyProps, MyState> {
     );
   }
 
-}
+  selectStyles = {
+    control: (provided: any, state: any) => ({
+      // none of react-select's styles are passed to <Control />
+      ...provided,
+      backgroundColor: 'bg-light',
+      border: 0,
+      boxShadow: 0,
+      height: '100%',
+      outline: 0,
+    }),
+    multiValue: (provided: any) => ({
+      ...provided,
+      backgroundColor: 'white',
+    }),
+    option: (provided: any) => ({
+      ...provided,
+      cursor: 'pointer',
+    }),
+  }
 
-const customStyles = {
-  control: (provided: any, state: any) => ({
-    // none of react-select's styles are passed to <Control />
-    ...provided,
-    backgroundColor: 'bg-light',
-    border: 0,
-    boxShadow: 0,
-    height: '100%',
-    outline: 0,
-  }),
-  option: (provided: any, state: any) => ({
-    ...provided,
-    // borderBottom: '1px dotted pink',
-    // color: state.isSelected ? 'red' : 'blue',
-    // padding: 20,
-  }),
-  singleValue: (provided: any, state: any) => {
-    // const opacity = state.isDisabled ? 0.5 : 1;
-    // const transition = 'opacity 300ms';
-
-    return { ...provided };
+  tagSelectStyles = {
+    control: (provided: any, state: any) => ({
+      // none of react-select's styles are passed to <Control />
+      ...provided,
+      backgroundColor: 'bg-light',
+      border: 0,
+      boxShadow: 0,
+      height: '100%',
+      outline: 0,
+    }),
+    multiValue: (provided: any, {data}: any) => ({
+      ...provided,
+      backgroundColor: this.getTagColor(data.id) + '44',
+      border: '2px solid' + this.getTagColor(data.id),
+      borderRadius: 0,
+    }),
+    option: (provided: any) => ({
+      ...provided,
+      cursor: 'pointer',
+    }),
   }
 }
 

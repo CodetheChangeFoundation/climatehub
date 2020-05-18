@@ -103,12 +103,12 @@ class Table extends React.Component<MyProps> {
     const allItemRows: Array<any> = this.renderItems();
 
     return (
-      <table className="table table-hover mb-0 w-100">
+      <table className="table table-hover table-borderless mb-0 w-100">
         <thead>
           <tr>
-            <th scope="col" className="position-sticky bg-light border-0 z-index-99">Name</th>
-            <th scope="col" className="position-sticky bg-light border-0 z-index-99">Tags</th>
-            <th scope="col" className="position-sticky bg-light border-0 z-index-99" style={{width: '50px'}}/>
+            <th scope="col" className="position-sticky bg-white text-muted border-0 z-index-99">Name</th>
+            <th scope="col" className="position-sticky bg-white text-muted border-0 z-index-99">Tags</th>
+            <th scope="col" className="position-sticky bg-white border-0 z-index-99" style={{width: '50px'}}/>
           </tr>
         </thead>
         <tbody>

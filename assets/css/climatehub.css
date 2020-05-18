@@ -342,7 +342,8 @@ body {
 /* Asset Map */
 
 .asset-map .table-container {
-  overflow-y: scroll;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -374,7 +375,7 @@ body {
 }
 
 .asset-map .table-container tbody tr.row-expandable:hover>td {
-  background-color: var(--light);
+  background-color: #FFFFFF;
 }
 
 .z-index-99 {
@@ -448,7 +449,8 @@ body {
   transition: all 250ms ease-in-out;
 }
 
-/* Asset Map */
+/* Map */
+
 #mapParent {
   --parent-height: 350px;
   height: var(--parent-height);
@@ -460,54 +462,68 @@ body {
 }
 
 #mapInfo {
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#defaultMessage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .mapNode {
-  width: 67px;
+  width: 65px;
+  z-index: 2;
 }
 
 .transit-line {
   width: 95px;
   height: 10px;
   left: -8px;
-  z-index: -1;
+  z-index: 0;
 }
 
 .transit-line-home-node-top {
   top: 27.5px;
   right: -5px;
   height: 10px;
-  width: 150px;
-  transform: rotate(-70deg);
+  width: 140px;
+  transform: rotate(-75deg);
   transform-origin: center right;
-  z-index: -1;
+  z-index: 0;
 }
 
 .transit-line-home-node-bottom {
   bottom: 27.5px;
   right: -5px;
   height: 10px;
-  width: 150px;
-  transform: rotate(70deg);
+  width: 140px;
+  transform: rotate(75deg);
   transform-origin: center right;
-  z-index: -1;
+  z-index: 0;
 }
 
 .nodeCircle {
   border: 3px solid var(--node-color);
-  height: 65px;
-  width: 65px;
+  height: 40px;
+  width: 40px;
+  margin: 12.5px;
   border-radius: 50%;
   display: inline-block;
+  z-index: 2;
+  position: relative;
 }
 
 .home-node {
   border: 3px solid;
-  height: 65px;
-  width: 65px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   display: inline-block;
+  z-index: 2;
+  position: relative;
 }
 
 .nodeCircle:hover {
@@ -517,9 +533,8 @@ body {
 }
 
 .legend {
-  width: 80px;
   right: 0;
-  z-index: -1;
+  z-index: 0;
 }
 
 .legendCircle {
@@ -540,6 +555,8 @@ body {
 .overflow-btn {
   color: var(--overflow-btn-color);
   margin: 13.5px 0px 13.5px 12px;
+  z-index: 2;
+  position: relative;
 }
 
 .overflow-btn:hover {
@@ -550,6 +567,7 @@ body {
 }
 
 .block-with-text {
+  font-size: 12px;
   overflow: hidden;
   position: relative; 
   line-height: 1.1em;
@@ -575,7 +593,7 @@ body {
   width: 0.5em;
   height: 1em;
   margin-top: 0.2em;
-  background: #f2f2f2;
+  background: #FFF;
 }
 
 .hideDescription {
@@ -603,13 +621,26 @@ body {
   opacity: 0;
 }
 
-.action-button {
-  position: fixed;
-  bottom: 30px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
+.map-action-button {
+  position: absolute;
+  bottom: -8px;
+  right: 8px;
+  width: 35px;
+  height: 35px;
   border-radius: 100%;
   z-index: 200;
-  background-color: var(--light);
+  background-color: white;
+  padding: 0 !important;
+}
+
+.fixed-action-button {
+  position: fixed;
+  bottom: 30px;
+  right:30px;
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+  z-index: 200;
+  background-color: white;
+  padding: 0 !important;
 }

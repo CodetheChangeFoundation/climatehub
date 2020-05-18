@@ -2,32 +2,32 @@ import * as React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import * as ReactModal from 'react-modal';
 
-
+interface ModalProps {
+    modalDisabled: boolean,
+    modalOpen: boolean,
+    enableModal: () => Promise<void>,
+    openModal: () => Promise<void>,
+    closeModal: () => Promise<void>,
+}
 interface ModalState {
-    isDisabled: boolean,
-    isOpen: boolean,
     modalData: any,
 }
 
 ReactModal.setAppElement("body");
 
-export default class HelpModal extends React.Component<{},ModalState> {
+export default class HelpModal extends React.Component<ModalProps,ModalState> {
     constructor(props: any) {
         super(props);
         
         this.state = {
-            isDisabled: false,
-            isOpen: true,
             modalData: <> </>,
         }
-
-        this.closeModal = this.closeModal.bind(this)
-        this.openModal = this.openModal.bind(this)
     }
 
     customStyles = {
         content: {
-            border: "3px solid var(--primary)",
+            border: "1px solid var(--primary)",
+            borderRadius: "0px",
             height: "60vh",
             margin: "auto",
             marginTop: "145px",
@@ -46,13 +46,6 @@ export default class HelpModal extends React.Component<{},ModalState> {
             .then(() => resolve())
         })
     }
-    openModal () {
-        this.setState({isOpen: true})
-    }
-
-    closeModal (): any {
-        this.setState({isOpen: false})
-    }
 
     loadModalData (): Promise<void> {
         return new Promise((resolve) => {
@@ -62,46 +55,45 @@ export default class HelpModal extends React.Component<{},ModalState> {
                 res.json()
                 .then((data: any) => {
                     let modalData = data[0].content.rendered;
-                    if (!modalData || modalData === "") {
-                        throw new Error ("No modal data");
-                    } else if (modalData) {
+                    if (modalData) {
                         modalData = <> {ReactHtmlParser(modalData)} </>
-                        this.setState({modalData}, () => resolve());
+                        this.setState({modalData}, () => {
+                            this.props.enableModal()
+                            .then(() => 
+                                resolve()
+                            )
+                        });
+                    } else if (!modalData || modalData === "") {
+                        throw new Error ("No modal data");
                     }
                 }).catch((err: Error) => {
-                    this.setState({isDisabled: true}, 
-                        () => {
-                            console.log(err);
-                            resolve();
-                        }
-                    );
+                    console.log(err);
+                    resolve();
                 })
             })
         })
     }
     
     public render() {
-        const {isOpen, isDisabled, modalData}= this.state;
+        const {modalData} = this.state;
+        const {modalDisabled, modalOpen} = this.props;
         return (
             <>
-                {!isDisabled &&
+                {!modalDisabled &&
                     <>
                         <ReactModal
-                            isOpen={isOpen}
+                            isOpen={modalOpen}
                             style={this.customStyles}
                             closeTimeoutMS={400}
                             shouldCloseOnOverlayClick={true}
                             shouldCloseOnEsc={true}
-                            onRequestClose={this.closeModal}
+                            onRequestClose={this.props.closeModal}
                             >
                             <div id="modalContent"> 
                                 {modalData}
                             </div>
-                            <button style= {{margin: "auto"}} type="button" className="btn btn-outline-primary font-italic" onClick={this.closeModal}>Continue</button>
+                            <button style= {{margin: "auto"}} type="button" className="btn btn-outline-primary font-italic" onClick={this.props.closeModal}>Continue</button>
                         </ReactModal>
-                        <button onClick={isOpen? this.closeModal : this.openModal}className="btn btn-outline-primary action-button">
-                            ?
-                        </button>
                     </>
                 }
             </>

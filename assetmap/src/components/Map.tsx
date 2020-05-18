@@ -2,13 +2,18 @@ import * as React from 'react';
 import { MapNode } from './MapNode';
 import { Tags } from './Tags';
 
+
 interface MyProps {
   maxNodes: number,
+  modalDisabled: boolean,
+  modalOpen: boolean,
   postType: string,
   selectedPost: number,
   selectedTags: Array<number>,
   tags: any,
   tag_types: any,
+  openModal: () => Promise<void>,
+  closeModal: () => Promise<void>,
   getPostById: (postType: string, ID: number) => object|undefined,
   handlePostQuery: (postType: string, postsToRender: Array<number>, currPostType: string) => Promise<void>, 
   setSelectedPost: (selectedPost: number) => Promise<void>
@@ -33,26 +38,10 @@ interface MyState {
 }
 
 const postTypeColors = {
-  // CH Colors
   groups: "#83D335",
   individuals: "#41D3BD",
   projects: "#F18F01",
-  // // Random Colors
-  // groups: "#2EC2A8",
-  // individuals: "#2DB3C7",
-  // projects: "#2D88CD",
 }
-
-const postTypeBackgroundColors = {
-  // groups: "#D6EAC2",
-  // individuals: "#C5EAE4",
-  // projects: "#F1D9B5"
-  groups: "#F2F2F2",
-  individuals: "#F2F2F2",
-  projects: "#F2F2F2",
-}
-
-const defaultMessage = <div className="d-flex h-100 align-items-center justify-content-center"><h5>Please select a row from the table</h5></div>
 
 export default class Map extends React.Component<MyProps, MyState> {  
   constructor(props: MyProps) {
@@ -65,7 +54,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       containerWidth: 0,
       homePost: undefined,
       post: undefined,
-      postInfo: defaultMessage,
+      postInfo: undefined,
       relatedPostsBottom: undefined,
       relatedPostsTop: undefined,
     };
@@ -127,7 +116,7 @@ export default class Map extends React.Component<MyProps, MyState> {
 
   setPostInfo(post: any): Promise<void> {
     return new Promise((resolve) => {
-      const postInfo = (post? this.populatePostInfo(post):defaultMessage);
+      const postInfo = (post? this.populatePostInfo(post):undefined);
       this.setState({postInfo}, () => resolve())
     })
   }
@@ -250,7 +239,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       }
 
       homePost = (
-        <div style={{height: "65px", width: "65px"}}>
+        <div style={{height: "45px", width: "45px"}}>
           {relatedPostsTop.length !== 0 &&
             <span className="transit-line-home-node-top position-absolute" style={{backgroundColor: postTypeColors[topPostType]}}/>
           }
@@ -286,7 +275,7 @@ export default class Map extends React.Component<MyProps, MyState> {
       const post: object | undefined = this.props.getPostById(postType, postId);
       if (post) {
         const node = new MapNode({
-          backgroundColor: postTypeBackgroundColors[postType],
+          backgroundColor: '#FFFFFF',
           color: postTypeColors[postType],
           handleNodeClick: this.handleNodeClick,
           overflowBtn: overflow,
@@ -337,11 +326,10 @@ export default class Map extends React.Component<MyProps, MyState> {
     const border = '3px solid ' + color;
     const btnStyle = {
       '--overflow-btn-color': color,
-      backgroundColor: 'none !important',
       border,
     }
     return(
-      <div className="overflow-btn font-italic d-inline-block p-2 text-nowrap" style={btnStyle} onClick={handleOverflowClick} key={clickedPostType + " overflow"}>
+      <div className="overflow-btn bg-white font-italic d-inline-block p-2 mx-0 text-nowrap" style={btnStyle} onClick={handleOverflowClick} key={clickedPostType + " overflow"}>
         See More
       </div>
     );
@@ -388,11 +376,12 @@ export default class Map extends React.Component<MyProps, MyState> {
       const mapVisual: HTMLElement | null = document.getElementById("mapVisual");
       const mapWidth: number | undefined = mapVisual?.clientWidth;
       let maxNodes: number = 0;
-      const mapNodeWidth: number = 83;
-      const homeNodeWidth: number = 65;
-      const mapVisualPadding: number = 16;
+      const mapNodeWidth: number = 82;
+      const homeNodeWidth: number = 45;
+      const mapVisualPadding: number = 8;
+      const actionButtonPadding: number = 40;
       if (mapWidth) {
-        maxNodes = Math.floor((mapWidth - mapVisualPadding - homeNodeWidth)/mapNodeWidth);
+        maxNodes = Math.floor((mapWidth - mapVisualPadding - homeNodeWidth - actionButtonPadding)/mapNodeWidth);
       }
 
       this.setState({
@@ -410,16 +399,16 @@ export default class Map extends React.Component<MyProps, MyState> {
     const mapPostType = this.props.getMapPostType()
     for (const [postType, color] of Object.entries(postTypeColors)) {
       // const backgroundColor: string = postType === this.state.mapPostType ? color : color + "44";
-      const backgroundColor: string = postType === mapPostType ? color : "#F2F2F2";
+      const backgroundColor: string = postType === mapPostType ? color : "#FFFFFF";
       let label: string = postType;
       if (postType === "individuals" && mapPostType === "projects") {
         label = "director";
       }
       const border: string = "3px solid " + color;
       legend.push(
-        <div key={postType} className="d-flex flex-column align-items-center py-1">
+        <div key={postType} className="d-flex flex-row align-items-center justify-content-end py-1">
+          <p className="d-inline-block pr-2 m-0 small text-grey">{label}</p>
           <span className="legendCircle" style={{backgroundColor, border}}/>
-          <p className="mt-1 m-0 small text-grey">{label}</p>
         </div>
       )
     }
@@ -428,13 +417,17 @@ export default class Map extends React.Component<MyProps, MyState> {
 
   public render() {
     const {homePost, postInfo, relatedPostsBottom, relatedPostsTop} = this.state;
+    const {modalDisabled, modalOpen, openModal, closeModal} = this.props;
     return (
-      <div className="container border border-dark h-100">
+      <div id="map-container" className="container bg-white h-100">
         <div className="row h-100 py-3">
-          <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 border-right border-grey d-flex justify-content-between flex-column">
+          {!postInfo && <div id="defaultMessage" className="text-muted"
+            ><h5>Please select a row from the table</h5>
+          </div> }
+          <div id="mapInfo" className="col-12 col-md-6 col-lg-5 col-xl-4 d-flex justify-content-between flex-column">
             {postInfo}
           </div>
-          <div id="mapVisual" className="col-12 col-md-6 col-lg-7 col-xl-8 px-2 d-flex justify-content-between position-relative">
+          <div id="mapVisual" className="col-12 col-md-6 col-lg-7 col-xl-8 pl-0 pr-1 d-flex justify-content-between position-relative">
             <div className="d-flex align-items-center position-relative">
               {homePost}
             </div>
@@ -448,11 +441,16 @@ export default class Map extends React.Component<MyProps, MyState> {
             </div>
             <div className="legend d-flex flex-column justify-content-center position-absolute h-100">
               {this.props.selectedPost > 0 && 
-                <div className="border-left border-grey px-2 text-capitalize">
+                <div className="px-2 text-capitalize">
                   {this.renderLegend()}
                 </div>
               } 
             </div>
+            {!modalDisabled && 
+              <button onClick={modalOpen? closeModal : openModal} className="btn btn-outline-primary map-action-button">
+                ?
+              </button>
+            }
           </div>
         </div>
       </div>
