@@ -26,7 +26,7 @@ export default class HelpModal extends React.Component<ModalProps,ModalState> {
 
     customStyles = {
         content: {
-            border: "1px solid var(--primary)",
+            border: "0px solid var(--primary)",
             borderRadius: "0px",
             height: "60vh",
             margin: "auto",
