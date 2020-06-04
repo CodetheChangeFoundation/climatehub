@@ -363,3 +363,314 @@ body {
   object-fit: contain;
   object-position: center center;
 }
+
+/* Asset Map */
+
+.asset-map .table-container {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+@media (min-width: 576px) {
+  .asset-map .table-container {
+    min-height: 500px;
+    max-height: 50vh;
+  }
+}
+
+.asset-map .table-container table {
+  table-layout: fixed;
+}
+
+.asset-map .table-container thead th {
+  top: 0;
+  box-shadow: 0px 1px 0px 0px #DFDFDF;
+}
+
+.asset-map .table-container .tag .overflow-btn {
+  white-space: nowrap;
+}
+
+.tag:hover {
+  background-color: var(--tag-color) !important;
+  color: #DFDFDF;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.asset-map .table-container tbody tr.row-expandable:hover>td {
+  background-color: #FFFFFF;
+}
+
+.z-index-99 {
+  z-index: 99;
+}
+
+.z-index-110 {
+  z-index: 110;
+}
+
+.z-index-120 {
+  z-index: 120;
+}
+
+.z-index-130 {
+  z-index: 130;
+}
+
+.back-button,
+.row-data {
+  cursor: pointer;
+}
+
+.back-button svg {
+  fill: var(--primary)
+}
+
+.back-button:hover svg {
+  fill: var(--body)
+}
+
+.back-button p {
+  color: var(--primary)
+}
+
+.back-button:hover p {
+  color: var(--body)
+}
+
+.py-11px {
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+@media (min-width: 576px) {
+  .border-sm-left {
+    border-left: 2px solid !important;
+  }
+
+  .border-sm-right {
+    border-right: 2px solid !important;
+  }
+
+  .border-top-sm-0 {
+    border-top: 0 !important;
+  }
+  
+  .border-bottom-sm-0 {
+    border-bottom: 0 !important;
+  }
+}
+
+.down-arrow {
+  fill: var(--dark);
+  transform: rotateX(0deg);
+  transition: all 250ms ease-in-out;
+}
+
+.down-arrow.active {
+  transform: rotateX(180deg);
+  transition: all 250ms ease-in-out;
+}
+
+/* Map */
+
+#mapParent {
+  --parent-height: 350px;
+  height: var(--parent-height);
+  line-height: 1;
+}
+
+#mapInfo, #mapVisual {
+  height: calc(var(--parent-height) - 34px);
+}
+
+#mapInfo {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#defaultMessage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.mapNode {
+  width: 65px;
+  z-index: 2;
+}
+
+.transit-line {
+  width: 95px;
+  height: 10px;
+  left: -8px;
+  z-index: 0;
+}
+
+.transit-line-home-node-top {
+  top: 27.5px;
+  right: -5px;
+  height: 10px;
+  width: 140px;
+  transform: rotate(-75deg);
+  transform-origin: center right;
+  z-index: 0;
+}
+
+.transit-line-home-node-bottom {
+  bottom: 27.5px;
+  right: -5px;
+  height: 10px;
+  width: 140px;
+  transform: rotate(75deg);
+  transform-origin: center right;
+  z-index: 0;
+}
+
+.nodeCircle {
+  border: 3px solid var(--node-color);
+  height: 40px;
+  width: 40px;
+  margin: 12.5px;
+  border-radius: 50%;
+  display: inline-block;
+  z-index: 2;
+  position: relative;
+}
+
+.home-node {
+  border: 3px solid;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  display: inline-block;
+  z-index: 2;
+  position: relative;
+}
+
+.nodeCircle:hover {
+  cursor: pointer;
+  background-color: var(--node-color) !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.legend {
+  right: 0;
+  z-index: 0;
+}
+
+.legendCircle {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.border-grey {
+  border-color: #666 !important;
+}
+
+.text-grey {
+  color: #666 !important;
+}
+
+.overflow-btn {
+  color: var(--overflow-btn-color);
+  margin: 13.5px 0px 13.5px 12px;
+  z-index: 2;
+  position: relative;
+}
+
+.overflow-btn:hover {
+  background-color: var(--overflow-btn-color) !important;
+  color: #F2F2F2;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.block-with-text {
+  font-size: 12px;
+  overflow: hidden;
+  position: relative; 
+  line-height: 1.1em;
+  max-height: 5.4em; 
+  text-align: center;
+  /* margin-right: -0.5em; */
+  padding-right: 0.5em;
+  margin: 0 calc(-6px - 0.5em) 0 -7px;  
+  overflow-wrap: break-word;
+}
+
+.block-with-text:before {
+  content: '...';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.block-with-text:after {
+  content: '';
+  position: absolute;
+  right: 0;
+  width: 0.5em;
+  height: 1em;
+  margin-top: 0.2em;
+  background: #FFF;
+}
+
+.hideDescription {
+  overflow: hidden;
+  height: 4.5em;
+  transition: all 500ms ease-in-out;
+}
+
+.showDescription {
+  height: auto;
+  transition: all 500ms ease-in-out;
+}
+/* Help Modal */
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 400ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open{
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close{
+  opacity: 0;
+}
+
+.map-action-button {
+  position: absolute;
+  bottom: -8px;
+  right: 8px;
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+  z-index: 200;
+  background-color: white;
+  padding: 0 !important;
+}
+
+.fixed-action-button {
+  position: fixed;
+  bottom: 30px;
+  right:30px;
+  width: 55px;
+  height: 55px;
+  border-radius: 100%;
+  z-index: 200;
+  background-color: white;
+  padding: 0 !important;
+}
+
+.modal-btn {
+  margin: 25px 0px 40px !important;
+  font-size: larger;
+}
