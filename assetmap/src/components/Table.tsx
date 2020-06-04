@@ -34,6 +34,12 @@ class Table extends React.Component<MyProps> {
     super(props);
   }
 
+  componentDidMount() {
+    const postIds = Object.keys(this.props.data);
+    if (postIds.length > 0 && Number(postIds[0])){
+      this.handleRowClick(Number(postIds[0]));
+    }
+  }
   // rowId = postId
   handleRowClick(rowId: number): void {
     const selectedPost = this.props.getSelectedPost();
