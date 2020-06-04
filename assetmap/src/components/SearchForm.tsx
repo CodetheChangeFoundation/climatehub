@@ -269,6 +269,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 <div className="bg-grey order-2 order-sm-3 col-12 col-sm-4 col-lg-5 px-0">
                   <Select
                     styles={this.tagSelectStyles}
+                    closeMenuOnSelect={false}
                     value={selectedTags}
                     onChange={this.props.handleTagFilterChange}
                     options={this.tagOptions}
