@@ -644,3 +644,8 @@ body {
   background-color: white;
   padding: 0 !important;
 }
+
+.modal-btn {
+  margin: 25px 0px 40px !important;
+  font-size: larger;
+}

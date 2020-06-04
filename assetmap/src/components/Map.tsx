@@ -105,7 +105,6 @@ export default class Map extends React.Component<MyProps, MyState> {
       }  
       this.setRelatedPosts(post);
     } else if (selectedTags !== prevProps.selectedTags) {
-      console.log("Changed selectedTags");
       this.setPostInfo(this.state.post);
     }
   }

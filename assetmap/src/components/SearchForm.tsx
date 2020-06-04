@@ -136,6 +136,19 @@ class SearchForm extends React.Component<MyProps, MyState> {
     }
     return '#123456';
   }
+  
+  getTagTypeColor(name: string): string {
+    const tag_types = this.props.tag_types;
+    let colour = '#123456'
+    if (tag_types) {
+      Object.values(tag_types).forEach((tagType: any) => {
+        if (tagType.name === name) {
+          colour = '#' + tagType.colour;
+        }
+      })
+    }
+    return colour;
+  }
 
   private searchFilter(searchTerm: string, currPosts: object): object {
     const searchTermFormatted = searchTerm.toLowerCase();
@@ -234,6 +247,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
               <div className="d-flex flex-column flex-sm-row  0  border-bottom-0">
                 <div className="bg-grey order-1 col-12 col-sm-4 col-lg-2 px-0">
                   <Select
+                    isSearchable={false}
                     styles={this.selectStyles}
                     value={{value: postType, label: postType}}
                     onChange={this.handlePostTypeChange}
@@ -255,6 +269,7 @@ class SearchForm extends React.Component<MyProps, MyState> {
                 <div className="bg-grey order-2 order-sm-3 col-12 col-sm-4 col-lg-5 px-0">
                   <Select
                     styles={this.tagSelectStyles}
+                    closeMenuOnSelect={false}
                     value={selectedTags}
                     onChange={this.props.handleTagFilterChange}
                     options={this.tagOptions}
@@ -344,6 +359,12 @@ class SearchForm extends React.Component<MyProps, MyState> {
       boxShadow: 0,
       height: '100%',
       outline: 0,
+    }),
+    groupHeading: (provided: any, state: any) => ({
+      ...provided,
+      // color: 'red',
+      color: this.getTagTypeColor(state.children),
+      fontSize: 'medium',
     }),
     multiValue: (provided: any, {data}: any) => ({
       ...provided,

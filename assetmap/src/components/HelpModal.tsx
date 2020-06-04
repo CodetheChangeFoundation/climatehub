@@ -92,7 +92,7 @@ export default class HelpModal extends React.Component<ModalProps,ModalState> {
                             <div id="modalContent"> 
                                 {modalData}
                             </div>
-                            <button style= {{margin: "auto"}} type="button" className="btn btn-outline-primary font-italic" onClick={this.props.closeModal}>Continue</button>
+                            <button style= {{margin: "auto"}} type="button" className=" btn btn-outline-primary font-italic modal-btn" onClick={this.props.closeModal}>Continue</button>
                         </ReactModal>
                     </>
                 }
