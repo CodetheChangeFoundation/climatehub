@@ -112,7 +112,7 @@
                         "required": 0,
                         "conditional_logic": 0,
                         "wrapper": {
-                            "width": "20",
+                            "width": "15",
                             "class": "",
                             "id": ""
                         },
@@ -136,7 +136,7 @@
                         "required": 0,
                         "conditional_logic": 0,
                         "wrapper": {
-                            "width": "40",
+                            "width": "15",
                             "class": "",
                             "id": ""
                         },
@@ -155,7 +155,7 @@
                         "required": 0,
                         "conditional_logic": 0,
                         "wrapper": {
-                            "width": "40",
+                            "width": "20",
                             "class": "",
                             "id": ""
                         },
@@ -164,6 +164,25 @@
                         "prepend": "",
                         "append": "",
                         "maxlength": ""
+                    },
+                    {
+                        "key": "field_5ed8747354435",
+                        "label": "Member Bio",
+                        "name": "member_bio",
+                        "type": "wysiwyg",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "50",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "tabs": "all",
+                        "toolbar": "full",
+                        "media_upload": 1,
+                        "delay": 0
                     }
                 ]
             }
@@ -173,7 +192,7 @@
                 {
                     "param": "page",
                     "operator": "==",
-                    "value": "46"
+                    "value": "8837"
                 }
             ]
         ],
@@ -183,7 +202,7 @@
         "label_placement": "top",
         "instruction_placement": "label",
         "hide_on_screen": "",
-        "active": 1,
+        "active": true,
         "description": ""
     }
 ]

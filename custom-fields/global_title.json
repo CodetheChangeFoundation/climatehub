@@ -53,14 +53,19 @@
         "location": [
             [
                 {
-                    "param": "page",
-                    "operator": "!=",
-                    "value": "6"
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "page"
                 },
                 {
-                    "param": "post_type",
+                    "param": "page",
                     "operator": "!=",
-                    "value": "post"
+                    "value": "556"
+                },
+                {
+                    "param": "page",
+                    "operator": "!=",
+                    "value": "555"
                 }
             ]
         ],
@@ -72,7 +77,7 @@
         "hide_on_screen": [
             "the_content"
         ],
-        "active": 1,
+        "active": true,
         "description": ""
     }
 ]

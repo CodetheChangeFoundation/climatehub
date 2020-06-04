@@ -32,7 +32,7 @@ $('.owl-carousel').owlCarousel({
 })
 
 // engagements page
-$('.partner-image').on('click', function() {
+$('.partner-image, .team-member-image').on('click', function() {
   $('.collapse.show').collapse('toggle');
 });
 
