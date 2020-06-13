@@ -26,7 +26,7 @@ if( get_field('enable_partners_grid') ):
                   $image = $gridRow['image_'.$logo];
                   $partnerId = 'partner-content-'.$grid_num.'-'.$count; ?>
                   <?php if ($image): ?>
-                    <a class="btn btn-link p-0 border-0" data-toggle="collapse" data-target="#<?php echo $partnerId ?>" aria-expanded="false" aria-controls="<?php echo $partnerId ?>">
+                    <a class="btn btn-link p-0 border-0 w-100" data-toggle="collapse" data-target="#<?php echo $partnerId ?>" aria-expanded="false" aria-controls="<?php echo $partnerId ?>">
                       <div class="partner-image background-image my-3" style="background-image: url('<?php echo $image['url'] ?>')"></div>
                     </a>
                     <div class="partner-content collapse" id="<?php echo $partnerId ?>">

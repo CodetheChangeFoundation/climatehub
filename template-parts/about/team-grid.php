@@ -31,7 +31,7 @@ endif; ?>
                             $description = $current_member['member_description'];
                             $bio = $current_member['member_bio'];?>
                             <div class="text-center grid-image my-3">
-                                <a class="btn btn-link p-0 border-0" data-toggle="collapse" data-target="#team-member-<?php echo $i ?>" aria-expanded="false" aria-controls="team-member-<?php echo $i ?>">
+                                <a class="btn btn-link p-0 border-0 w-100" data-toggle="collapse" data-target="#team-member-<?php echo $i ?>" aria-expanded="false" aria-controls="team-member-<?php echo $i ?>">
                                     <img class="img-fluid team-member-image p-0" src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
                                     <?php if($name || $description): ?>
                                     <div class="bg-white p-2">

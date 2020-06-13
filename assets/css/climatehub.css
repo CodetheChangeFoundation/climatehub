@@ -145,6 +145,10 @@ body {
   position: relative;
 }
 
+.grid-image h5 {
+  white-space: pre-wrap;
+}
+
 /* Partners Grid */
 .partner-grid-container {
   display: grid;
