@@ -110,7 +110,8 @@ class Assetmap extends React.Component<{}, MyState> {
       onLoad.push(this.getPostsOnLoad(type));
     })
     onLoad.push(this.setWindowSize());
-    Promise.all(onLoad).then(() => {
+    Promise.all(onLoad)
+    .then(() => {
       this.setLoadedState();
       window.addEventListener("resize",() => {
         this.setWindowSize();
@@ -124,7 +125,11 @@ class Assetmap extends React.Component<{}, MyState> {
     return new Promise((resolve) => {
       this.getAllPostsByType(postType).then(() => {
         this.appendToPostTypeState(postType, this.cache[postType])
-        .then(() => resolve());
+        .then(() => resolve())
+        .catch((err) => { 
+          console.log(err);
+          resolve();
+        })
       })
     })
   }
@@ -233,9 +238,12 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   appendToPostTypeState (postType: string, posts: Array<any>): Promise<void> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const updatedState = {};
       updatedState[postType] = this.state[postType];
+      if (!posts) {
+        reject("No posts for " + postType)
+      }
       Object.values(posts).forEach((post: any) => {
         updatedState[postType][post.id] = post;
       })
