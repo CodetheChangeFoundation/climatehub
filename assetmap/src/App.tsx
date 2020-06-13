@@ -26,6 +26,7 @@ interface MyState {
   searchTerm: string,
   selectedPost: number,
   selectedTags: any,
+  siteURL: string,
   tag_types: any,
   tags: any,
   windowSize: number,
@@ -72,6 +73,7 @@ class Assetmap extends React.Component<{}, MyState> {
       searchTerm: "",
       selectedPost: 0,
       selectedTags: null,
+      siteURL: "http://climatehub.local",
       tag_types: [],
       tags: [],
       windowSize: 0,
@@ -136,7 +138,7 @@ class Assetmap extends React.Component<{}, MyState> {
   getAllPostsByType(postType: string): Promise<any> {
     return new Promise((resolve) => {
       console.log("Querying WP for : " + postType);
-      const baseUrl = "http://climatehub.local/wp-json/wp/v2/" + postType + '?per_page=100';
+      const baseUrl = this.state.siteURL + "/wp-json/wp/v2/" + postType + '?per_page=100';
       // Fetch first page
       const requestUrl = baseUrl + '&page=' + 1;
       fetch(requestUrl)
@@ -465,7 +467,7 @@ class Assetmap extends React.Component<{}, MyState> {
   }
 
   public render() {
-    const { cities, communities, error, groups, isLoaded, maxNodes, modalDisabled, modalOpen, postType, selectedPost, selectedTags, tags, tag_types, windowSize} = this.state;
+    const { cities, communities, error, groups, isLoaded, maxNodes, modalDisabled, modalOpen, postType, selectedPost, selectedTags, siteURL, tags, tag_types, windowSize} = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -476,6 +478,7 @@ class Assetmap extends React.Component<{}, MyState> {
       return (
         <div id="asset-map" className="asset-map pt-3">
           <HelpModal 
+            siteURL={siteURL}
             modalDisabled={modalDisabled}
             modalOpen={modalOpen}
             enableModal={this.enableModal}

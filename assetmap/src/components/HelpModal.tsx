@@ -5,6 +5,7 @@ import * as ReactModal from 'react-modal';
 interface ModalProps {
     modalDisabled: boolean,
     modalOpen: boolean,
+    siteURL: string,
     enableModal: () => Promise<void>,
     openModal: () => Promise<void>,
     closeModal: () => Promise<void>,
@@ -49,7 +50,7 @@ export default class HelpModal extends React.Component<ModalProps,ModalState> {
 
     loadModalData (): Promise<void> {
         return new Promise((resolve) => {
-            const url: string = "http://climatehub.local/wp-json/wp/v2/pages/?slug=asset-map" 
+            const url: string = this.props.siteURL + "/wp-json/wp/v2/pages/?slug=asset-map" 
             fetch(url)
             .then((res: any) => {
                 res.json()
