@@ -42,16 +42,18 @@ endif; ?>
                                 </a>
                             </div>
                             
-                            <div class="team-member-bio collapse" id="team-member-<?php echo $i ?>">
-                                <div class="container bg-white">
-                                    <div class="row">
-                                    <a class="close-icon text-primary btn btn-link font-weight-light" role="button">&times;</a>
-                                    <div class="col-12 p-4">
-                                        <?php echo $bio ?>
-                                    </div>
+                            <?php if($bio): ?>
+                                <div class="team-member-bio collapse" id="team-member-<?php echo $i ?>">
+                                    <div class="container bg-white">
+                                        <div class="row">
+                                        <a class="close-icon text-primary btn btn-link font-weight-light" role="button">&times;</a>
+                                        <div class="col-12 p-4">
+                                            <?php echo $bio ?>
+                                        </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            <?php endif; ?>
                         <?php endfor; ?>
                     </div>
                 </div>
