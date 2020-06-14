@@ -73,7 +73,7 @@ class Assetmap extends React.Component<{}, MyState> {
       searchTerm: "",
       selectedPost: 0,
       selectedTags: null,
-      siteURL: "http://test.ubcclimatehub.ca/",
+      siteURL: "https://ubcclimatehub.ca/",
       tag_types: [],
       tags: [],
       windowSize: 0,
