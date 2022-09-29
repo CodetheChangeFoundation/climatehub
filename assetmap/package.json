@@ -7,7 +7,7 @@
     "@types/react-html-parser": "^2.0.1",
     "@types/react-modal": "^3.10.5",
     "@types/react-select": "^3.0.8",
-    "d3": "^5.7.0",
+    "d3": "^7.6.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-html-parser": "^2.0.2",
